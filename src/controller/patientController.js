@@ -105,7 +105,7 @@ const findPatient = async (req, res) => {
 const docPatient = async (req, res) => {
 
     try {
-        const DocId = req.query.id
+        const DocId = req.query.doc_id
 
         if (!DocId) {
             return res.status(400).send({ status: false, msg: "please enter Doctor Id to find the details" })
