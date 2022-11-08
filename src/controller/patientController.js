@@ -87,7 +87,7 @@ const findPatient = async (req, res) => {
 
         }
 
-        const patient = await patientModel.findOne({ email: email }).select({ _id: 1, DocId: 1, fname: 1, lname: 1, email: 1, phone: 1, disabalityType: 1, progress: 0,createdAt:0,updatedAt:0,__v:0 })
+        const patient = await patientModel.findOne({ email: email }).select({ _id: 1, DocId: 1, patientFullName: 1, email: 1, phone: 1, disabalityType: 1, progress: 0,createdAt:0,updatedAt:0,__v:0 })
 
         if (!patient) {
             return res.status(400).send({ status: false, msg: "Patient not found please enter valid id/email id" })
