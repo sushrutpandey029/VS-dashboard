@@ -305,5 +305,7 @@ const storeData = async (req,res) => {
     catch(error){
         return res.status(500).send({status: false,message:error.message})
     }
+
+    
 }
 module.exports = { createPatient, findPatient, docPatient,gameHistory,zipfile,gameData,storeData}
