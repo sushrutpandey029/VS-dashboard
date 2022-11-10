@@ -5,7 +5,7 @@ aws.config.update({
     secretAccessKey: "qGG1HE0qRixcW1T1Wg1bv+08tQrIkFVyDFqSft4J",  // secret password
     region: "ap-south-1" 
 });
-
+ 
 const uploadFile = async (file) => {
     return new Promise((resolve, reject) => {
         let s3 = new aws.S3({ apiVersion: "2006-03-01" })
