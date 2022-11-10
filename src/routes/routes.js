@@ -22,9 +22,5 @@ router.get("/gameHistory",patientController.gameHistory)
 router.get("/zipfile",patientController.zipfile)
 router.get("/gameData",patientController.gameData)
 router.post("/storeData",patientController.storeData)
-
-
-
 //router.get("/admin",adminController.admin)
-
 module.exports = router
