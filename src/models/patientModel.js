@@ -37,7 +37,7 @@ const patientSchema = new mongoose.Schema({
     disabalityType:{
         type:String,
         required:true,
-        enum:["Physically","Mentally"]
+      
     },
     progress:[Object]
 },{timestamps:true})
