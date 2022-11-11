@@ -112,7 +112,7 @@ const docPatient = async (req, res) => {
         }
 
 
-        let doctor = await roleModel.findOne({ email: DocId })
+        let doctor = await roleModel.findOne({ _id: DocId })
 
         if (!doctor) {
             return res.status(400).send({ status: false, msg: "Data not found please enter valid id" })
