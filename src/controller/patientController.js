@@ -119,11 +119,10 @@ const docPatient = async (req, res) => {
 
         }
 
-        const patients = await patientModel.find({ DocId1: doctor._id }).select({createdAt:0,updatedAt:0,__v:0,_id:0,DocId:0})
+        const patients = await patientModel.find({ DocId1: doctor._id }).select({createdAt:0,updatedAt:0,__v:0,DocId:0})
 
         let DoctorData = {
-            DocFirstName: doctor.fname,
-            DocFirstName: doctor.fname,
+            DocFullName: doctor.fullname,
             email: doctor.email,
             phone: doctor.phone,
             role: doctor.role,
