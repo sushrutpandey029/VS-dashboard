@@ -4,9 +4,13 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 const gameSchema = new mongoose.Schema({
     gamecategories: {
         type: String,
+        required: true,
+        trim: true 
       },
     gamename: {
         type: String,
+        required: true,
+        trim: true 
       },
     gameimage: {
         type: String,
@@ -14,6 +18,7 @@ const gameSchema = new mongoose.Schema({
     },
     gamedescription: {
         type: String,
+        required: true,
     },
     gamelink: {
         type: String,
