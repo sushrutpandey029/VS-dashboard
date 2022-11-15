@@ -337,8 +337,8 @@ const addgames = async (req,res) => {
         // }
 
         const output = await gameModel.create(body)
-        gameData.push(output);
-        return res.status(201).send({ status: true, msg: "game Succesfully added", output })
+        
+        return res.status(201).send({ status: true, msg: "game Succesfully added", data: output })
 
     }catch (error) {
         return res.status(500).send({ status: false, message: error.message });
