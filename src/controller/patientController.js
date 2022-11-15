@@ -1,6 +1,7 @@
 const roleModel = require("../models/rolesModel");
 const patientModel = require("../models/patientModel");
 const progressModel=require("../models/progressModel")
+const gameModel=require("../models/gameModel")
 const validation = require("../validator/validator");
 const AdmZip = require('adm-zip');
 var fs = require('fs');
@@ -303,8 +304,45 @@ const storeData = async (req,res) => {
     }
     catch(error){
         return res.status(500).send({status: false,message:error.message})
-    }
-
-    
+    } 
 }
-module.exports = { createPatient, findPatient, docPatient,gameHistory,zipfile,gameData,storeData}
+
+const addgames = async (req,res) => {
+    try{
+        let body = req.body
+
+        if (!validation.isrequestBody(body)) {
+            return res.status(400).send({ status: false, msg: "Invalid parameters, please provide user details" })
+        }
+
+        const { gamecategories, gamename, gameimage, gamedescription, gamelink} = body
+
+        if (!validation.isValidobjectId(gamecategories)) {
+            return res.status(400).send({ status: false, msg: "please provide gamecategories" })
+        }
+
+        if (!validation.isValid(gamelink)) {
+            return res.status(400).send({ status: false, msg: "please provide gamelink" })
+
+        }
+
+        if (!validation.isValid(gamedescription)) {
+            return res.status(400).send({ status: false, msg: "please provide gamedescription" })
+
+        }
+
+        if (!validation.isValid(gamename)) {
+            return res.status(400).send({ status: false, msg: "please provide gamedescription" })
+
+        }
+
+        const output = await gameModel.create(body)
+        gameData.push(output);
+        return res.status(201).send({ status: true, msg: "game Succesfully added", output })
+
+    }catch (error) {
+        return res.status(500).send({ status: false, message: error.message });
+    }
+}
+
+module.exports = { createPatient, findPatient, docPatient,gameHistory,zipfile,gameData,storeData,addgames}
