@@ -317,24 +317,24 @@ const addgames = async (req,res) => {
 
         const { gamecategories, gamename, gameimage, gamedescription, gamelink} = body
 
-        if (!validation.isValidobjectId(gamecategories)) {
-            return res.status(400).send({ status: false, msg: "please provide gamecategories" })
-        }
+        // if (!validation.isValidobjectId(gamecategories)) {
+        //     return res.status(400).send({ status: false, msg: "please provide gamecategories" })
+        // }
 
-        if (!validation.isValid(gamelink)) {
-            return res.status(400).send({ status: false, msg: "please provide gamelink" })
+        // if (!validation.isValid(gamelink)) {
+        //     return res.status(400).send({ status: false, msg: "please provide gamelink" })
 
-        }
+        // }
 
-        if (!validation.isValid(gamedescription)) {
-            return res.status(400).send({ status: false, msg: "please provide gamedescription" })
+        // if (!validation.isValid(gamedescription)) {
+        //     return res.status(400).send({ status: false, msg: "please provide gamedescription" })
 
-        }
+        // }
 
-        if (!validation.isValid(gamename)) {
-            return res.status(400).send({ status: false, msg: "please provide gamedescription" })
+        // if (!validation.isValid(gamename)) {
+        //     return res.status(400).send({ status: false, msg: "please provide gamedescription" })
 
-        }
+        // }
 
         const output = await gameModel.create(body)
         gameData.push(output);
