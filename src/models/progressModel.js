@@ -8,10 +8,6 @@ const progressSchema = new mongoose.Schema({
         type:String,
         required: true,
     },
-    overralrating:{
-        type:String,
-        required:true
-    },
     Settings: {
        LoudnessTarget:{
         MinLoudnessTarget :{type :Number},
@@ -25,6 +21,9 @@ const progressSchema = new mongoose.Schema({
     Measurements:{
         cumulativeDurationOfSounds: Number,
        
+    },
+    overralrating:{
+        type:String,
     },
     AcousticData:{
         Pitch:{
