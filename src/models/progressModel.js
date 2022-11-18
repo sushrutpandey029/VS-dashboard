@@ -8,6 +8,9 @@ const progressSchema = new mongoose.Schema({
         type:String,
         required: true,
     },
+    NumberOfTrials:{
+        type:String,
+    },
     Settings: {
        LoudnessTarget:{
         MinLoudnessTarget :{type :Number},
@@ -15,9 +18,6 @@ const progressSchema = new mongoose.Schema({
        }
     },
     Date: Date,
-    Counts : {
-        NumberOfTrials:Number,
-    },
     Measurements:{
         cumulativeDurationOfSounds: Number,
        
