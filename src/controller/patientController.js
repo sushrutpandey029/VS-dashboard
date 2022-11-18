@@ -143,25 +143,25 @@ const docPatient = async (req, res) => {
 const gameHistory = async (req,res)=>
 {
     try{
-        // const email = req.query.email;
-        // if(!email){
-        //     return res.status(400).send({status: false,message:"Please send an email id"})
-        // }
+        const id = req.query._id;
+        if(!id){
+            return res.status(400).send({status: false,message:"Please send an id"})
+        }
 
         // if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
         //     return res.status(400).send({ status: false, message: "email is not valid" })
 
         // }
-        //     const patient = await patientModel.findOne({email : email})
-        //     if(patient){
-        //         return res.status(200).send({status : true,data : patient.progress})
-        //   }
+            const patient = await patientModel.findOne({_id : id})
+            if(patient){
+                return res.status(200).send({status : true,data : patient.progress})
+          }
 
-        //   else{
-        //     const doctor = await roleModel.findOne({email : email});
-        //     if(!doctor){
-        //      return res.status(404).send({status: false, message:"Please enter a valid patient or doctor email id"})
-        //   }
+          else{
+            // const doctor = await roleModel.findOne({email : email});
+            // if(!doctor){
+             return res.status(404).send({status: false, message:"Please enter a valid patient or doctor email id"})
+          }
 
         //   const doctorID = await patientModel.find({DocId: doctor._id})
         //     if(!doctorID){
@@ -169,45 +169,47 @@ const gameHistory = async (req,res)=>
         //     }
 
         //     return res.status(200).send({status : true , data : doctorID.progress})
-        // }         
-        const DocEmail = req.query.DocEmail;
-        const patientEmail =req.query.patientEmail;
+        } 
+        
+        
+    //     const DocEmail = req.query.DocEmail;
+    //     const patientEmail =req.query.patientEmail;
 
-        if(!DocEmail){
-            return res.status(400).send({status:true,message:"Please Enter doctor Email id"})
-        }
+    //     if(!DocEmail){
+    //         return res.status(400).send({status:true,message:"Please Enter doctor Email id"})
+    //     }
 
-        if(!patientEmail){
-            return res.status(400).send({status:true,message:"Please Enter patient Email id"})
-        }
+    //     if(!patientEmail){
+    //         return res.status(400).send({status:true,message:"Please Enter patient Email id"})
+    //     }
 
-        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(DocEmail))) {
-             return res.status(400).send({ status: false, message: "Doctor email is not valid" })
-        }
+    //     if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(DocEmail))) {
+    //          return res.status(400).send({ status: false, message: "Doctor email is not valid" })
+    //     }
 
-        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(patientEmail))) {
-            return res.status(400).send({ status: false, message:"Patient email is not valid" })
-       }
+    //     if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(patientEmail))) {
+    //         return res.status(400).send({ status: false, message:"Patient email is not valid" })
+    //    }
 
-       const doctor = await roleModel.findOne({email : DocEmail});
-         if(!doctor){
-            return res.status(404).send({status: false, message:"Please enter a valid doctor email id"})
-       }
-     //  console.log("Doc", doctor._id)
+    //    const doctor = await roleModel.findOne({email : DocEmail});
+    //      if(!doctor){
+    //         return res.status(404).send({status: false, message:"Please enter a valid doctor email id"})
+    //    }
+    //  //  console.log("Doc", doctor._id)
 
-       const details = await patientModel.findOne({email : patientEmail ,DocId : doctor._id})
-       //console.log(details.DocId)
-       if(!details){
-        return res.status(404).send({status: false,message:"No such data found,Please chck email id"})
-       }
+    //    const details = await patientModel.findOne({email : patientEmail ,DocId : doctor._id})
+    //    //console.log(details.DocId)
+    //    if(!details){
+    //     return res.status(404).send({status: false,message:"No such data found,Please chck email id"})
+    //    }
 
-       else {
-        return res.status(200).send({status: true , data: details.progress})
-       }
-    }
-    catch(error){
-        return res.status(500).send({status: false , message:error.message})
-    }
+    //    else {
+    //     return res.status(200).send({status: true , data: details.progress})
+    //    }
+    // }
+    // catch(error){
+    //     return res.status(500).send({status: false , message:error.message})
+    // }
 }
 
 const zipfile = async (req,res) => {
