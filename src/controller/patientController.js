@@ -245,12 +245,12 @@ const gameData = async (req,res) =>{
         }
 
         if(!patientId){
-            return res.status(400).send({status:true,message:"Please Enter patient Email id"});
+            return res.status(400).send({status:true,message:"Please Enter patient  id"});
         }
 
-        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(patientId))) {
-             return res.status(400).send({ status: false, message: "Doctor email is not valid" });
-        }
+        // if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(patientId))) {
+        //      return res.status(400).send({ status: false, message: "Doctor email is not valid" });
+        // }
 
         const patientData = await patientModel.findOne({__id:patientId});
         if(!patientData){
