@@ -252,9 +252,9 @@ const gameData = async (req,res) =>{
              return res.status(400).send({ status: false, message: "Doctor email is not valid" });
         }
 
-        const patientData = await patientModel.findOne({email:patientId});
+        const patientData = await patientModel.findOne({__id:patientId});
         if(!patientData){
-            return res.status(400).send({status:false,message:"This email is not registered"});
+            return res.status(400).send({status:false,message:"This id is not registered"});
         }
 
         const array = patientData.progress;
