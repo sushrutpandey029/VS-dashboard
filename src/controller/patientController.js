@@ -196,13 +196,13 @@ const gameHistory = async (req,res)=>
     //   console.log("Doc", doctor._id)
 
        const details = await patientModel.findOne({_id : patientId})
-       console.log(details)
+    //    console.log(details)
        if(!details){
         return res.status(404).send({status: false,message:"No such data found,Please check id"})
        }
 
        else {
-        return res.status(200).send({status: true , data: details.progress})
+        return res.status(200).send({status: true , data:details.progress})
        }
     }
     catch(error){
