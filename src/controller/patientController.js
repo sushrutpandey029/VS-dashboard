@@ -170,16 +170,16 @@ const gameHistory = async (req,res)=>
 
         //     return res.status(200).send({status : true , data : doctorID.progress})
         // }         
-        const DocId = req.query._id;
-        const patientId =req.query._id;
+        const DocId = req.query.DocId;
+        // const _id =req.query._id;
 
         if(!DocId){
             return res.status(400).send({status:true,message:"Please Enter doctor  id"})
         }
 
-        if(!patientId){
-            return res.status(400).send({status:true,message:"Please Enter patient id"})
-        }
+        // if(!patientId){
+        //     return res.status(400).send({status:true,message:"Please Enter patient id"})
+        // }
 
         // if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(DocEmail))) {
         //      return res.status(400).send({ status: false, message: "Doctor email is not valid" })
