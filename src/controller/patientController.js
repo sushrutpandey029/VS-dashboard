@@ -4,7 +4,6 @@ const progressModel=require("../models/progressModel")
 const gameModel=require("../models/gameModel")
 const validation = require("../validator/validator");
 const AdmZip = require('adm-zip');
-const aws = require("../aws/aws")
 var fs = require('fs');
 
 var multer = require('multer');
@@ -350,12 +349,6 @@ const addgames = async (req,res) => {
         // }
 
 
-        let files = req.files
-        if (files && files.length > 0) {
-            var uploadedFileURL = await aws.uploadFile(files[0])
-
-        } 
-        body["gamefile"]=uploadedFileURL
 
 
 
