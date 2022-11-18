@@ -286,15 +286,15 @@ const storeData = async (req,res) => {
         const {patientId}= body
 
         if(!validation.isValid(patientId)){
-            return res.status(400).send({ status: false, msg: "Please provide email id"})
+            return res.status(400).send({ status: false, msg: "Please provide  id"})
         }
 
-        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(patientId))) {
-            return res.status(400).send({ status: false, message: "Email is not valid" })
+        // if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(patientId))) {
+        //     return res.status(400).send({ status: false, message: "Email is not valid" })
 
-        }
+        // }
 
-        const patient = await patientModel.findOne({email : patientId})
+        const patient = await patientModel.findOne({_id : patientId})
         if(!patient){
             return res.status(400).send({status: false,message:"No such patient found"})
         }
