@@ -279,24 +279,22 @@ const gameData = async (req,res) =>{
 const storeData = async (req,res) => {
     try{
         const body = req.body;
-        
         if(!validation.isrequestBody(body)){
             return res.status(400).send({status:false,message:"Game response is not coming"})
         }
 
-        const {email}= body
+        const {patientId}= body
 
-        if(!validation.isValid(email)){
+        if(!validation.isValid(patientId)){
             return res.status(400).send({ status: false, msg: "Please provide email id"})
         }
 
-        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
+        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(patientId))) {
             return res.status(400).send({ status: false, message: "Email is not valid" })
 
         }
 
-        const patient = await patientModel.findOne({email:email})
-
+        const patient = await patientModel.findOne({email : patientId})
         if(!patient){
             return res.status(400).send({status: false,message:"No such patient found"})
         }
