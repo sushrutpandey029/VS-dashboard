@@ -170,33 +170,32 @@ const gameHistory = async (req,res)=>
 
         //     return res.status(200).send({status : true , data : doctorID.progress})
         // }         
-        // const Docid = req.query._id;
-        const patientId =req.query. _id;
+        const DocEmail = req.query.DocEmail;
+        const patientEmail =req.query.patientEmail;
 
-        // if(!DocEmail){
-        //     return res.status(400).send({status:true,message:"Please Enter doctor Email id"})
-        // }
-
-        if(!patientId){
-            return res.status(400).send({status:true,message:"Please Enter patient  id"})
+        if(!DocEmail){
+            return res.status(400).send({status:true,message:"Please Enter doctor Email id"})
         }
 
-        // if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(DocEmail))) {
-        //      return res.status(400).send({ status: false, message: "Doctor email is not valid" })
-        // }
+        if(!patientEmail){
+            return res.status(400).send({status:true,message:"Please Enter patient Email id"})
+        }
 
-        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(patientId))) {
+        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(DocEmail))) {
+             return res.status(400).send({ status: false, message: "Doctor email is not valid" })
+        }
+
+        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(patientEmail))) {
             return res.status(400).send({ status: false, message:"Patient email is not valid" })
        }
 
-    //    const doctor = await roleModel.findOne({email : DocEmail});
-
-    //      if(!doctor){
-    //         return res.status(404).send({status: false, message:"Please enter a valid doctor email id"})
-    //    }
+       const doctor = await roleModel.findOne({email : DocEmail});
+         if(!doctor){
+            return res.status(404).send({status: false, message:"Please enter a valid doctor email id"})
+       }
      //  console.log("Doc", doctor._id)
 
-       const details = await patientModel.findOne({_id : patientId})
+       const details = await patientModel.findOne({email : patientEmail ,DocId : doctor._id})
        //console.log(details.DocId)
        if(!details){
         return res.status(404).send({status: false,message:"No such data found,Please chck email id"})
@@ -252,7 +251,7 @@ const gameData = async (req,res) =>{
         const patientData = await patientModel.findOne({_id:patientId});
 
         if(!patientData){
-            return res.status(400).send({status:false,message:"This id is not right"});
+            return res.status(400).send({status:false,message:"This id is not id"});
         }
 
         const array = patientData.progress;
