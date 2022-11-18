@@ -193,7 +193,7 @@ const gameHistory = async (req,res)=>
          if(!doctor){
             return res.status(404).send({status: false, message:"Please enter a valid doctor id"})
        }
-     //  console.log("Doc", doctor._id)
+      console.log("Doc", doctor._id)
 
     //    const details = await patientModel.findOne({_id : patientEmail ,DocId : doctor._id})
        //console.log(details.DocId)
