@@ -16,7 +16,7 @@ const progressSchema = new mongoose.Schema({
     },
     Date: Date,
     Counts : {
-        NumberOfTrials:Number,
+        type:string,
     },
     Measurements:{
         cumulativeDurationOfSounds: Number,
