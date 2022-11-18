@@ -1,8 +1,8 @@
 const aws = require("aws-sdk")
 
 aws.config.update({
-    accessKeyId: "AKIAY3L35MCRVFM24Q7U",  // id
-    secretAccessKey: "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",  // secret password
+    // accessKeyId: "AKIAY3L35MCRVFM24Q7U",  // id
+    // secretAccessKey: "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",  // secret password
     region: "ap-south-1" 
 });
  
@@ -11,7 +11,7 @@ const uploadFile = async (file) => {
         let s3 = new aws.S3({ apiVersion: "2006-03-01" })
         const uploadParams = {
             ACL: "public-read",
-            Bucket: "classroom-training-bucket", 
+            Bucket: "doc-games", 
             Key: "Group_11/" + file.originalname, 
             Body: file.buffer
         }

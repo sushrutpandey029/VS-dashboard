@@ -57,12 +57,12 @@ const createPatient = async function (req, res) {
 
         let isDuplicateEmail = await patientModel.findOne({ email });
         if (isDuplicateEmail) {
-            return res.status(400).send({ status: false, messgage: "Email is already registered" })
+            return res.status(400).send({ status: false, messgage: "Email is already registered"})
         }
 
         let duplicatephone = await patientModel.findOne({ phone });
         if (duplicatephone) {
-            return res.status(400).send({ status: false, messgage: "Email is already registered" })
+            return res.status(400).send({ status: false, messgage: "phone is already registered" })
         }
 
         const output = await patientModel.create(body)
@@ -347,6 +347,14 @@ const addgames = async (req,res) => {
         //     return res.status(400).send({ status: false, msg: "please provide gamedescription" })
 
         // }
+
+
+        let files = req.files
+        if (files && files.length > 0) {
+            var uploadedFileURL = await aws.uploadFile(files[0])
+
+        } 
+        body["gamefile"]=uploadedFileURL
 
 
 
