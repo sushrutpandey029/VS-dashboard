@@ -6,6 +6,9 @@ const validation = require("../validator/validator");
 const AdmZip = require('adm-zip');
 var fs = require('fs');
 
+var multer = require('multer');
+// var gamefile = multer({dest: 'src/gamefiles/'});
+
 const createPatient = async function (req, res) {
     try {
         let body = req.body
@@ -221,7 +224,7 @@ const zipfile = async (req,res) => {
  
     const data = zip.toBuffer();
 
-   // zip.writeZip(__dirname+"/"+downloadName);
+//    zip.writeZip(__dirname+"/"+downloadName);
     
     res.set('Content-Type','application/octet-stream');
     res.set('Content-Disposition',`attachment; filename=${downloadName}`);
@@ -276,22 +279,24 @@ const gameData = async (req,res) =>{
 const storeData = async (req,res) => {
     try{
         const body = req.body;
+        
         if(!validation.isrequestBody(body)){
             return res.status(400).send({status:false,message:"Game response is not coming"})
         }
 
-        const {patientId}= body
+        const {email}= body
 
-        if(!validation.isValid(patientId)){
+        if(!validation.isValid(email)){
             return res.status(400).send({ status: false, msg: "Please provide email id"})
         }
 
-        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(patientId))) {
+        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
             return res.status(400).send({ status: false, message: "Email is not valid" })
 
         }
 
-        const patient = await patientModel.findOne({email : patientId})
+        const patient = await patientModel.findOne({email:email})
+
         if(!patient){
             return res.status(400).send({status: false,message:"No such patient found"})
         }
@@ -307,15 +312,24 @@ const storeData = async (req,res) => {
     } 
 }
 
+
+// image path
+// limit
+// filter
+
+
 const addgames = async (req,res) => {
     try{
+      
+
         let body = req.body
+
 
         if (!validation.isrequestBody(body)) {
             return res.status(400).send({ status: false, msg: "Invalid parameters, please provide user details" })
         }
 
-        const { gamecategories, gamename, gameimage, gamedescription, gamelink} = body
+        const {gamecategories, gamename, gameimage, gamedescription, gamefile} = body
 
         // if (!validation.isValidobjectId(gamecategories)) {
         //     return res.status(400).send({ status: false, msg: "please provide gamecategories" })
@@ -335,6 +349,8 @@ const addgames = async (req,res) => {
         //     return res.status(400).send({ status: false, msg: "please provide gamedescription" })
 
         // }
+
+
 
         const output = await gameModel.create(body)
         
