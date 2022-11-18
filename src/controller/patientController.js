@@ -170,15 +170,15 @@ const gameHistory = async (req,res)=>
 
         //     return res.status(200).send({status : true , data : doctorID.progress})
         // }         
-        const DocEmail = req.query._id;
-        const patientEmail =req.query._id;
+        const DocId = req.query._id;
+        const patientId =req.query._id;
 
-        if(!DocEmail){
-            return res.status(400).send({status:true,message:"Please Enter doctor Email id"})
+        if(!DocId){
+            return res.status(400).send({status:true,message:"Please Enter doctor  id"})
         }
 
-        if(!patientEmail){
-            return res.status(400).send({status:true,message:"Please Enter patient Email id"})
+        if(!patientId){
+            return res.status(400).send({status:true,message:"Please Enter patient id"})
         }
 
         // if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(DocEmail))) {
@@ -189,21 +189,21 @@ const gameHistory = async (req,res)=>
     //         return res.status(400).send({ status: false, message:"Patient email is not valid" })
     //    }
 
-       const doctor = await roleModel.findOne({_id : DocEmail});
+       const doctor = await roleModel.findOne({_id : DocId});
          if(!doctor){
-            return res.status(404).send({status: false, message:"Please enter a valid doctor email id"})
+            return res.status(404).send({status: false, message:"Please enter a valid doctor id"})
        }
      //  console.log("Doc", doctor._id)
 
-       const details = await patientModel.findOne({_id : patientEmail ,DocId : doctor._id})
+    //    const details = await patientModel.findOne({_id : patientEmail ,DocId : doctor._id})
        //console.log(details.DocId)
-       if(!details){
-        return res.status(404).send({status: false,message:"No such data found,Please chck email id"})
-       }
+    //    if(!details){
+    //     return res.status(404).send({status: false,message:"No such data found,Please chck email id"})
+    //    }
 
-       else {
-        return res.status(200).send({status: true , data: details.progress})
-       }
+    //    else {
+    //     return res.status(200).send({status: true , data: details.progress})
+    //    }
     }
     catch(error){
         return res.status(500).send({status: false , message:error.message})
