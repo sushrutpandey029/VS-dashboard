@@ -17,7 +17,7 @@ const progressSchema = new mongoose.Schema({
     Settings: {
        LoudnessTarget:{
         MinLoudnessTarget :{type :Number},
-        MinLoudnessTarget :{type:Number}
+        MaxLoudnessTarget :{type:Number}
        }
     },
     Date: Date,
