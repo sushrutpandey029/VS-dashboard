@@ -7,6 +7,11 @@ const gameSchema = new mongoose.Schema({
         required: true,
         trim: true 
       },
+    gametype:{
+        type: String,
+        required: true,
+        trim: true 
+    },
     gamename: {
         type: String,
         required: true,
