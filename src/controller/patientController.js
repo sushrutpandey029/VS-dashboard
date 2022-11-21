@@ -371,7 +371,7 @@ const gamelist = async (req, res) => {
             return res.status(400).send({ status: false, msg: "please enter gamecategories to find the game" })
         }
 
-        const game = await gameModel.find({ gamecategories: gamecategories }).select({ _id: 1, gamecategories: 1, gamename: 1, gamedescription: 1, gamefile: 1})
+        const game = await gameModel.find({ gamecategories: gamecategories }).select({ _id: 1, gamecategories: 1, gametype:1, gamename: 1, gamedescription: 1, gamefile: 1})
 
         if (!game) {
             return res.status(400).send({ status: false, msg: "game not found please enter valid categories" })
