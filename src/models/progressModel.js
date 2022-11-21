@@ -15,7 +15,7 @@ const progressSchema = new mongoose.Schema({
         type:String,
     },
     audioId:{
-        type:string,
+        type:String,
     },
     Settings: {
        LoudnessTarget:{
