@@ -2,61 +2,81 @@ const mongoose = require("mongoose")
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const progressSchema = new mongoose.Schema({
-    ClientId: String,
-    GameName:String,
+    
+    counter:String,
+    
+    gameId:{
+        type:String,
+    },
+
     patientId:{
         type:String,
         required: true,
     },
-    NumberOfTrials:{
-        type:String,
-    },
+
+    
     overralrating:{
         type:String,
     },
+
+    date:{
+        type:String,
+    },
+
+    elapsedTime:{
+        type:String,
+    },
+
+    LoudnessTarget:{
+        type:String,
+    },
+
+    NumberOfTrials:{
+        type:String,
+    },
+
+
+    cumulativeDurationOfSounds:{
+        type:String,
+    },
+
+
+    MeanPitch:{
+        type:String,
+    },
+
+    meanLoudness:{
+        type:String,
+    },
+
+    stdDevPitch:{
+        type:String,
+    },
+
+    stdDevLoudness:{
+        type:String,
+    },
+
+    rangepitchMin:{
+        type:String,
+    },
+
+    rangepitchMax:{
+
+        type:String,
+    },
+
+    rangeLoudnessMin:{
+        type:String,
+    },
+
+    rangeLoudnessmax:{
+        type:String,
+    },
+
     audioId:{
         type:String,
     },
-    Settings: {
-       LoudnessTarget:{
-        MinLoudnessTarget :{type :Number},
-        MaxLoudnessTarget :{type:Number}
-       }
-    },
-    Date: Date,
-    Measurements:{
-        cumulativeDurationOfSounds: Number,
-
-    },
-  
-    AcousticData:{
-        Pitch:{
-            MeanPitch :Number,
-            stdDevPitch:Number,
-            Range: {
-                rangepitchMin :{type :Number},
-                rangepitchMax :{type:Number}
-            }
-        },
-
-        Loudness:{
-            meanLoudness:Number,
-            stdDevLoudness:Number,
-            Range: {
-                rangeLoudnessMin :{type :Number},
-                rangeLoudnessmax  :{type:Number}
-            }
-        },
-        DurationOfSuccessfullAttempt:{
-            Last:Number,
-            Mean:Number,
-            StdDev:Number,
-            Range: {
-                min :{type :Number},
-                max :{type:Number}
-            }
-        }  
-    }
 
 
 },{timestamps:true})

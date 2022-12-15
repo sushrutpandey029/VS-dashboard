@@ -1,7 +1,11 @@
 const roleModel = require("../models/rolesModel");
 const patientModel = require("../models/patientModel");
 const validation = require("../validator/validator");
+const Register = require("../models/registerModel");
 const bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken");
+
+//added controller for admin login and register
 
 const authUser = (req,res,next)=>{
     try{
@@ -37,4 +41,126 @@ function authRole(role){
         }
     }
 }
-module.exports = {authUser,authRole}
+
+//edited section start from here
+
+const register =async(req,res)=>{
+    try {
+       let body = req.body
+       let errors = [];
+       const { username,email,phone,password } = body
+ 
+       
+       
+       if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
+          res.status(400)
+          errors.push({text:'Email Id is Invalid'})
+ 
+       }
+ 
+       if (!(/^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/.test(phone))) {
+          res.status(400)
+          errors.push({text:'Mobile Number is Invalid '})
+ 
+       }
+ 
+    //    let Admin = await Register.findOne({isAdmin:true})
+    //    if(Admin){
+    //       res.status(400)
+    //       errors.push({text:'Admin is already in use'})
+    //    }
+ 
+       let isDuplicateAdmin = await Register.findOne({ email:email,phone:phone,isAdmin:true });
+       if (isDuplicateAdmin) {
+          res.status(400)
+          errors.push({text:'Admin is already in use'})
+       }
+ 
+       if(errors.length>0){
+          res.render("register",{
+              errors:errors,
+              title:'Error',
+              username:username,
+              email:email,
+              password:password,
+              phone:phone
+          })
+      }
+      else{
+       // generate salt to hash password
+       const salt = await bcrypt.genSalt(10);
+       // now we set user password to hashed password
+       body.password = await bcrypt.hash(body.password, salt);
+ 
+       const output = await Register.create(body)
+       return res.status(201).render("login")
+      }
+   }
+   catch (error) {
+    let errors = [];
+    errors.push[{text:"Server error"}]
+    return res.render("login",{
+       errors:errors,
+       title:'Error'
+    });
+   }
+  }
+  
+  const adminlogin = async(req,res)=>{
+    try{
+        let body = req.body;
+        let errors = [];
+       const { email, password } = body;
+ 
+       if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
+          res.status(400)
+          errors.push({text:'Email Id is Invalid'})
+       }
+ 
+       const user = await Register.findOne({ email });
+       const adminid=await Register.find({'email':req.body.email})
+       if (user) {
+          
+           const validPassword = await bcrypt.compare(password, user.password);
+           if (!validPassword) {
+             res.status(400)
+             errors.push({text:'Password is Invalid'})
+             }
+       } else {
+          res.status(400)
+          errors.push({text:"User does not exist"})
+        }
+ 
+        if(errors.length>0){
+          res.render("login",{
+              errors:errors,
+              title:'Error',
+              email:email,
+              password:password
+          })
+      }
+       req.user = user;
+    //   console.log(user);
+
+       const token = await jwt.sign({
+           userid: user._id.toString(),
+       },"Testing")
+      
+    //    console.log("token ",token);
+       res.setHeader("Authentication", token) // Setting key Value pair of Token
+       
+       req.session.isAuth=true;
+       return res.status(200).render("profile",{userData:adminid})
+   }
+   catch (error) {
+    let errors = [];
+    errors.push[{text:"Server error"}]
+    return res.render("login",{
+       errors:errors,
+       title:'Error'
+    });
+  }
+ }
+
+
+module.exports = {authUser,authRole,register,adminlogin} 

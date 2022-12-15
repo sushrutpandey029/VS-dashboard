@@ -1,11 +1,16 @@
 const roleModel = require("../models/rolesModel");
 const patientModel = require("../models/patientModel");
 const validation = require("../validator/validator");
+const Register = require("../models/registerModel");
 const bcrypt = require('bcrypt');
-const aws = require("../aws/aws")
-
-
+const aws = require("../aws/aws");
 const jwt = require("jsonwebtoken");
+var multer = require('multer');
+var fs = require('fs');
+var path = require('path');
+
+
+ // created deletedoc, docupdate.
 
 const createUser = async function (req, res) {
     try {
@@ -72,8 +77,8 @@ const createUser = async function (req, res) {
 
         const output = await roleModel.create(body)
         
-        return res.status(201).send({ status: true, msg: "User Succesfully Created", data: output })
-
+        return res.status(201).send({ status: true, msg: "User Succesfully Created", data: output }) // original code
+        // res.redirect('http://localhost:3000/index') //added this to redirect 
     }
     catch (error) {
         console.log(error.message)
@@ -82,7 +87,9 @@ const createUser = async function (req, res) {
 
 }
 
-const login = async (req, res) => {
+
+
+const login = async (req, res) => { 
     try {
         let body = req.body;
 
@@ -141,5 +148,143 @@ const login = async (req, res) => {
     }
     
 }
-module.exports = { createUser, login }
 
+
+
+// ADMIN PANELS FUNCTION 
+
+
+
+
+const createUsernew = async function (req, res) {
+    console.log("new user")
+    try {
+        let body ={
+            fullname:req.body.fullname,
+            email:req.body.email,
+            Dob:req.body.Dob,
+            phone:req.body.phone,
+            password:req.body.password,
+            role:req.body.role,
+            Address:req.body.Address,
+            Country:req.body.Country,
+            City:req.body.City,
+            State:req.body.State,
+            pincode:req.body.pincode,
+            profilepic:{ 
+                data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+            contentType: 'image/png'
+        },Biography:req.body.Biography,
+        status:req.body.status,
+        payment:req.body.payment
+        }
+
+        if (!validation.isrequestBody(body)) {
+            return res.status(400).send({ status: false, msg: "Invalid parameters, please provide user details" })
+        }
+
+        const { fullname, email, phone, password, role, payment, patientId } = body
+
+        if (!validation.isValid(fullname)) {
+            return res.status(400).send({ status: false, msg: "please provide full name" })
+
+        }
+        if (!validation.isValid(email)) {
+            return res.status(400).send({ status: false, msg: "please provide email" })
+
+        }
+
+        if (!validation.isValid(phone)) {
+            return res.status(400).send({ status: false, msg: "please provide phone" })
+
+        }
+
+        if (!validation.isValid(password)) {
+            return res.status(400).send({ status: false, msg: "please provide password" })
+
+        }
+
+        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
+            return res.status(400).send({ status: false, message: "email is not valid" })
+
+        }
+
+        if (!(/^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/.test(phone))) {
+            return res.status(400).send({ status: false, message: "Mobile Number is not valid" })
+
+        }
+
+        let isDuplicateEmail = await roleModel.findOne({ email });
+        if (isDuplicateEmail) {
+            res.redirect("/createUser")
+        }
+
+        let duplicatephone = await roleModel.findOne({ phone });
+        if (duplicatephone) {
+            return res.status(400).send({ status: false, msg: "phone is already in use" })
+        }
+
+        // generate salt to hash password
+        const salt = await bcrypt.genSalt(10);
+        // now we set user password to hashed password
+        body.password = await bcrypt.hash(body.password, salt);
+
+        if (role == "Admin") {
+            let duplicateAdmin = await roleModel.findOne({ role: "Admin" })
+            if (duplicateAdmin) {
+                return res.status(400).send({ status: false, msg: "Admin Already Present!!! Only one admin can exist" })
+            }
+        }
+        const output = await roleModel.create(body)
+        
+        // return res.status(201).send({ status: true, msg: "User Succesfully Created", data: output }) // original code
+        res.redirect('http://localhost:3000/index') //added this to redirect 
+    }
+    catch (error) {
+        console.log(error.message)
+        return res.status(500).send({ status: false, message: error.message });
+    }
+
+}
+
+
+const deletedoc=async (req,res)=>{
+        const ID=req.params.id;
+       // console.log(ID)
+    await roleModel.findOneAndDelete({_id:ID});
+    
+   // let data = await roleModel.find()
+    // console.log(data.length);
+    res.redirect('http://localhost:3000/index') 
+}
+
+const docUpdate=async (req,res)=>{
+   await roleModel.updateOne({_id:req.params.id},{
+        $set:{
+            fullname:req.body.fullname,
+            email:req.body.email,
+            Dob:req.body.Dob,
+            phone:req.body.phone,
+            role:req.body.role,
+            Address:req.body.Address,
+            Country:req.body.Country,
+            City:req.body.City,
+            State:req.body.State,
+            pincode:req.body.pincode,
+            profilepic:req.body.profilepic,
+            Biography:req.body.Biography,
+            status:req.body.status,
+            payment:req.body.payment
+        },function(err,docs){
+            if(err){
+                console.log(err);
+            }else{
+                console.log("updated doc :",docs);
+                res.redirect('http://localhost:3000/index') 
+            }
+        }
+    })  
+     
+}
+
+module.exports = { createUser,login,deletedoc,docUpdate,createUsernew};

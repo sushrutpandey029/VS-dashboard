@@ -1,3 +1,5 @@
+//added delete_patient and update_patient api 
+
 const roleModel = require("../models/rolesModel");
 const patientModel = require("../models/patientModel");
 const progressModel=require("../models/progressModel")
@@ -9,15 +11,16 @@ var fs = require('fs');
 var multer = require('multer');
 // var gamefile = multer({dest: 'src/gamefiles/'});
 
+
 const createPatient = async function (req, res) {
     try {
         let body = req.body
-
+            console.log(body);
         if (!validation.isrequestBody(body)) {
             return res.status(400).send({ status: false, msg: "Invalid parameters, please provide user details" })
         }
 
-        const { DocId, patientFullName, email, phone, disabalityType, progress } = body
+        const { DocId, patientFullName, email, phone, disabalityType, progress, address } = body
 
         if (!validation.isValidobjectId(DocId)) {
             return res.status(400).send({ status: false, msg: "Doctor id is wrong" })
@@ -69,13 +72,13 @@ const createPatient = async function (req, res) {
         const data = await roleModel.findOne({ _id: DocId })
         data.patientData.push(output);
         return res.status(201).send({ status: true, msg: "Patient Succesfully Created", data: output })
-
     }
     catch (error) {
         return res.status(500).send({ status: false, message: error.message });
     }
 
 }
+
 
 const findPatient = async (req, res) => {
     try {
@@ -310,12 +313,6 @@ const storeData = async (req,res) => {
     } 
 }
 
-
-// image path
-// limit
-// filter
-
-
 const addgames = async (req,res) => {
     try{
       
@@ -361,7 +358,6 @@ const addgames = async (req,res) => {
     }
 }
 
-
 const gamelist = async (req, res) => {
     try {
         const gamecategories = req.query.gamecategories
@@ -386,4 +382,108 @@ const gamelist = async (req, res) => {
     }
 }
 
-module.exports = { createPatient, findPatient, docPatient,gameHistory,zipfile,gameData,storeData,addgames,gamelist}
+
+
+
+// ADMIN FUNCTION FOR ADMIN PANEL
+
+
+const createPatientnew = async function (req, res) {
+    try {
+        let body = req.body
+            console.log(body);
+        if (!validation.isrequestBody(body)) {
+            return res.status(400).send({ status: false, msg: "Invalid parameters, please provide user details" })
+        }
+
+        const { DocId, patientFullName, email, phone, disabalityType, progress, address } = body
+
+        // if (!validation.isValidobjectId(DocId)) {
+        //     return res.status(400).send({ status: false, msg: "Doctor id is wrong" })
+        // }
+
+        if (!validation.isValid(patientFullName)) {
+            return res.status(400).send({ status: false, msg: "please provide fullname" })
+
+        }
+
+
+        if (!validation.isValid(email)) {
+            return res.status(400).send({ status: false, msg: "please provide email" })
+
+        }
+
+        if (!validation.isValid(phone)) {
+            return res.status(400).send({ status: false, msg: "please provide phone" })
+
+        }
+
+        if (!validation.isValid(disabalityType)) {
+            return res.status(400).send({ status: false, msg: "please provide disabalityType" })
+
+        }
+
+
+        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
+            return res.status(400).send({ status: false, message: "email is not valid" })
+
+        }
+
+        if (!(/^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/.test(phone))) {
+            return res.status(400).send({ status: false, message: "Mobile Number is not valid" })
+
+        }
+
+        let isDuplicateEmail = await patientModel.findOne({ email });
+        if (isDuplicateEmail) {
+            return res.status(400).send({ status: false, messgage: "Email is already registered"})
+        }
+
+        let duplicatephone = await patientModel.findOne({ phone });
+        if (duplicatephone) {
+            return res.status(400).send({ status: false, messgage: "phone is already registered" })
+        }
+
+        const output = await patientModel.create(body)
+        const data = await roleModel.findOne({ _id: DocId })
+        data.patientData.push(output);
+        // return res.status(201).send({ status: true, msg: "Patient Succesfully Created", data: output })
+        res.redirect('http://localhost:3000/index') 
+
+    }
+    catch (error) {
+        return res.status(500).send({ status: false, message: error.message });
+    }
+
+}
+
+const delete_patient = async (req,res)=>{         
+    const ID=req.params.id;
+await patientModel.findOneAndDelete({_id:ID});
+
+res.redirect('http://localhost:3000/index') 
+}
+
+
+const update_patient=async (req,res)=>{
+    await patientModel.updateOne({_id:req.params.id},{
+        $set:{
+            patientFullName:req.body.patientFullName,
+            DocId:req.body.DocId,
+            email:req.body.email,
+            phone:req.body.phone,
+            disabalityType:req.body.disabalityType,
+            address:req.body.address
+            // progress:req.body.progress
+            
+        },function(err,docs){
+            if(err){
+                console.log(err);
+            }else{
+                res.redirect('http://localhost:3000/index') 
+            }
+        }
+    })  
+}
+
+module.exports = { createPatient, findPatient, docPatient,gameHistory,zipfile,gameData,storeData,addgames,gamelist,delete_patient,update_patient,createPatientnew}

@@ -39,7 +39,10 @@ const patientSchema = new mongoose.Schema({
         required:true,
       
     },
-    progress:[Object]
+    progress:{
+       type: Object,
+       default: []
+    }
 },{timestamps:true})
 
 module.exports=mongoose.model("patient",patientSchema)

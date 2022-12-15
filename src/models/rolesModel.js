@@ -52,9 +52,9 @@ const rolesSchema = new mongoose.Schema({
     pincode:{
         type: String,
     },
-    profilepic: {
-        type: String,
-        // required: true
+    profilepic: { 
+        data: Buffer,
+        contentType: String
     },
     Biography:{
         type:String

@@ -24,4 +24,4 @@ const uploadFile = async (file) => {
     })
 }
 
-module.exports.uploadFile = uploadFile
+module.exports.uploadFile = uploadFile 
