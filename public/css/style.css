@@ -1090,8 +1090,8 @@ textarea.form-control {
 	color: #009efb;
 }
 .account-box .form-control {
-	border: 1px solid #eaeaea;
-	border-radius: 0;
+	border: 4px solid #000000;
+	border-radius: 2px;
 	box-shadow: inherit;
 	font-size: 14px;
 	height: 40px;

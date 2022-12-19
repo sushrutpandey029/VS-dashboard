@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
-    <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <title>VS Doc</title>
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../css/select2.min.css">
@@ -22,39 +22,50 @@
         <div class="page-wrapper">
             <div class="content">
                 <div class="row">
-                    <div class="col-sm-4 col-3">
+                    <div class="col-sm-4 col-3"> 
                         <h4 class="page-title">Doctors</h4>
                     </div>
                     <div class="col-sm-8 col-9 text-right m-b-20">
                         <a href="add-doctor" class="btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Doctor</a>
                     </div>
                 </div>
-				<div class="row doctor-grid">
-                    {{#each userData}}
-                    <div class="col-md-4 col-sm-4  col-lg-3">
-                        <div class="profile-widget">
-                              <div class="doctor-img">
-                                <a class="avatar" href="/doc-profile/{{this._id}}"><img alt="" src="img/doctor-thumb-03.jpg"></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="./edit-doctor/{{this._id}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="/delete-doctor/{{this._id}}" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                    <a class="dropdown-item" href="doc-dashboard/{{this._id}}"> Dashboard</a>
-                                </div>
-                            </div>
-                            <h4 class="doctor-name text-ellipsis"><a href="profile">{{this.fullname}}</a></h4>
-                            <div class="doc-prof">Psychologist</div>
-                            <div class="user-country">
-                                <i class="fa fa-map-marker"></i> {{this.Country}}, {{this.City}}
+
+                <div class="col-12 col-md-6 col-lg-8 col-xl-8">
+                    <div class="card">
+                        <div class="card-header">
+                        </div>
+                        <div class="card-block">
+                            <div class="table-responsive">
+                                <table class="table mb-0 new-patient-table">
+                                    <tbody>
+                                        {{#each userData}}
+                                        <tr>
+                                            <td>
+                                                <a class="avatar" href="/doc-profile/{{this._id}}"><img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""></a> 
+                                                <h2>{{this.name}}</h2>
+                                            </td>
+                                            <td>{{this.email}}</td>
+                                            <td>{{this.phone}}</td>
+                                            <td class="text-right">
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class="btn btn-primary btn-primary-one float-right" data-toggle="dropdown" aria-expanded="false">options</a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a class="dropdown-item" href="./edit-doctor/{{this._id}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        <a class="dropdown-item" href="/delete-doctor/{{this._id}}" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                        <a class="dropdown-item" href="doc-dashboard/{{this._id}}"> Dashboard</a>
+                
+                                                    </div>
+                                                </div>
+                                            </td>  
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                    {{/each}}
-
-                    
                 </div>
+
 				<div class="row">
                     <div class="col-sm-12">
                         <div class="see-all">

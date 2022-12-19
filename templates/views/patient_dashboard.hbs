@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
-    <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <title>VS dashboard</title>
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../css/select2.min.css">
@@ -17,15 +17,15 @@
 
 <body>
     <div class="main-wrapper">
-        {{>header}}
+ {{>header}}
         {{>sidebar}}
         <div class="page-wrapper">
             <div class="content">
-                {{#each userData}}
+               
                 <div class="row">
                   
                     <div class="col-sm-7 col-6">
-                        <h4 class="page-title">My Profile</h4>
+                        <h4 class="page-title">Patient Progress</h4>
                     </div>
 
                     <div class="col-sm-5 col-6 text-right m-b-30">
@@ -34,6 +34,7 @@
                 </div>
                 <div class="card-box profile-header">
                     <div class="row">
+                        {{#each userData}}
                         <div class="col-md-12">
                             <div class="profile-view">
                                 <!-- <div class="profile-img-wrap">
@@ -45,12 +46,14 @@
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="profile-info-left">
-                                                <h3 class="user-name m-t-0 mb-0">{{this.patientFullName}}</h3>
-                                                <h3 class="user-name m-t-0 mb-0">{{this.username}}</h3>
-                                                <small class="text-muted">Patient</small>
-                                                <div class="staff-id">Email ID : {{this.email}}</div>
-                                                <div class="staff-id">Address : {{this.address}}</div>
-                                                <div class="staff-id">Disability Type : {{this.disabalityType}}</div>
+                                                <h3 class="user-name m-t-0 mb-0">Patient Name : </h3>
+                                                {{!-- <h3 class="user-name m-t-0 mb-0">{{this.elapsedTime}}</h3> --}}
+
+                                                <small class="text-muted"><b>Patient ID : {{this.patientId}}</b></small>
+                                                <div class="staff-id">Game Name : </div>
+                                                <div class="staff-id">Game Play Date : {{this.date}}</div>
+                                                <div class="staff-id">Number of times played : {{this.NumberOfTrials}}</div>
+                                                <!-- <div class="staff-id">Disability Type : {{this.disabalityType}}</div> -->
                                                 <!-- <div class="staff-id">Experience : 10 Years</div>
                                                 <div class="staff-id">Language : Hindi, English, Spanish</div> -->
                                                 <div class="staff-msg">
@@ -60,18 +63,51 @@
                                         </div>
                                         <div class="col-md-7">
                                             <ul class="personal-info">
+                                                <center><h4 class="user-name m-t-0 mb-0">Progress Info</h4></center><hr style="color: black;">
                                                 <li>
-                                                    <span class="title">Phone:</span>
-                                                    <span class="text"><a href="#">{{this.phone}}</a></span>
+                                                    {{!-- <span class="title">Date :</span>
+                                                    <span class="text"><a href="#">{{this.date}}</a></span> --}}
+                                                    <span class="title">elapsedTime :</span>
+                                                    <span class="text"><a href="#">{{this.elapsedTime}}</a></span>
+
+                                                    <span class="title">LoudnessTarget :</span>
+                                                    <span class="text"><a href="#">{{this.LoudnessTarget}}</a></span><br>
+
+                                                    <span class="title">cumulativeDuration :</span>
+                                                    <span class="text"><a href="#">{{this.cumulativeDurationOfSounds}}</a></span>
+
+                                                    <span class="title">MeanPitch :</span>
+                                                    <span class="text"><a href="#">{{this.MeanPitch}}</a></span>
+
+                                                    <span class="title">meanLoudness :</span>
+                                                    <span class="text"><a href="#">{{this.meanLoudness}}</a></span>
+
+                                                    <span class="title">stdDevPitch :</span>
+                                                    <span class="text"><a href="#">{{this.stdDevPitch}}</a></span>
+
+                                                    <span class="title">stdDevLoudness :</span>
+                                                    <span class="text"><a href="#">{{this.stdDevLoudness}}</a></span>
+
+                                                    <span class="title">rangepitchMin :</span>
+                                                    <span class="text"><a href="#">{{this.rangepitchMin}}</a></span>
+
+                                                    <span class="title">rangepitchMax :</span>
+                                                    <span class="text"><a href="#">{{this.rangepitchMax}}</a></span>
+
+                                                    <span class="title">rangeLoudnessMin :</span>
+                                                    <span class="text"><a href="#">{{this.rangeLoudnessMin}}</a></span>
+
+                                                    <span class="title">rangeLoudnessmax :</span>
+                                                    <span class="text"><a href="#">{{this.rangeLoudnessmax}}</a></span>
                                                 </li>
-                                                <li>
+                                                <!-- <li>
                                                     <span class="title">Email:</span>
                                                     <span class="text"><a href="#">{{this.email}}</a></span>
                                                 </li>
                                                 <li>
                                                     <span class="title">Native language:</span>
                                                     <span class="text"><a href="#">{{this.nativeLanaguage}}</a></span>
-                                                </li>
+                                                </li> -->
                                                 <!-- <li>
                                                     <span class="title">Birthday:</span>
                                                     <span class="text">3rd March</span>
@@ -86,10 +122,22 @@
                                                 </li> -->
                                             </ul>
                                         </div>
+                                        <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="chart-title">
+                                                        <h4>Patient Game graph</h4>
+                                                        <!-- <span class="float-right"><i class="fa fa-caret-up" aria-hidden="true"></i> 15% Higher than Last Month</span> -->
+                                                    </div>	
+                                                    <canvas id="linegraph"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>                        
                         </div>
+                        {{/each}}
                     </div>
                 </div>
 				{{!-- <div class="profile-tabs">
@@ -185,7 +233,7 @@
 						</div>
 					</div> --}}
 				</div> --}}
-                {{/each}}
+                
             </div>
             {{!-- <div class="notification-box">
                 <div class="msg-sidebar notifications msg-noti">

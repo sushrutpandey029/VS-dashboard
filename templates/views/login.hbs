@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
-    <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <title>VS dashboard</title>
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../css/select2.min.css">
@@ -22,7 +22,7 @@
 				<div class="account-box">
                     <form action="/adminlogin" class="form-signin" method="POST">
 						<div class="account-logo">
-                            <a href="index.hbs"><img src="img/logo-dark.png" alt=""></a>
+                            <a href="index.hbs"><img src="" alt="">VS</a>
                         </div>
                          {{#each errors}}
                         <div class="alert alert-danger" id="alert" role="alert">
@@ -31,22 +31,18 @@
                         </div>
                         {{/each}}
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="text" autofocus="" class="form-control" name="email" value="{{username}}" required>
+                            <label><b>Email</b></label>
+                            <input type="text" autofocus="" class="form-control" name="email" value="{{username}}" placeholder="example@gmail.com" required>
                         </div>
                         <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" class="form-control" name="password" value="{{password}}" required>
+                            <label><b>Password</b></label>
+                            <input type="password" class="form-control" name="password" value="{{password}}" placeholder="password@123" required>
                         </div>
-                        <div class="form-group text-right">
-                            <a href="./forgot-password">Forgot your password?</a>
-                        </div>
+                       
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-primary account-btn">Login</button>
                         </div>
-                        <div class="text-center register-link">
-                            Don't have an account? <a href="./register">Register Now</a>
-                        </div>
+                      
                     </form>
                 </div>
 			</div>

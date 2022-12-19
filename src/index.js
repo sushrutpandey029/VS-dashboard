@@ -7,13 +7,16 @@ const route = require('./routes/routes');
 const roleModel=require("./models/rolesModel");
 const patientModel=require("./models/patientModel");
 const registerModel=require("./models/registerModel");
+const progressModel = require('./models/progressModel');
 const { default: mongoose, trusted } = require('mongoose');
 const multer = require('multer'); 
 const path = require("path"); 
 const hbs = require('hbs');
 const gameModel = require('./models/gameModel');
+let cookieParser = require('cookie-parser');
 const app = express();
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.text({ type: '/' }));
@@ -81,14 +84,21 @@ app.get("/index",async(req,res) => {
    res.render("login");
 })
 
-app.get('/edit-profile',(req,res)=>{
-   res.render("edit-profile");
+app.get('/logout',(req,res)=>{ // at the time of logout clearing the cookie
+   res.clearCookie("id");
+   return res.redirect("/login")
+})
+
+app.get('/edit-profile',async(req,res)=>{
+   const temp= req.cookies.id;
+   const data=await registerModel.find({_id:temp})
+   res.render("edit-profile",{userData:data});
 })
 
 app.get('/admin-profile',async(req,res)=>{
-   const data = await registerModel.find()
+   const temp= req.cookies.id;
+   const data=await registerModel.find({_id:temp})
    res.render("admin-profile",{data:data});
-
 });
 
 app.get('/profile',(req,res)=>{
@@ -125,7 +135,7 @@ app.get("/doc-dashboard/:id",async(req,res)=>{
 })
 
 app.get("/patient_dashboard/:id",async(req,res)=>{
-      let data=await patientModel.find({"_id":req.params.id})
+      let data=await progressModel.find({"patientId":req.params.id})
       res.render("patient_dashboard",{userData:data})
 })
 
@@ -165,6 +175,7 @@ app.get('/edit-patient/:id',async(req,res)=>{
 
    res.render("edit-patient",{userData:user})
 })
+
 
 app.get('/patients-profile/:id',async(req,res)=>{
    const user=await patientModel.find({"_id": req.params.id})

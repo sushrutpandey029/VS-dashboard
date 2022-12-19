@@ -43,6 +43,7 @@ router.post("/edit-patient/:id",patientController.update_patient)
 router.post("/game_register",gameController.game_register)
 router.post("/edit_game/:id",gameController.update_game)
 router.get("/delete-game/:id",gameController.delete_game)
+router.post("/adminUpdate/:id",adminController.adminUpdate)
 
 // section edited ends here..
 router.post("/createPatient",patientController.createPatient)

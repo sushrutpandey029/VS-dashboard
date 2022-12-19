@@ -25,9 +25,6 @@ const AdminSchema = new mongoose.Schema({
     isAdmin:{
         type:String,
         default:true
-    },
-    dob:{
-        type:String,
     }
 })
 

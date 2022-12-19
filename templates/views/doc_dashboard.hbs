@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
-    <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <title>VS Doc</title>
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../css/select2.min.css">
@@ -17,8 +17,8 @@
 
 <body>
     <div class="main-wrapper">
-      {{>header}}
-      {{>sidebar}}
+ {{>header}}
+        {{>sidebar}}
         <div class="page-wrapper">
             <div class="content">
                
@@ -63,7 +63,7 @@
 												<td>{{this.email}}</td>
 												<td>{{this.phone}}</td>
                                                 <form action="http://localhost:3000/patient_dashboard/{{this._id}}">
-												<td><button type="submit" class="btn btn-primary btn-primary-one float-right">View</button></td>
+												<td><button type="submit" class="btn btn-primary btn-primary-one float-right">Dashboard</button></td>
                                                 </form>
 											</tr>
 										

@@ -2,6 +2,7 @@ const roleModel = require("../models/rolesModel");
 const patientModel = require("../models/patientModel");
 const validation = require("../validator/validator");
 const Register = require("../models/registerModel");
+const gameModel = require("../models/gameModel");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 
@@ -126,6 +127,7 @@ const register =async(req,res)=>{
              res.status(400)
              errors.push({text:'Password is Invalid'})
              }
+             res.cookie("id",user._id.toString())  // storing id in the form of cookie at the browser side, make it make secure while deploying..
        } else {
           res.status(400)
           errors.push({text:"User does not exist"})
@@ -150,7 +152,12 @@ const register =async(req,res)=>{
        res.setHeader("Authentication", token) // Setting key Value pair of Token
        
        req.session.isAuth=true;
-       return res.status(200).render("profile",{userData:adminid})
+
+       let data= await roleModel.find().sort({_id:-1})
+       let data1 = await patientModel.find().sort({_id:-1})
+       let data2 = await gameModel.find().sort({_id:-1})
+
+       return res.status(200).render("index",{docData:data, patientdata:data1, gameData:data2}) 
    }
    catch (error) {
     let errors = [];
@@ -162,5 +169,23 @@ const register =async(req,res)=>{
   }
  }
 
+ const adminUpdate=async (req,res)=>{
+    await Register.updateOne({_id:req.params.id},{
+         $set:{
+             username:req.body.username,
+             email:req.body.email,
+             phone:req.body.phone,
+         },function(err,docs){
+             if(err){
+                 console.log(err);
+             }else{
+                 console.log("updated admin :",admin);
+                 res.redirect('http://localhost:3000/admin-profile') 
+             }
+         }
+     })  
+      
+ }
 
-module.exports = {authUser,authRole,register,adminlogin} 
+
+module.exports = {authUser,authRole,register,adminlogin,adminUpdate} 
