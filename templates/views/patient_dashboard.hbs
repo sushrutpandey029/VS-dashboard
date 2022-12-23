@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
-    <title>VS dashboard</title>
+    <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../css/select2.min.css">
@@ -17,7 +17,7 @@
 
 <body>
     <div class="main-wrapper">
- {{>header}}
+        {{>header}}
         {{>sidebar}}
         <div class="page-wrapper">
             <div class="content">
@@ -25,7 +25,7 @@
                 <div class="row">
                   
                     <div class="col-sm-7 col-6">
-                        <h4 class="page-title">Patient Progress</h4>
+                        <h4 class="page-title">My Profile</h4>
                     </div>
 
                     <div class="col-sm-5 col-6 text-right m-b-30">
@@ -46,12 +46,10 @@
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="profile-info-left">
-                                                <h3 class="user-name m-t-0 mb-0">Patient Name : </h3>
-                                                {{!-- <h3 class="user-name m-t-0 mb-0">{{this.elapsedTime}}</h3> --}}
-
-                                                <small class="text-muted"><b>Patient ID : {{this.patientId}}</b></small>
-                                                <div class="staff-id">Game Name : </div>
-                                                <div class="staff-id">Game Play Date : {{this.date}}</div>
+                                                <h3 class="user-name m-t-0 mb-0">{{this.patientId}}</h3>
+                                                <h3 class="user-name m-t-0 mb-0">{{this.elapsedTime}}</h3>
+                                                <small class="text-muted">Patient</small>
+                                                <div class="staff-id">Game ID : {{this.gameId}}</div>
                                                 <div class="staff-id">Number of times played : {{this.NumberOfTrials}}</div>
                                                 <!-- <div class="staff-id">Disability Type : {{this.disabalityType}}</div> -->
                                                 <!-- <div class="staff-id">Experience : 10 Years</div>
@@ -63,42 +61,9 @@
                                         </div>
                                         <div class="col-md-7">
                                             <ul class="personal-info">
-                                                <center><h4 class="user-name m-t-0 mb-0">Progress Info</h4></center><hr style="color: black;">
                                                 <li>
-                                                    {{!-- <span class="title">Date :</span>
-                                                    <span class="text"><a href="#">{{this.date}}</a></span> --}}
-                                                    <span class="title">elapsedTime :</span>
-                                                    <span class="text"><a href="#">{{this.elapsedTime}}</a></span>
-
-                                                    <span class="title">LoudnessTarget :</span>
-                                                    <span class="text"><a href="#">{{this.LoudnessTarget}}</a></span><br>
-
-                                                    <span class="title">cumulativeDuration :</span>
-                                                    <span class="text"><a href="#">{{this.cumulativeDurationOfSounds}}</a></span>
-
-                                                    <span class="title">MeanPitch :</span>
-                                                    <span class="text"><a href="#">{{this.MeanPitch}}</a></span>
-
-                                                    <span class="title">meanLoudness :</span>
-                                                    <span class="text"><a href="#">{{this.meanLoudness}}</a></span>
-
-                                                    <span class="title">stdDevPitch :</span>
-                                                    <span class="text"><a href="#">{{this.stdDevPitch}}</a></span>
-
-                                                    <span class="title">stdDevLoudness :</span>
-                                                    <span class="text"><a href="#">{{this.stdDevLoudness}}</a></span>
-
-                                                    <span class="title">rangepitchMin :</span>
-                                                    <span class="text"><a href="#">{{this.rangepitchMin}}</a></span>
-
-                                                    <span class="title">rangepitchMax :</span>
-                                                    <span class="text"><a href="#">{{this.rangepitchMax}}</a></span>
-
-                                                    <span class="title">rangeLoudnessMin :</span>
-                                                    <span class="text"><a href="#">{{this.rangeLoudnessMin}}</a></span>
-
-                                                    <span class="title">rangeLoudnessmax :</span>
-                                                    <span class="text"><a href="#">{{this.rangeLoudnessmax}}</a></span>
+                                                    <span class="title">Date :</span>
+                                                    <span class="text"><a href="#">{{this.date}}</a></span>
                                                 </li>
                                                 <!-- <li>
                                                     <span class="title">Email:</span>

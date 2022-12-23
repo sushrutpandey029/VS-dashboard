@@ -13,9 +13,12 @@
     <link rel="stylesheet" type="text/css" href="../css/select2.min.css">
     <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 
 <body>
+
+    
     <div class="main-wrapper">
        {{>header}}
         {{>sidebar}}
@@ -30,41 +33,149 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6 col-lg-8 col-xl-8">
-                    <div class="card">
-                        <div class="card-header">
-                        </div>
-                        <div class="card-block">
-                            <div class="table-responsive">
-                                <table class="table mb-0 new-patient-table">
-                                    <tbody>
-                                        {{#each userData}}
-                                        <tr>
-                                            <td>
-                                                <a class="avatar" href="/doc-profile/{{this._id}}"><img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""></a> 
-                                                <h2>{{this.name}}</h2>
-                                            </td>
-                                            <td>{{this.email}}</td>
-                                            <td>{{this.phone}}</td>
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="btn btn-primary btn-primary-one float-right" data-toggle="dropdown" aria-expanded="false">options</a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="./edit-doctor/{{this._id}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="/delete-doctor/{{this._id}}" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                        <a class="dropdown-item" href="doc-dashboard/{{this._id}}"> Dashboard</a>
-                
-                                                    </div>
-                                                </div>
-                                            </td>  
-                                        </tr>
-                                        {{/each}}
-                                    </tbody>
-                                </table>
+               <div class="row doctor-grid">
+                    {{#each userData}}
+                    <div class="col-md-4 col-sm-4  col-lg-3">
+                        <div class="profile-widget">
+                            <div class="doctor-img">
+                                <a class="avatar" href="/doc-profile/{{this._id}}"><img alt="" src="img/doctor-thumb-03.jpg"></a>
+                            </div>
+                            <div class="dropdown profile-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                  <a class="dropdown-item" href="./edit-doctor/{{this._id}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                  <a class="dropdown-item" href="/delete-doctor/{{this._id}}" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                  <a class="dropdown-item" href="doc-dashboard/{{this._id}}"> Dashboard</a>
+                                </div>
+                            </div>
+                            <h4 class="doctor-name text-ellipsis"><a href="/doc-profile/{{this._id}}"></a>{{this.fullname}}</h4>
+                            <div class="doc-prof">{{this.email}}</div>
+                            <div class="user-country">
+                                <i class="fa fa-map-marker"></i> {{this.Country}}, {{this.City}}
                             </div>
                         </div>
                     </div>
+                    {{/each}}
+
+                    
                 </div>
+
+                <div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="chart-title">
+									<h4>Doctors</h4>
+								
+								</div>	
+								   <canvas id="myChartp" style="width:100%"></canvas>
+                                   <button onClick="timeFramep('day')" >Day</button>
+                                   <button onclick="timeFramep('month')">Month</button>
+                                   <button onclick="timeFramep('year')" >Year</button>
+                            <input onchange="filterDatap()" type="date" id="startdatep" value="">
+                            <input onchange="filterDatap()" type="date" id="enddatep" value=""> 
+                                </div>
+						</div>
+					</div>
+				</div>
+                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+        
+                <script myvar={{graphData}}>
+                   
+          var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
+          var temp = document.currentScript.getAttribute('myvar'); 
+          var arr2=temp.split(","); // spliting from iso date to normal date
+         var datapoints=[];
+          var curr=1;
+         for(var i=1;i<arr2.length;i++){ //counting occurance of each element
+            if(arr2[i-1]===arr2[i]){
+              ++curr;
+            }else{
+              datapoints.push(curr);
+              curr=1;
+            }
+         }
+          datapoints.push(curr);
+          arr2=unique(arr2);
+          var day=[];
+          for(var i=0;i<arr2.length;i++){
+             day.push({x:Date.parse(arr2[i]),y:datapoints[i]});
+          }
+          var data = {
+            labels: arr2,
+            datasets: [{
+              label: 'Doctors',
+              data: day,
+              backgroundColor: "rgba(0,0,255,1.0)",
+              borderColor: "rgba(0,0,255,0.1)",
+              borderWidth: 1
+            }]
+          };
+          var config = {
+            type: 'line',
+            data,
+            options: {
+              scales: {
+                x:{
+                  type: 'time',
+                  time:{
+                    unit: 'month'
+                  }
+                },
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          };
+          const myChartp = new Chart(
+            document.getElementById('myChartp'),
+            config
+          );
+
+          function timeFramep(period){
+            console.log(period)
+            if(period=='day'){
+              myChartp.config.options.scales.x.time.unit=period;
+              myChartp.config.data.datasets[0].data=day;
+            }else if(period=='month'){
+              myChartp.config.options.scales.x.time.unit=period;
+              myChartp.config.data.datasets[0].data=day;
+            }else if(period=='year'){
+              myChartp.config.options.scales.x.time.unit=period;
+              myChartp.config.data.datasets[0].data=day;
+            }
+            myChartp.update();
+          }
+
+          function filterDatap(){
+            var dates2=[...arr2];
+            const startdatep=document.getElementById('startdatep');
+            const enddatep=document.getElementById('enddatep');
+           const indexstartdate=dates2.findIndex(function(date) {
+                            return date >=startdate.value;
+                        });
+           var indexenddate=dates2.findIndex(function(date) {        
+                      if(date==enddatep.value){
+                          return date;
+                        }else if(date>enddatep.value){
+                          return date;
+                        }
+                        });
+                        if(indexenddate==-1){
+                          indexenddate=dates2.length-1;
+                        }
+           const filterDate= dates2.slice(indexstartdate,indexenddate+1);
+            myChart.config.data.labels=filterDate;
+            var datapoints2=[...datapoints]
+            const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate+1);
+            myChart.config.data.datasets[0].data=filterDatapoints;
+
+            myChartp.update();
+       
+          }
+             </script>
 
 				<div class="row">
                     <div class="col-sm-12">
@@ -74,231 +185,8 @@
                     </div>
                 </div>
             </div>
-            <div class="notification-box">
-                <div class="msg-sidebar notifications msg-noti">
-                    <div class="topnav-dropdown-header">
-                        <span>Messages</span>
-                    </div>
-                    <div class="drop-scroll msg-list-scroll" id="msg_list">
-                        <ul class="list-box">
-                            <li>
-                                <a href="chat">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar">R</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author">Richard Miles </span>
-                                            <span class="message-time">12:28 AM</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html">
-                                    <div class="list-item new-message">
-                                        <div class="list-left">
-                                            <span class="avatar">J</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author">John Doe</span>
-                                            <span class="message-time">1 Aug</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar">T</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author"> Tarah Shropshire </span>
-                                            <span class="message-time">12:28 AM</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar">M</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author">Mike Litorus</span>
-                                            <span class="message-time">12:28 AM</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar">C</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author"> Catherine Manseau </span>
-                                            <span class="message-time">12:28 AM</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar">D</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author"> Domenic Houston </span>
-                                            <span class="message-time">12:28 AM</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar">B</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author"> Buster Wigton </span>
-                                            <span class="message-time">12:28 AM</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar">R</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author"> Rolland Webber </span>
-                                            <span class="message-time">12:28 AM</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar">C</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author"> Claire Mapes </span>
-                                            <span class="message-time">12:28 AM</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar">M</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author">Melita Faucher</span>
-                                            <span class="message-time">12:28 AM</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar">J</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author">Jeffery Lalor</span>
-                                            <span class="message-time">12:28 AM</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar">L</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author">Loren Gatlin</span>
-                                            <span class="message-time">12:28 AM</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="chat.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar">T</span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author">Tarah Shropshire</span>
-                                            <span class="message-time">12:28 AM</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="topnav-dropdown-footer">
-                        <a href="chat.html">See all messages</a>
-                    </div>
-                </div>
-            </div>
+           
         </div>
-		<div id="delete_doctor" class="modal fade delete-modal" role="dialog">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-body text-center">
-						<img src="img/sent.png" alt="" width="50" height="46">
-						<h3>Are you sure you want to delete this Doctor?</h3>
-						<div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                            <form action="">
-							<button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                        </div>
-					</div>
-				</div>
-			</div>
-		</div>
     </div>
     <div class="sidebar-overlay" data-reff=""></div>
     <script src="js/jquery-3.2.1.min.js"></script>

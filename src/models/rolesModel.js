@@ -52,10 +52,6 @@ const rolesSchema = new mongoose.Schema({
     pincode:{
         type: String,
     },
-    profilepic: { 
-        data: Buffer,
-        contentType: String
-    },
     Biography:{
         type:String
     },

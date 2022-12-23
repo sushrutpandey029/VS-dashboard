@@ -153,11 +153,12 @@ const register =async(req,res)=>{
        
        req.session.isAuth=true;
 
-       let data= await roleModel.find().sort({_id:-1})
-       let data1 = await patientModel.find().sort({_id:-1})
-       let data2 = await gameModel.find().sort({_id:-1})
+    //    let data= await roleModel.find().sort({_id:-1})
+    //    let data1 = await patientModel.find().sort({_id:-1})
+    //    let data2 = await gameModel.find().sort({_id:-1})
 
-       return res.status(200).render("index",{docData:data, patientdata:data1, gameData:data2}) 
+    //    return res.status(200).render("index",{docData:data, patientdata:data1, gameData:data2}) 
+    res.redirect("http://localhost:3000/index")
    }
    catch (error) {
     let errors = [];

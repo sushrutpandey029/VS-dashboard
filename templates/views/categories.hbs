@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- doctors23:12-->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <title>Vs Doc</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.min.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+    <div class="main-wrapper">
+       {{>header}}
+        {{>sidebar}}
+        <div class="page-wrapper">
+            <div class="content">
+                <div class="row">
+                    <div class="col-sm-4 col-3">
+                        <h4 class="page-title">Game Category</h4>
+                    </div>
+                    <div class="col-sm-8 col-9 text-right m-b-20">
+                        <a href="add-game" class="btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Game</a>
+                    </div>
+                </div>
+				<div class="row doctor-grid">
+                    {{#each userData}}
+                    <div class="col-md-4 col-sm-4  col-lg-3">
+                        <div class="profile-widget">
+                            <div class="doctor-img">
+                                <!-- add image url here to display -->
+                                <a class="avatar" href="/game_categorie/{{this}}"><img alt="" src=""></a> 
+                            </div>
+                           
+                            <h4 class="doctor-name text-ellipsis"><a href="/game_categorie/{{this}}">{{this}}</a></h4>
+                            <h3>{{this.gamecategories}}</h3>
+                        </div>
+                    </div>
+                    {{/each}}
+                
+            </div>
+            
+        </div>
+    </div>
+    </div>
+    <div class="sidebar-overlay" data-reff=""></div>
+    <script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.slimscroll.js"></script>
+    <script src="js/select2.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+
+<!-- doctors23:17-->
+</html>

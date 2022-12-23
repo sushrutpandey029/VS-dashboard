@@ -35,6 +35,7 @@ router.post("/login",roleController.login)
 router.post("/register",adminController.register);
 router.post("/adminlogin",adminController.adminlogin);
 // router.post("/adminprofile",adminController.adminprofile);
+router.post("/doclogin",roleController.doclogin)
 router.get("/delete-doctor/:id",roleController.deletedoc);
 router.post("/docUpdate/:id",roleController.docUpdate);
 router.post("/add-patient",patientController.createPatientnew);

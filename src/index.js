@@ -1,3 +1,7 @@
+//middle ware can be created to handle url verifications
+//currently working for doctor only, create a middleware to find each and every role..
+
+
 require('dotenv').config();
 const session = require("express-session");
 const MongoDBSession = require("connect-mongodb-session")(session);
@@ -14,7 +18,7 @@ const path = require("path");
 const hbs = require('hbs');
 const gameModel = require('./models/gameModel');
 let cookieParser = require('cookie-parser');
-const app = express();
+const app = express(); 
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -68,11 +72,27 @@ app.use('/', route);
 app.get("/index",async(req,res) => {
 
    let data= await roleModel.find().sort({_id:-1})
+   let datag= await roleModel.find().sort({_id:1})
    let data1 = await patientModel.find().sort({_id:-1})
+   let datap = await patientModel.find().sort({_id:1})
    let data2 = await gameModel.find().sort({_id:-1})
-   // res.render("doc_dashboard",{userData:data})
+   const temp=req.cookies.id;
+   const user=await registerModel.find({_id:temp}); //checking if id logged in is of admin or not..
+   // doctor as an admin condition is not handled
+   var array=[]
+   datag.map(ob =>{
+      let iso=new Date(ob.createdAt).toISOString();
+      array.push(iso.split("T")[0])
+   })
 
-    res.render("index",{docData:data, patientdata:data1, gameData:data2})
+   var array2=[]
+   datap.map(ob =>{
+      let iso=new Date(ob.createdAt).toISOString();
+      array2.push(iso.split("T")[0])
+   })
+
+   if(user.length>0)res.render("index",{docData:data, patientdata:data1, gameData:data2,graphDataDoc:array,graphDataPatient:array2}) //if found to be of admin then return else invalid
+   else res.send("authorization invalid");
 })
 
 
@@ -98,7 +118,8 @@ app.get('/edit-profile',async(req,res)=>{
 app.get('/admin-profile',async(req,res)=>{
    const temp= req.cookies.id;
    const data=await registerModel.find({_id:temp})
-   res.render("admin-profile",{data:data});
+   if(data.length>0)res.render("admin-profile",{data:data});
+   else res.send("access not provided")
 });
 
 app.get('/profile',(req,res)=>{
@@ -113,16 +134,39 @@ app.get('/change-password',(req,res)=>{
    res.render("change-password");
 })
 
-app.get('/games',async(req,res)=>{
-   let data = await gameModel.find()
+app.get('/game_categorie/:category',async(req,res)=>{
+   let data = await gameModel.find({gamecategories:req.params.category})
    res.render("games",{userData:data});
 })
 
+app.get('/games',async(req,res)=>{
+   let data =await gameModel.find()
+   var temp=[];
+   data.forEach(element => {
+      temp.push(element.gamecategories);
+   }); 
+   function removeDuplicates(temp) {
+      return temp.filter((item, 
+          index) => temp.indexOf(item) === index);
+  }
+ let newdata=removeDuplicates(temp);
+  res.render("categories",{userData:newdata})
+})
+
 app.get("/doctor",async(req,res)=>{
-   let data = await roleModel.find()
-   // console.log(data.length);
-   res.render('doctor',{userData:data})
-   // console.log(data)
+   let exist=await roleModel.find({_id:req.cookies.id})
+   let data= await roleModel.find().sort({_id:1})
+   var array=[]
+   data.map(ob =>{
+      let iso=new Date(ob.createdAt).toISOString();
+      array.push(iso.split("T")[0])
+   })
+   if(exist.length>0)res.send("admin login required")
+   else res.render('doctor',{userData:data,graphData:array})
+})
+
+app.get("/doctor_login",(req,res)=>{
+   res.render("doctor_login")
 })
 
 app.get("/add-doctor",(req,res)=>{
@@ -130,9 +174,18 @@ app.get("/add-doctor",(req,res)=>{
 })
 
 app.get("/doc-dashboard/:id",async(req,res)=>{
+   let docdata =await roleModel.find({_id:req.params.id}).sort({_id:-1})
    let data=await patientModel.find({DocId:req.params.id}).sort({_id:-1})
-   res.render("doc_dashboard",{userData:data})
+   let datap=await patientModel.find({DocId:req.params.id}).sort({_id:1})
+   var array=[]
+   datap.map(ob =>{
+      let iso=new Date(ob.createdAt).toISOString();
+      array.push(iso.split("T")[0])
+   })
+   res.render("doc_dashboard",{userData:data,graphData:array,dacdata:docdata})
 })
+
+
 
 app.get("/patient_dashboard/:id",async(req,res)=>{
       let data=await progressModel.find({"patientId":req.params.id})
@@ -141,8 +194,10 @@ app.get("/patient_dashboard/:id",async(req,res)=>{
 
 app.get("/patients",async(req,res)=>{ // to render all the paitients 
    let data = await patientModel.find()
-
-   res.render('patients',{userData:data})
+   let exist=await roleModel.find({_id:req.cookies.id})
+   let Data = await patientModel.find({DocId:req.cookies.id});
+   if(exist.length>0)res.render('patients',{userData:Data})
+   else res.render('patients',{userData:data})
 })
 
 app.get("/add-patient",(req,res)=>{

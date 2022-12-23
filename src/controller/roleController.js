@@ -153,9 +153,6 @@ const login = async (req, res) => {
 
 // ADMIN PANELS FUNCTION 
 
-
-
-
 const createUsernew = async function (req, res) {
     console.log("new user")
     try {
@@ -171,12 +168,9 @@ const createUsernew = async function (req, res) {
             City:req.body.City,
             State:req.body.State,
             pincode:req.body.pincode,
-            profilepic:{ 
-                data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-            contentType: 'image/png'
-        },Biography:req.body.Biography,
-        status:req.body.status,
-        payment:req.body.payment
+            Biography:req.body.Biography,
+            status:req.body.status,
+            payment:req.body.payment
         }
 
         if (!validation.isrequestBody(body)) {
@@ -247,6 +241,68 @@ const createUsernew = async function (req, res) {
 
 }
 
+const doclogin = async(req,res)=>{
+    try{
+        let body = req.body;
+        let errors = [];
+       const { email, password } = body;
+ 
+       if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
+          res.status(400)
+          errors.push({text:'Email Id is Invalid'})
+       }
+ 
+       const user = await roleModel.findOne({ email });
+    //    const adminid=await roleModel.find({'email':req.body.email})
+       if (user) {
+           const validPassword = await bcrypt.compare(password, user.password);
+           if (!validPassword) {
+             res.status(400)
+             errors.push({text:'Password is Invalid'})
+             } 
+             if(user.role!="Doctor"){
+                res.status(400)
+                errors.push({text:'Enter a valid doctor id'})
+             }
+             res.cookie("id",user._id.toString())  // storing id in the form of cookie at the browser side, make it secure while deploying..
+       } else {
+          res.status(400)
+          errors.push({text:"User does not exist"})
+        }
+ 
+        if(errors.length>0){
+          res.render("login",{
+              errors:errors,
+              title:'Error',
+              email:email,
+              password:password
+          })
+      }
+       req.user = user;
+    //   console.log(user);
+
+       const token = await jwt.sign({
+           userid: user._id.toString(),
+       },"Testing")
+      
+    //    console.log("token ",token);
+       res.setHeader("Authentication", token) // Setting key Value pair of Token
+       
+       req.session.isAuth=true;
+
+    //    return res.status(200).send(`/doc-dashboard/:${user._id.toString()}`); 
+       res.redirect(`http://localhost:3000/doc-dashboard/${user._id.toString()}`) 
+   }
+   catch (error) {
+    let errors = [];
+    errors.push[{text:"Server error"}]
+    return res.render("login",{
+       errors:errors,
+       title:'Error'
+    });
+  }
+ }
+
 
 const deletedoc=async (req,res)=>{
         const ID=req.params.id;
@@ -280,11 +336,11 @@ const docUpdate=async (req,res)=>{
                 console.log(err);
             }else{
                 console.log("updated doc :",docs);
-                res.redirect('http://localhost:3000/index') 
+                res.redirect('http://localhost:3000/index')  
             }
         }
     })  
      
 }
 
-module.exports = { createUser,login,deletedoc,docUpdate,createUsernew};
+module.exports = { createUser,login,deletedoc,docUpdate,createUsernew,doclogin};
