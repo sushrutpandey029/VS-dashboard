@@ -80,7 +80,7 @@ const createUser = async function (req, res) {
         const output = await roleModel.create(body)
         
         return res.status(201).send({ status: true, msg: "User Succesfully Created", data: output }) // original code
-        // res.redirect('http://localhost:3000/index') //added this to redirect 
+        // res.redirect('../index') //added this to redirect 
     }
     catch (error) {
         console.log(error.message)
@@ -260,7 +260,7 @@ const createUsernew = async function (req, res) {
 
         
         // return res.status(201).send({ status: true, msg: "User Succesfully Created", data: output }) // original code
-        res.redirect('http://localhost:3000/doctor') //added this to redirect 
+        res.redirect('../doctor') //added this to redirect 
     }
 
     catch (error) {
@@ -320,7 +320,7 @@ const doclogin = async(req,res)=>{
        req.session.isAuth=true;
 
     //    return res.status(200).send(`/doc-dashboard/:${user._id.toString()}`); 
-       res.redirect(`http://localhost:3000/doc-dashboard/${user._id.toString()}`) 
+       res.redirect(`../doc-dashboard/${user._id.toString()}`) 
    }
    catch (error) {
     let errors = [];
@@ -340,7 +340,7 @@ const deletedoc=async (req,res)=>{
     
    // let data = await roleModel.find()
     // console.log(data.length);
-    res.redirect('http://localhost:3000/doctor') 
+    res.redirect('../doctor') 
 }
 
 const docUpdate=async (req,res)=>{
@@ -365,7 +365,7 @@ const docUpdate=async (req,res)=>{
                 console.log(err);
             }else{
                 console.log("updated doc :",docs);
-                res.redirect('http://localhost:3000/doctor')  
+                res.redirect('../doctor')  
             }
         }
     })  

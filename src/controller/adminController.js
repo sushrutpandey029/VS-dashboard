@@ -158,7 +158,7 @@ const register =async(req,res)=>{
     //    let data2 = await gameModel.find().sort({_id:-1})
 
     //    return res.status(200).render("index",{docData:data, patientdata:data1, gameData:data2}) 
-    res.redirect("http://localhost:3000/index")
+    res.redirect("../index")
    }
    catch (error) {
     let errors = [];
@@ -181,7 +181,7 @@ const register =async(req,res)=>{
                  console.log(err);
              }else{
                  console.log("updated admin :",admin);
-                 res.redirect('http://localhost:3000/admin-profile') 
+                 res.redirect('../admin-profile') 
              }
          }
      })  

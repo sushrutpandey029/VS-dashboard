@@ -91,7 +91,7 @@ app.get("/index",async(req,res) => {
       array2.push(iso.split("T")[0])
    })
 
-   if(user.length>0)res.render("index",{docData:data, patientdata:data1, gameData:data2,graphDataDoc:array,graphDataPatient:array2}) //if found to be of admin then return else invalid
+   if(user.length>0)res.render("../index",{docData:data, patientdata:data1, gameData:data2,graphDataDoc:array,graphDataPatient:array2}) //if found to be of admin then return else invalid
    else res.send("authorization invalid");
 })
 
