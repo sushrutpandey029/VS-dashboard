@@ -9,6 +9,8 @@ var multer = require('multer');
 var fs = require('fs');
 var path = require('path');
 
+const nodemailer = require('nodemailer');
+
 
  // created deletedoc, docupdate.
 
@@ -153,8 +155,11 @@ const login = async (req, res) => {
 
 // ADMIN PANELS FUNCTION 
 
+
 const createUsernew = async function (req, res) {
-    console.log("new user")
+    // console.log("new user", info.messageId)
+ 
+
     try {
         let body ={
             fullname:req.body.fullname,
@@ -200,7 +205,6 @@ const createUsernew = async function (req, res) {
 
         if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
             return res.status(400).send({ status: false, message: "email is not valid" })
-
         }
 
         if (!(/^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/.test(phone))) {
@@ -229,18 +233,43 @@ const createUsernew = async function (req, res) {
                 return res.status(400).send({ status: false, msg: "Admin Already Present!!! Only one admin can exist" })
             }
         }
+
+        let testAccount = await nodemailer.createTestAccount();
+
+        let transporter = nodemailer.createTransport({
+            service:'gmail',
+            auth: {
+                user: 'rashupandey029@gmail.com', // generated ethereal user
+                pass: 'nsedmjzulrvhucif', // generated ethereal password
+            },
+          });
+
+        let info = await transporter.sendMail({
+            from: 'rashupandey029@gmail.com', // sender address
+            to: body.email, // list of receivers
+            subject: "Registration Confirmed VS", // Subject line
+            text: "Welcome to Voice Simulation", // plain text body
+            html:`<b>Hi ${body.fullname}</b><br><b>Welcome to Voice Simulation</b><br><p>Your registration was successful. Thank you for joining our service!</p><b>Your Login Id = </b> ${body.email}<br> <b>Your Login Password = </b>${password}<br><br> Best Regards <br>Voice Simulation <br> Head Office <br>Thank You `,// html body
+          });
+
+          console.log("new user", info.messageId);
+          console.log("To", info);
+        
+        
         const output = await roleModel.create(body)
+
         
         // return res.status(201).send({ status: true, msg: "User Succesfully Created", data: output }) // original code
-        res.redirect('http://localhost:3000/index') //added this to redirect 
+        res.redirect('http://localhost:3000/doctor') //added this to redirect 
     }
+
     catch (error) {
         console.log(error.message)
         return res.status(500).send({ status: false, message: error.message });
     }
 
-}
 
+}
 const doclogin = async(req,res)=>{
     try{
         let body = req.body;
@@ -311,7 +340,7 @@ const deletedoc=async (req,res)=>{
     
    // let data = await roleModel.find()
     // console.log(data.length);
-    res.redirect('http://localhost:3000/index') 
+    res.redirect('http://localhost:3000/doctor') 
 }
 
 const docUpdate=async (req,res)=>{
@@ -336,7 +365,7 @@ const docUpdate=async (req,res)=>{
                 console.log(err);
             }else{
                 console.log("updated doc :",docs);
-                res.redirect('http://localhost:3000/index')  
+                res.redirect('http://localhost:3000/doctor')  
             }
         }
     })  

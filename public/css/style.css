@@ -671,7 +671,7 @@ textarea.form-control {
 	border: 0 none;
 	font-size: 16px;
 	line-height: 30px;
-	padding: 0px;
+	padding: 15px;
 }
 .card .card-header .card-title {
 	font-size: 18px;
@@ -858,7 +858,23 @@ textarea.form-control {
 }
 .sidebar-menu li.active a {
 	color: #009efb;
-	/* background-color: #f3f3f3; */
+	background-color: #f3f3f3;
+}
+
+.sidebar-menu li.active1 a {
+	color: #009efb;
+	background-color: #f3f3f3;
+}
+
+.sidebar-menu li.active2 a {
+	color: #009efb;
+	background-color: #f3f3f3;
+}
+
+
+.sidebar-menu li.active3 a {
+	color: #009efb;
+	background-color: #f3f3f3;
 }
 .menu-title {
 	color: #333;
@@ -871,22 +887,11 @@ textarea.form-control {
 	line-height: 40px;
 }
 .sidebar-menu li.menu-title a {
-	/* float: right; */
 	color: #009efb;
 	display: inline-block;
+	float: right;
 	padding: 0;
 }
-
-.sidebar-menu li a:active {
-	color: #000000;
-	background-color: #009ce7;
-}
-
-.sidebar-menu li a:focus {
-	color: black;
-	background-color: #1e00ff7b;
-}
-
 .sidebar-menu li.menu-title a.btn {
 	color: #fff;
 	display: block;
@@ -1101,24 +1106,23 @@ textarea.form-control {
 	color: #009efb;
 }
 .account-box .form-control {
-    border: 2px solid #000000;
-    border-radius: 11px;
-    box-shadow: inherit;
-    font-size: 13px;
-    height: 40px;
+	border: 1px solid #eaeaea;
+	border-radius: 0;
+	box-shadow: inherit;
+	font-size: 14px;
+	height: 40px;
 }
 .account-box textarea.form-control {
 	height: 130px;
 }
 .account-box label {
 	color: #323232;
-	font-size: 24px;
+	font-size: 14px;
 	font-weight: normal;
 }
 .account-logo img {
-	max-height: 136px;
-    max-width: 129px;
-    border-radius: 94px;
+	max-height: 60px;
+	width: auto;
 }
 .account-box .account-btn {
 	border-radius: 50px;
@@ -1138,7 +1142,7 @@ textarea.form-control {
 	margin-bottom: 30px;
 	padding: 20px;
 	position: relative;
-	box-shadow: 0 1px 2px 0 rgb(0, 0, 0);
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
 }
 .dash-widget-bg1 {
 	width: 65px;
@@ -1280,7 +1284,7 @@ ul.chat-user-total li i.old-users {
 .bar-chart > .legend > .item {
 	position: relative;
 	display: inline-block;
-	/* float: left; */
+	float: left;
 	width: 25%;
 }
 .bar-chart > .legend > .item:before {
@@ -2233,7 +2237,7 @@ ul.chat-user-total li i.old-users {
 	margin-right: 10px;
 	display: inline-block;
 	position: relative;
-	/* float: left; */
+	float: left;
 }
 .chat-avatar-sm img {
 	width: 24px;
@@ -3920,7 +3924,7 @@ blockquote p {
 }
 .social-share > li {
 	display: inline-block;
-	/* float: left; */
+	float: left;
 	margin-left: 10px;
 	text-align: center;
 }

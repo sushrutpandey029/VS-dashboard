@@ -1,27 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-
-<!-- doctors23:12-->
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
-    <title>VS Doc</title>
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-</head>
-
-<body>
-
-    
-    <div class="main-wrapper">
-       {{>header}}
-        {{>sidebar}}
+{{>header}}
+{{>sidebar}}
         <div class="page-wrapper">
             <div class="content">
                 <div class="row">
@@ -45,7 +23,7 @@
                                 <div class="dropdown-menu dropdown-menu-right">
                                   <a class="dropdown-item" href="./edit-doctor/{{this._id}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                   <a class="dropdown-item" href="/delete-doctor/{{this._id}}" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                  <a class="dropdown-item" href="doc-dashboard/{{this._id}}"> Dashboard</a>
+                                  <a class="dropdown-item" href="doc-dashboard/{{this._id}}"><i class="fa fa-pencil m-r-5"></i> Dashboard</a>
                                 </div>
                             </div>
                             <h4 class="doctor-name text-ellipsis"><a href="/doc-profile/{{this._id}}"></a>{{this.fullname}}</h4>
@@ -65,24 +43,24 @@
 						<div class="card">
 							<div class="card-body">
 								<div class="chart-title">
-									<h4>Doctors</h4>
+									<center><b><h4>Doctors graph</h4></b></center>
 								
 								</div>	
-								   <canvas id="myChartp" style="width:100%"></canvas>
-                                   <button onClick="timeFramep('day')" >Day</button>
-                                   <button onclick="timeFramep('month')">Month</button>
-                                   <button onclick="timeFramep('year')" >Year</button>
-                            <input onchange="filterDatap()" type="date" id="startdatep" value="">
-                            <input onchange="filterDatap()" type="date" id="enddatep" value=""> 
-                                </div>
+								   <canvas id="myChart" style="width:100%;"></canvas>
+               <button onClick="timeFrame('day')" >Day</button>
+          <button onclick="timeFrame('month')">Month</button>
+          <button onclick="timeFrame('year')" >Year</button>
+          <input onchange="filterData()" type="date" id="startdate" value="">
+          <input onchange="filterData()" type="date" id="enddate" value="">     
+							</div>
 						</div>
 					</div>
 				</div>
                 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
         
-                <script myvar={{graphData}}>
-                   
+               <script  myvar={{graphDataDoc}}>
+
           var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
           var temp = document.currentScript.getAttribute('myvar'); 
           var arr2=temp.split(","); // spliting from iso date to normal date
@@ -95,21 +73,24 @@
               datapoints.push(curr);
               curr=1;
             }
-         }
+         } 
           datapoints.push(curr);
           arr2=unique(arr2);
           var day=[];
           for(var i=0;i<arr2.length;i++){
              day.push({x:Date.parse(arr2[i]),y:datapoints[i]});
           }
+
+          // console.log(day);
+        
           var data = {
             labels: arr2,
             datasets: [{
               label: 'Doctors',
               data: day,
-              backgroundColor: "rgba(0,0,255,1.0)",
-              borderColor: "rgba(0,0,255,0.1)",
-              borderWidth: 1
+              backgroundColor: "skyblue",
+              borderColor: "blue",
+              borderWidth: 3
             }]
           };
           var config = {
@@ -129,37 +110,36 @@
               }
             }
           };
-          const myChartp = new Chart(
-            document.getElementById('myChartp'),
+          const myChart = new Chart(
+            document.getElementById('myChart'),
             config
           );
 
-          function timeFramep(period){
-            console.log(period)
+          function timeFrame(period){
             if(period=='day'){
-              myChartp.config.options.scales.x.time.unit=period;
-              myChartp.config.data.datasets[0].data=day;
+              myChart.config.options.scales.x.time.unit=period;
+              myChart.config.data.datasets[0].data=day;
             }else if(period=='month'){
-              myChartp.config.options.scales.x.time.unit=period;
-              myChartp.config.data.datasets[0].data=day;
+              myChart.config.options.scales.x.time.unit=period;
+              myChart.config.data.datasets[0].data=day;
             }else if(period=='year'){
-              myChartp.config.options.scales.x.time.unit=period;
-              myChartp.config.data.datasets[0].data=day;
+              myChart.config.options.scales.x.time.unit=period;
+              myChart.config.data.datasets[0].data=day;
             }
-            myChartp.update();
+            myChart.update();
           }
 
-          function filterDatap(){
+          function filterData(){
             var dates2=[...arr2];
-            const startdatep=document.getElementById('startdatep');
-            const enddatep=document.getElementById('enddatep');
+            const startdate=document.getElementById('startdate');
+            const enddate=document.getElementById('enddate');
            const indexstartdate=dates2.findIndex(function(date) {
                             return date >=startdate.value;
                         });
            var indexenddate=dates2.findIndex(function(date) {        
-                      if(date==enddatep.value){
+                      if(date==enddate.value){
                           return date;
-                        }else if(date>enddatep.value){
+                        }else if(date>enddate.value){
                           return date;
                         }
                         });
@@ -172,10 +152,11 @@
             const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate+1);
             myChart.config.data.datasets[0].data=filterDatapoints;
 
-            myChartp.update();
+            myChart.update();
        
           }
-             </script>
+
+          </script> 
 
 				<div class="row">
                     <div class="col-sm-12">
@@ -188,17 +169,4 @@
            
         </div>
     </div>
-    <div class="sidebar-overlay" data-reff=""></div>
-    <script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.slimscroll.js"></script>
-    <script src="js/select2.min.js"></script>
-    <script src="js/moment.min.js"></script>
-    <script src="js/bootstrap-datetimepicker.min.js"></script>
-    <script src="js/app.js"></script>
-</body>
-
-
-<!-- doctors23:17-->
-</html>
+    {{>footer}}

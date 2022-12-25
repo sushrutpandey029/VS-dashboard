@@ -1,30 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-
-
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
-    <title>VS Doc</title>
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-</head>
-
-<body>
-    <div class="main-wrapper">
- {{>header}}
-        {{>sidebar}}
+{{>header}}
+{{>sidebar}}
         <div class="page-wrapper">
             <div class="content">
                
-                <center><div class="">
-                    <div class="">
+                <div class="row">
+                    <div class="col-md-12">
                         <div class="dash-widget">
                             <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
                             <div class="dash-widget-info text-right">
@@ -33,31 +13,63 @@
                             </div>
                         </div>
                     </div>
-                </div></center>
+                </div>
 
-               
-               <center> <div class="row">
-					
-                    {{#each dacdata}}
-					<div class="col-12">
-						<div class="card" style="border-radius: 20px;">
-							<div class="card-body" style="border-radius: 20px;">
-								<div class="chart-title">
-									<i><b><h2>Doctor Profile</h2></b></i>
-                                    <hr color="red">
-								</div>	
-								 <b><p>Doctor Name : {{this.fullname}}</p></b> 
-                                  <b><p>Email: {{this.email}}</p></b>
-                                 <b><p>Phone : {{this.phone}}</p></b>
-                                 <b><p>Age : {{this.age}}</p></b>
-                                 <b><p>Role: {{this.role}}</p></b>
-                                 <b><p>Biography : {{this.Biography}}</p></b>
-							</div>
-						</div>
-					</div>
-                    {{/each}}
-				</div></center>
 
+
+                <div class="card-box profile-header">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="profile-view">
+                              {{#each dacdata}}
+                                <div class="profile-img-wrap"  style="max-height: 100px;">
+                                    <div class="profile-img"  style="max-height: 100px;">
+                                        <a href="#"><img class="avatar" src="{{this.image}}" alt=""  style="max-height: 100px;"></a>
+                                    </div>
+                                </div>
+                                <div class="profile-basic">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="profile-info-left">
+                                                <h3 class="user-name m-t-0 mb-0">{{this.fullname}}</h3>
+                                                <small class="text-muted">{{this.email}}</small>
+                                                <div class="staff-id">Employee ID : {{this._id}}</div>
+                                               
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <ul class="personal-info">
+                                                <li>
+                                                    <span class="title">Phone:</span>
+                                                    <span class="text"><a href="#">{{this.phone}}</a></span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Email:</span>
+                                                    <span class="text"><a href="#">{{this.email}}</a></span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Birthday:</span>
+                                                    <span class="text">{{this.Dob}}</span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Address:</span>
+                                                    <span class="text">{{this.Address}}</span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Country:</span>
+                                                    <span class="text">{{this.Country}}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </div>                        
+                        </div>
+                    </div>
+                </div>
+
+                <br><br>
 
 
                  <div class="row">
@@ -67,7 +79,7 @@
 						<div class="card">
 							<div class="card-body">
 								<div class="chart-title">
-									<h4>Patients</h4>
+									<center><b><h4> Doc Patient Graph</h4></b></center>
 								</div>	
 								 <canvas id="myChartp" style="width:100%"></canvas>
                                  <button onClick="timeFramep('day')" >Day</button>
@@ -108,9 +120,9 @@
             datasets: [{
               label: 'Patients Under Doctor',
               data: day,
-              backgroundColor: "rgba(0,0,255,1.0)",
-              borderColor: "rgba(0,0,255,0.1)",
-              borderWidth: 1
+              backgroundColor: "lightgreen",
+              borderColor: "green",
+              borderWidth: 3
             }]
           };
           var config = {
@@ -155,7 +167,7 @@
             const startdatep=document.getElementById('startdatep');
             const enddatep=document.getElementById('enddatep');
            const indexstartdate=dates2.findIndex(function(date) {
-                            return date >=startdate.value;
+                            return date >=startdatep.value;
                         });
            var indexenddate=dates2.findIndex(function(date) {        
                       if(date==enddatep.value){
@@ -168,34 +180,35 @@
                           indexenddate=dates2.length-1;
                         }
            const filterDate= dates2.slice(indexstartdate,indexenddate+1);
-            myChart.config.data.labels=filterDate;
+            myChartp.config.data.labels=filterDate;
             var datapoints2=[...datapoints]
-            const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate+1);
-            myChart.config.data.datasets[0].data=filterDatapoints;
+            const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate);
+            myChartp.config.data.datasets[0].data=filterDatapoints;
 
             myChartp.update();
        
           }
               </script>
 				
-			<div class="row" style="border-radius: 30px;"> 
-					<div class="col-12" style="border-radius: 30px;">
-						<div class="card" style="border-radius: 30px;">
+				<div class="row">
+                   
+					<div class="col-12">
+						<div class="card">
 							<div class="card-header">
-								<center><h4 class="card-title d-inline-block"><b><i>New Patients </i></b></h4> </center>
+								<center><b><h4 class=""> Doctor Patients </h4></b></center>
 							</div>
-							<div class="card-block" style="border-radius: 24px; box-shadow: -2px 3px 26px 0px rgb(32, 31, 31);">
+							<div class="card-block">
                               
-								<div class="table-responsive" style="border-radius: 20px;">
-									<table class="table mb-0 new-patient-table" style="border-radius: 20px;">
-                                        <thead>
+								<div class="table-responsive">
+									<table class="table mb-0 new-patient-table">
+                          <thead>
 									<tr>
 										<th>Image/Name</th>
 										{{!-- <th>Age</th> --}}
-									<th>Email</th>
-										<th>Phone</th>
-										
-										<th class="text-right">Action</th>
+										<th>Doctor ID</th>
+										<th>Patient Email</th>
+										<th>Patient Phone</th>
+										<th class="text-right">Patient Profile</th>
 									</tr>
 								</thead>
                                           {{#each userData}}
@@ -205,10 +218,13 @@
 													<img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
 													<h2>{{this.patientFullName}}</h2>
 												</td>
+                        <td>{{this.DocId}}</td>
 												<td>{{this.email}}</td>
 												<td>{{this.phone}}</td>
 												<!-- <td><button class="btn btn-primary btn-primary-one float-right">{{this.disabalityType}}</button></td> -->
-                                                 <td><a href="http://localhost:3000/patient_dashboard/{{this._id}}"><button type="submit" class="btn btn-primary btn-primary-one float-right">Patient Details</button></a></td>
+                                                <form action="http://localhost:3000/patients-profile/{{this._id}}">
+                                                    <td><button type="submit" class="btn btn-primary btn-primary-one float-right">Profile</button></td>
+                                                    </form>
 											</tr>
 									
 										</tbody>
@@ -219,35 +235,6 @@
 							</div>
 						</div>
 					</div>
-
-                    {{!-- <div class="col-12 col-md-6 col-lg-4 col-xl-4">
-                        <div class="card member-panel">
-							<div class="card-header bg-white">
-								<h4 class="card-title mb-0">New Patients </h4>
-							</div>
-                            <div class="card-body">
-                                <ul class="contact-list">
-                                     {{#each userData}}
-                                    <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                               <img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis"><b>{{this.patientFullName}}</b></span>
-                                                <span class="contact-date">{{this.email}}</span>
-                                               <span class="contact-date"><a href="http://localhost:3000/patient_dashboard/{{this._id}}"><button type="submit" class="btn btn-primary btn-primary-one float-right">Patient Details</button></a></span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    {{/each}}
-                                </ul>
-                            </div>
-                            <div class="card-footer text-center bg-white">
-                                <a href="doctors.html" class="text-muted">View all Doctors</a>
-                            </div>
-                        </div>
-                    </div> --}}
                    
 				</div>
                
@@ -255,17 +242,4 @@
         
         </div>
     </div>
-    <div class="sidebar-overlay" data-reff=""></div>
-    <script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.slimscroll.js"></script>
-    <script src="js/Chart.bundle.js"></script>
-    <script src="js/chart.js"></script>
-    <script src="js/app.js"></script>
-
-</body>
-
-{{!-- C:\Users\Harsh\OneDrive\Desktop\New folder (4)\doctor\public\js\tagsinput.js --}}
-
-</html>
+    {{>footer}}

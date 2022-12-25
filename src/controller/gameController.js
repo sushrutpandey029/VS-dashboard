@@ -29,7 +29,7 @@ const update_game = async (req,res)=>{
             if(err){
                 console.log(err);
             }else{
-                console.log("updated doc :",docs);
+                // console.log("updated doc :",docs);
                 res.redirect('http://localhost:3000/games') 
             }
         }

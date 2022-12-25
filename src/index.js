@@ -156,13 +156,15 @@ app.get('/games',async(req,res)=>{
 app.get("/doctor",async(req,res)=>{
    let exist=await roleModel.find({_id:req.cookies.id})
    let data= await roleModel.find().sort({_id:1})
+   let datag= await roleModel.find().sort({_id:1})
+
    var array=[]
-   data.map(ob =>{
+   datag.map(ob =>{
       let iso=new Date(ob.createdAt).toISOString();
       array.push(iso.split("T")[0])
    })
    if(exist.length>0)res.send("admin login required")
-   else res.render('doctor',{userData:data,graphData:array})
+   else res.render('doctor',{userData:data,graphDataDoc:array})
 })
 
 app.get("/doctor_login",(req,res)=>{
@@ -175,7 +177,9 @@ app.get("/add-doctor",(req,res)=>{
 
 app.get("/doc-dashboard/:id",async(req,res)=>{
    let docdata =await roleModel.find({_id:req.params.id}).sort({_id:-1})
+
    let data=await patientModel.find({DocId:req.params.id}).sort({_id:-1})
+
    let datap=await patientModel.find({DocId:req.params.id}).sort({_id:1})
    var array=[]
    datap.map(ob =>{
@@ -195,9 +199,15 @@ app.get("/patient_dashboard/:id",async(req,res)=>{
 app.get("/patients",async(req,res)=>{ // to render all the paitients 
    let data = await patientModel.find()
    let exist=await roleModel.find({_id:req.cookies.id})
+   let datap = await patientModel.find().sort({_id:1})
    let Data = await patientModel.find({DocId:req.cookies.id});
+   var array2=[]
+   datap.map(ob =>{
+      let iso=new Date(ob.createdAt).toISOString();
+      array2.push(iso.split("T")[0])
+   })
    if(exist.length>0)res.render('patients',{userData:Data})
-   else res.render('patients',{userData:data})
+   else res.render('patients',{userData:data,graphDataPatient:array2})
 })
 
 app.get("/add-patient",(req,res)=>{
@@ -232,10 +242,62 @@ app.get('/edit-patient/:id',async(req,res)=>{
 })
 
 
-app.get('/patients-profile/:id',async(req,res)=>{
-   const user=await patientModel.find({"_id": req.params.id})
+// app.get('/patients-profile/:id',async(req,res)=>{
+//    const user=await patientModel.find({"_id": req.params.id})
 
-   res.render("patients-profile",{userData:user})
+//    res.render("patients-profile",{userData:user})
+// })
+
+app.get('/patients-profile/:id',async(req,res)=>{
+   const data=await patientModel.find({"_id": req.params.id});
+   const gameData=await progressModel.find({"":req.params.id}).sort({patientId:1})
+   const data2=await progressModel.find({"patientId": req.params.id}).sort({patientId:1});
+   
+   var array2=[]
+   var mpl=new Map();
+   var mpp=new Map();
+   var mpo=new Map();
+   var arrl=[];
+   var arrp=[];
+   var arro=[];
+
+   gameData.map(ob =>{
+      let iso=new Date(ob.createdAt).toISOString();
+      iso=iso.split("T")[0];
+      mpl[iso]=mpl[iso] || []
+      mpo[iso]=mpo[iso] || []
+      mpp[iso]=mpp[iso] || []
+      mpl[iso].push(parseFloat(ob.meanLoudness))
+      mpp[iso].push(parseFloat(ob.MeanPitch))
+      mpo[iso].push(parseFloat(ob.overralrating))
+      array2.push(iso)
+   }) 
+
+   for(var m in mpl){
+      var sum=0;
+      for(var k=0;k<mpl[m].length;k++){
+         sum+= Math.abs(mpl[m][k]);
+      } 
+      arrl.push(sum/mpl[m].length);
+   }
+// console.log(arrl.length);
+   for(var m in mpp){
+      var sum=0;
+      for(var k=0;k<mpp[m].length;k++){
+         sum+= Math.abs(mpp[m][k]);
+      }
+      arrp.push(sum/mpp[m].length);
+   }
+   for(var m in mpo){
+      var sum=0;
+      for(var k=0;k<mpo[m].length;k++){
+         sum+= Math.abs(mpo[m][k]);
+      }
+      arro.push(sum/mpo[m].length);
+   }
+   // console.log(arro);
+
+   res.render("progress",{userData:data,graphDataPatient:array2,loudness:arrl,pitch:arrp,overrall:arro,progreshdata:data2});
 })
 
 app.listen(process.env.PORT || 3000, function () {

@@ -7,12 +7,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
-    <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
+    <title>VS Dashboard</title>
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../css/select2.min.css">
     <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 
 <body>
@@ -25,13 +26,263 @@
                 <div class="row">
                   
                     <div class="col-sm-7 col-6">
-                        <h4 class="page-title">My Profile</h4>
+                        <h4 class="page-title">Patient Profile</h4>
                     </div>
 
-                    <div class="col-sm-5 col-6 text-right m-b-30">
-                        <a href="edit-profile" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Edit Profile</a>
+                   
+                </div>
+
+
+                
+
+
+                <div class="row">
+                        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <div class="dash-widget">
+							<span class="dash-widget-bg1"><i class="fa fa-stethoscope" aria-hidden="true"></i></span>
+							<div class="dash-widget-info text-right">
+								<h3>24</h3>
+								<span class="widget-title1">game played <i class="fa fa-check" aria-hidden="true"></i></span>
+							</div>
+                        </div>
+                       </div>
                     </div>
                 </div>
+
+
+                <div class="row">
+
+                   {{#each patientData}}
+					<div class="col-12 col-md-6 col-lg-6 col-xl-6">
+						<div class="card">
+							<div class="card-body">
+								<div class="chart-title">
+									<h4>Patient Data</h4>
+								
+								</div>
+								  <h3>patientFullName : {{this.patientFullName}}</h3>
+                                  <p>email: {{this.email}}</p>
+                                  <p>phone : {{this.phone}}</p>
+                                  <p>age : {{this.age}}</p>
+                                  <p>disabalityType: {{this.disabalityType}}</p>
+                                  <p>address : {{this.address}}</p>
+                               
+							</div>
+						</div>
+					</div>
+                    {{/each}}
+
+                     
+                      {{#each patientData}}
+                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+						<div class="card">
+							<div class="card-body">
+								<div class="chart-title">
+									<h4>game played list</h4>
+								</div>	
+								<p>gamename: baloonigirl</p>
+                                  <p>type: Nasi</p>
+                                  <p>category: </p>
+							</div>
+						</div>
+					</div>
+				</div>
+                {{/each}}
+
+
+                <div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="chart-title">
+									<center><h4><b>OverAllGraph</b></h4></center>
+								
+								</div>	
+								   <canvas id="OverAllGraph" style="width:100%;max-width:100%"></canvas>
+                   
+							</div>
+             
+						</div>
+					</div>
+				</div>
+
+
+
+                  <div class="row">
+					<div class="col-12 col-md-4 col-lg-4col-xl-4">
+						<div class="card">
+							<div class="card-body">
+								<div class="chart-title">
+									<h4>Loudness Graph</h4>
+								
+								</div>	
+								   <canvas id="Loudness" style="width:100%;max-width:600px"></canvas>
+                   
+							</div>
+             
+						</div>
+					</div>
+
+					<div class="col-12 col-md-4 col-lg-4col-xl-4">
+						<div class="card">
+							<div class="card-body">
+								<div class="chart-title">
+									<h4>Hz Graph</h4>
+								</div>
+								 <canvas id="Hz" style="width:100%;max-width:600px"></canvas>
+							</div>
+						</div>
+					</div>
+
+                    <div class="col-12 col-md-4 col-lg-4col-xl-4">
+						<div class="card">
+							<div class="card-body">
+								<div class="chart-title">
+									<h4>Recognition Graph</h4>
+								</div>
+								 <canvas id="Recognition" style="width:100%;max-width:600px"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>
+
+               
+				
+
+
+                
+                
+
+               
+
+            <script>
+              var xValues = ['11.09','1.98','12.09','2.09','3.0','7.09','10.98','12.0','5.98','7.09','7.0','7.77'];
+
+              var yValues = ['3','7','6','8','10','13'];
+
+              
+
+
+
+                  new Chart("OverAllGraph", {
+                    type: "line",
+                    data: {
+                      labels: xValues,
+                      datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "orange",
+                        borderColor: "yellow",
+                        data: yValues
+                      }]
+                    },
+                    options: {
+                      legend: {display: false},
+                      scales: {
+                        xAxes: [{ticks: {min: 0, max:95}}],
+                        yAxes: [{ticks: {min: 0, max:100}}],
+                      }
+                    }
+                  });
+                  </script>
+
+
+                   <script>
+              var xValues = ['11.09','1.98','12.09','2.09','3.0','7.09','10.98','12.0','5.98','7.09','7.0','7.77'];
+
+              var yValues = ['3','7','6','8','10','13'];
+
+              
+
+
+
+                  new Chart("Loudness", {
+                    type: "line",
+                    data: {
+                      labels: xValues,
+                      datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "pink",
+                        borderColor: "orange",
+                        data: yValues
+                      }]
+                    },
+                    options: {
+                      legend: {display: false},
+                      scales: {
+                        xAxes: [{ticks: {min: 0, max:95}}],
+                        yAxes: [{ticks: {min: 0, max:100}}],
+                      }
+                    }
+                  });
+                  </script>
+
+
+                   <script>
+              var xValues = ['11.09','1.98','12.09','2.09','3.0','7.09','10.98','12.0','5.98','7.09','7.0','7.77'];
+
+              var yValues = ['3','7','6','8','10','13'];
+
+              
+
+
+
+                  new Chart("Hz", {
+                    type: "line",
+                    data: {
+                      labels: xValues,
+                      datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "pink",
+                        borderColor: "Blue",
+                        data: yValues
+                      }]
+                    },
+                    options: {
+                      legend: {display: false},
+                      scales: {
+                        xAxes: [{ticks: {min: 0, max:95}}],
+                        yAxes: [{ticks: {min: 0, max:100}}],
+                      }
+                    }
+                  });
+                  </script>
+
+                   <script>
+              var xValues = ['11.09','1.98','12.09','2.09','3.0','7.09','10.98','12.0','5.98','7.09','7.0','7.77'];
+
+              var yValues = ['3','7','6','8','10','13'];
+
+              
+
+
+
+                  new Chart("Recognition", {
+                    type: "line",
+                    data: {
+                      labels: xValues,
+                      datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "pink",
+                        borderColor: "red",
+                        data: yValues
+                      }]
+                    },
+                    options: {
+                      legend: {display: false},
+                      scales: {
+                        xAxes: [{ticks: {min: 0, max:95}}],
+                        yAxes: [{ticks: {min: 0, max:100}}],
+                      }
+                    }
+                  });
+                  </script>
+
+
+
                 <div class="card-box profile-header">
                     <div class="row">
                         {{#each userData}}
@@ -87,7 +338,9 @@
                                                 </li> -->
                                             </ul>
                                         </div>
-                                        <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+
+
+                                        <div class="col-12 col-md-6 col-lg-6 col-xl-6" style="max-width: 100%;">
                                             <div class="card">
                                                 <div class="card-body">
                                                     <div class="chart-title">

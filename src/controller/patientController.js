@@ -448,7 +448,7 @@ const createPatientnew = async function (req, res) {
         const data = await roleModel.findOne({ _id: DocId })
         data.patientData.push(output);
         // return res.status(201).send({ status: true, msg: "Patient Succesfully Created", data: output })
-        res.redirect('http://localhost:3000/index') 
+        res.redirect('http://localhost:3000/patients') 
 
     }
     catch (error) {
@@ -461,7 +461,7 @@ const delete_patient = async (req,res)=>{
     const ID=req.params.id;
 await patientModel.findOneAndDelete({_id:ID});
 
-res.redirect('http://localhost:3000/index') 
+res.redirect('http://localhost:3000/patients') 
 }
 
 
@@ -480,7 +480,7 @@ const update_patient=async (req,res)=>{
             if(err){
                 console.log(err);
             }else{
-                res.redirect('http://localhost:3000/index') 
+                res.redirect('http://localhost:3000/patients') 
             }
         }
     })  

@@ -1,0 +1,554 @@
+{{>header}}
+{{>sidebar}}
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+        <div class="page-wrapper">
+            <div class="content">
+               <div class="row">
+                   <div class="col-sm-7 col-6">
+                        <h4 class="page-title">Patient Profile</h4>
+                    </div>
+                </div>
+               <div class="row">
+                    <div class="col-md-12">
+                        <div class="dash-widget">
+                            <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
+                            <div class="dash-widget-info text-right">
+                                <h3>24</h3>
+                                <span class="widget-title2">Play Games<i class="fa fa-check" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+               <div class="card-box profile-header">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="profile-view">
+                              {{#each userData}}
+                                <div class="profile-img-wrap">
+                                    <div class="profile-img">
+                                        <a href="#"><img class="avatar" src="{{this.image}}" alt=""  ></a>
+                                    </div>
+                                </div>
+                                <div class="profile-basic">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="profile-info-left">
+                                                <h3 class="user-name m-t-0 mb-0">{{this.patientFullName}}</h3>
+                                                <small class="text-muted">{{this.email}}</small>
+                                                <div class="staff-id">Employee ID : {{this._id}}</div>
+                                                 <div class="staff-id">Doc ID : {{this.DocId}}</div>
+                                               
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <ul class="personal-info">
+                                                <li>
+                                                    <span class="title">Phone:</span>
+                                                    <span class="text"><a href="#">{{this.phone}}</a></span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Email:</span>
+                                                    <span class="text"><a href="#">{{this.email}}</a></span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">NativeLanaguage:</span>
+                                                    <span class="text">{{this.nativeLanaguage}}</span>
+                                                </li>
+                                                  <li>
+                                                    <span class="title">Age:</span>
+                                                    <span class="text">{{this.age}}</span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Address:</span>
+                                                    <span class="text">{{this.address}}</span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Disabality:</span>
+                                                    <span class="text">{{this.disabalityType}}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </div>                        
+                        </div>
+                    </div>
+                </div>
+
+                
+<br><br>
+
+
+        <div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="chart-title">
+									<center><h4><b>OverAllGraph</b></h4></center>
+								
+								</div>	
+								   <canvas id="myCharto" style="width:100%;max-width:100%"></canvas>
+                                   <button onClick="timeFrameo('day')" >Day</button>
+                                   <button onclick="timeFrameo('month')">Month</button>
+                                   <button onclick="timeFrameo('year')" >Year</button>
+                                   <input onchange="filterDatao()" type="date" id="startdateo" value="">
+                                   <input onchange="filterDatao()" type="date" id="enddateo" value=""> 
+							</div>
+             
+						</div>
+					</div>
+				</div>
+
+
+
+                  <div class="row">
+					<div class="col-12 col-md-4 col-lg-4col-xl-4">
+						<div class="card">
+							<div class="card-body">
+								<div class="chart-title">
+									<h4>Loudness Graph</h4>
+								
+								</div>	
+								   <canvas id="myChartl" style="width:100%;max-width:600px"></canvas>
+                                   <button onClick="timeFramel('day')" >Day</button>
+                                   <button onclick="timeFramel('month')">Month</button>
+                                   <button onclick="timeFramel('year')" >Year</button>
+                                   <input onchange="filterDatal()" type="date" id="startdatel" value="">
+                                   <input onchange="filterDatal()" type="date" id="enddatel" value=""> 
+							</div>
+             
+						</div>
+					</div>
+
+					<div class="col-12 col-md-4 col-lg-4col-xl-4">
+						<div class="card">
+							<div class="card-body">
+								<div class="chart-title">
+									<h4>Hz Graph</h4>
+								</div>
+								 <canvas id="myCharth" style="width:100%;max-width:600px"></canvas>
+                                 <button onClick="timeFrameh('day')" >Day</button>
+                                 <button onclick="timeFrameh('month')">Month</button>
+                                 <button onclick="timeFrameh('year')" >Year</button>
+                                 <input onchange="filterDatah()" type="date" id="startdateh" value="">
+                                 <input onchange="filterDatah()" type="date" id="enddateh" value=""> 
+							</div>
+						</div>
+					</div>
+
+                    <div class="col-12 col-md-4 col-lg-4col-xl-4">
+						<div class="card">
+							<div class="card-body">
+								<div class="chart-title">
+									<h4>Recognition Graph</h4>
+								</div>
+								 <canvas id="myChartr" style="width:100%;max-width:600px"></canvas>
+                                 <button onClick="timeFramer('day')" >Day</button>
+                                   <button onclick="timeFramer('month')">Month</button>
+                                   <button onclick="timeFramer('year')" >Year</button>
+                                   <input onchange="filterDatar()" type="date" id="startdater" value="">
+                                   <input onchange="filterDatar()" type="date" id="enddater" value=""> 
+							</div>
+						</div>
+					</div>
+				</div>
+
+        {{!-- Overall graph --}}
+
+            <script myvar={{graphDataPatient}} myvarl={{loudness}} myvarp={{pitch}} myvarr={{overrall}} >
+               var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
+          var temp = document.currentScript.getAttribute('myvar'); 
+          var temp2 = document.currentScript.getAttribute('myvarl'); 
+          var temp3 = document.currentScript.getAttribute('myvarp');
+          var temp4 = document.currentScript.getAttribute('myvarr');
+        
+          var arro=temp.split(","); // spliting from iso date to normal date
+          var arrl=temp2.split(",");
+          var arrp=temp3.split(",");
+          var arrr=temp4.split(",");
+          
+         var datapointso=[];
+         arro=unique(arro);
+         for(var i=0;i<arro.length;i++){ //counting occurance of each element
+            var sum=parseFloat(arrl[i])+parseFloat(arrr[i])+parseFloat(arrp[i]); 
+            datapointso.push(parseFloat(sum/3));
+            }
+            // console.log(datapoints)
+         
+          const dayo=[];
+          for(var i=0;i<arro.length;i++){
+             dayo.push({x:Date.parse(arro[i]),y:datapointso[i]});
+          } 
+          var data = {
+            labels: arro,
+            datasets: [{
+              label: 'Over All Graph',
+              data: dayo,
+              backgroundColor: "orange",
+              borderColor: "red",
+              borderWidth: 3
+            }]
+          };
+          var config = {
+            type: 'line',
+            data,
+            options: {
+              scales: {
+                x:{
+                  type: 'time',
+                  time:{
+                    unit: 'day'
+                  }
+                },
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          };
+          const myCharto = new Chart(
+            document.getElementById('myCharto'),
+            config
+          );
+
+          function timeFrameo(period){
+            console.log(period)
+            if(period=='day'){
+              myCharto.config.options.scales.x.time.unit=period;
+              myCharto.config.data.datasets[0].data=dayo;
+            }else if(period=='month'){
+              myCharto.config.options.scales.x.time.unit=period;
+              myCharto.config.data.datasets[0].data=dayo;
+            }else if(period=='year'){
+              myCharto.config.options.scales.x.time.unit=period;
+              myCharto.config.data.datasets[0].data=dayo;
+            }
+            myCharto.update();
+          }
+
+          function filterDatao(){
+            var dates2=[...arro];
+            const startdate=document.getElementById('startdateo');
+            const enddate=document.getElementById('enddateo');
+           var indexstartdate=dates2.findIndex(function(date) {
+                            return date >=startdate.value;
+                        });
+            var indexenddate;
+          for(var i=0;i<dates2.length;i++){
+            if(dates2[i]<=enddate.value){
+              indexenddate=i;
+            }
+          }
+           const filterDate= dates2.slice(indexstartdate,indexenddate+1);
+            myCharto.config.data.labels=filterDate;
+            var datapoints2=[...datapointso]
+            const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate+1);
+            myCharto.config.data.datasets[0].data=filterDatapoints;
+
+            myCharto.update();
+       
+          }
+        </script>
+
+        {{!-- Loudness --}}
+
+        <script myvar={{graphDataPatient}} myvars={{loudness}}>
+        var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
+          var temp2 = document.currentScript.getAttribute('myvars'); 
+        
+          var arrY=temp2.split(",");
+          var datapointsl=[];
+        
+         for(var i=0;i<arrY.length;i++){ //counting occurance of each element
+              datapointsl.push(parseFloat(arrY[i]));
+            }
+          var dayl=[];
+          for(var i=0;i<arro.length;i++){
+             dayl.push({x:Date.parse(arro[i]),y:datapointsl[i]});
+          }
+          console.log(dayl)
+          var data = {
+            labels: arro,
+            datasets: [{
+              label: 'Loudness',
+              data: dayl,
+              backgroundColor: "green",
+              borderColor: "lightgreen",
+              borderWidth: 3
+            }]
+          };
+          var config = {
+            type: 'line',
+            data,
+            options: {
+              scales: {
+                x:{
+                  type: 'time',
+                  time:{
+                    unit: 'day'
+                  }
+                },
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          };
+          const myChartl = new Chart(
+            document.getElementById('myChartl'),
+            config
+          );
+
+          function timeFramel(period){
+            if(period=='day'){
+              myChartl.config.options.scales.x.time.unit=period;
+              myChartl.config.data.datasets[0].data=dayl;
+            }else if(period=='month'){
+              myChartl.config.options.scales.x.time.unit=period;
+              myChartl.config.data.datasets[0].data=dayl;
+            }else if(period=='year'){
+              myChartl.config.options.scales.x.time.unit=period;
+              myChartl.config.data.datasets[0].data=dayl;
+            }
+            myChartl.update();
+          }
+
+          function filterDatal(){
+            var dates2=[...arro];
+            const startdate=document.getElementById('startdatel');
+            const enddate=document.getElementById('enddatel');
+           const indexstartdate=dates2.findIndex(function(date) {
+                            return date >=startdate.value;
+                        });
+            var indexenddate;
+          for(var i=0;i<dates2.length;i++){
+            if(dates2[i]<=enddate.value){
+              indexenddate=i;
+            }
+          }
+           const filterDate= dates2.slice(indexstartdate,indexenddate+1);
+            myChartl.config.data.labels=filterDate;
+            var datapoints2=[...datapointsl]
+            const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate+1);
+            myChartl.config.data.datasets[0].data=filterDatapoints;
+
+            myChartl.update();
+       
+          }
+
+             </script>
+
+             {{!-- pitch --}}
+
+
+        <script myvar={{graphDataPatient}} myvars={{pitch}}>
+              var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
+          var templ = document.currentScript.getAttribute('myvars'); 
+        
+          var arrYp=templ.split(",");
+         var datapointsp=[];
+        
+         for(var i=0;i<arrYp.length;i++){ //counting occurance of each element
+              datapointsp.push(parseFloat(arrYp[i]));
+            }
+          var dayp=[];
+          for(var i=0;i<arro.length;i++){
+             dayp.push({x:Date.parse(arro[i]),y:datapointsp[i]});
+          }
+          var data = {
+            labels: arro,
+            datasets: [{
+              label: 'Pitch',
+              data: dayp,
+              backgroundColor: "skyblue",
+              borderColor: "blue",
+              borderWidth: 3
+            }]
+          };
+          var config = {
+            type: 'line',
+            data,
+            options: {
+              scales: {
+                x:{
+                  type: 'time',
+                  time:{
+                    unit: 'day'
+                  }
+                },
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          };
+          const myCharth = new Chart(
+            document.getElementById('myCharth'),
+            config
+          );
+
+          function timeFrameh(period){
+            if(period=='day'){
+              myCharth.config.options.scales.x.time.unit=period;
+              myCharth.config.data.datasets[0].data=dayp;
+            }else if(period=='month'){
+              myCharth.config.options.scales.x.time.unit=period;
+              myCharth.config.data.datasets[0].data=dayp;
+            }else if(period=='year'){
+              myCharth.config.options.scales.x.time.unit=period;
+              myCharth.config.data.datasets[0].data=dayp;
+            }
+            myCharth.update();
+          }
+
+          function filterDatah(){
+            var dates2=[...arro];
+            const startdate=document.getElementById('startdateh');
+            const enddate=document.getElementById('enddateh');
+           const indexstartdate=dates2.findIndex(function(date) {
+                            return date >=startdate.value;
+                        });
+                        var indexenddate;
+          for(var i=0;i<dates2.length;i++){
+            if(dates2[i]<=enddate.value){
+              indexenddate=i;
+            }
+          }
+           const filterDate= dates2.slice(indexstartdate,indexenddate+1);
+            myCharth.config.data.labels=filterDate;
+            var datapoints2=[...datapointsp]
+            const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate+1);
+            myCharth.config.data.datasets[0].data=filterDatapoints;
+
+            myCharth.update();
+       
+          }
+
+        </script>
+
+        {{!-- Recognition --}}
+
+        <script myvar={{graphDataPatient}} myvars={{overrall}}>
+             var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
+          var tempr = document.currentScript.getAttribute('myvars'); 
+        
+          var arrYr=tempr.split(",");
+         var datapointsr=[];
+        
+         for(var i=0;i<arro.length;i++){ //counting occurance of each element
+              datapointsr.push(parseFloat(arrYr[i]));
+            }
+          var dayr=[];
+          for(var i=0;i<arro.length;i++){
+             dayr.push({x:Date.parse(arro[i]),y:datapointsr[i]});
+          }
+          var data = {
+            labels: arro,
+            datasets: [{
+              label: 'Recognition',
+              data: dayr,
+              backgroundColor: "yellow",
+              borderColor: "orange",
+              borderWidth: 3
+            }]
+          };
+          var config = {
+            type: 'line',
+            data,
+            options: {
+              scales: {
+                x:{
+                  type: 'time',
+                  time:{
+                    unit: 'day'
+                  }
+                },
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          };
+          const myChartr = new Chart(
+            document.getElementById('myChartr'),
+            config
+          );
+
+          function timeFramer(period){
+            if(period=='day'){
+              myChartr.config.options.scales.x.time.unit=period;
+              myChartr.config.data.datasets[0].data=dayr;
+            }else if(period=='month'){
+              myChartr.config.options.scales.x.time.unit=period;
+              myChartr.config.data.datasets[0].data=dayr;
+            }else if(period=='year'){
+              myChartr.config.options.scales.x.time.unit=period;
+              myChartr.config.data.datasets[0].data=dayr;
+            }
+            myChartr.update();
+          }
+
+          function filterDatar(){
+            var dates2=[...arro];
+            const startdate=document.getElementById('startdater');
+            const enddate=document.getElementById('enddater');
+           const indexstartdate=dates2.findIndex(function(date) {
+                            return date >=startdate.value;
+                        });
+                        var indexenddate;
+          for(var i=0;i<dates2.length;i++){
+            if(dates2[i]<=enddate.value){
+              indexenddate=i;
+            }
+          }
+           const filterDate= dates2.slice(indexstartdate,indexenddate+1);
+            myChartr.config.data.labels=filterDate;
+            var datapoints2=[...datapointsr]
+            const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate+1);
+            myChartr.config.data.datasets[0].data=filterDatapoints;
+
+            myChartr.update();
+       
+          }
+        </script>
+
+               <div class="col-12">
+                        <div class="card member-panel">
+							<div class="card-header bg-white">
+								<center><h4 class="card-title mb-0">Patient Pragress Details</h4></center>
+							</div>
+                            <div class="card-body">
+                                <ul class="contact-list">
+                                  {{#each progreshdata}}
+                                    <li>
+                                        <div class="contact-cont">
+                                            <div class="float-left user-img m-r-10">
+                                                <a href="#" title="John Doe"><img src="{{this.image}}" alt="" class="w-40 rounded-circle"></a>
+                                            </div>
+                                            <div class="contact-info">
+                                               <span class="contact-name text-ellipsis">{{this.patientId}}</span>
+                                                <span class="contact-date">{{this.date}}</span>
+                                                <details><p>this is detail page </p></details> 
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {{/each}}
+                                   
+                                </ul>
+                            </div>
+                            {{!-- <div class="card-footer text-center bg-white">
+                                <a href="#" class="text-muted">View all Doctors</a>
+                            </div> --}}
+                        </div>
+                    </div>
+				</div
+			
+                
+            </div>
+        
+        </div>
+    </div>
+{{>footer}}

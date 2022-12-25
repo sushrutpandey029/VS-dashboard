@@ -1,30 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-
-
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
-    <title>VS dashboard</title>
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
-	 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-</head>
-
-<body>
-    <div class="main-wrapper">
-      {{>header}}
-      {{>sidebar}}
-        <div class="page-wrapper">
-            <div class="content">
+{{>header}}
+{{>sidebar}}
+<div class="page-wrapper">
+  <div class="content">
 
                 <div class="row">
-                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="col-md-8 col-sm-8 col-lg-8 col-xl-4">
                         <div class="dash-widget">
 							<span class="dash-widget-bg1"><i class="fa fa-stethoscope" aria-hidden="true"></i></span>
 							<div class="dash-widget-info text-right">
@@ -33,7 +13,7 @@
 							</div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="col-md-8 col-sm-8 col-lg-8 col-xl-4">
                         <div class="dash-widget">
                             <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
                             <div class="dash-widget-info text-right">
@@ -42,12 +22,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="col-md-8 col-sm-8 col-lg-8 col-xl-4">
                         <div class="dash-widget">
                             <span class="dash-widget-bg3"><i class="fa fa-user-md" aria-hidden="true"></i></span>
                             <div class="dash-widget-info text-right">
                                 <h3>{{gameData.length}}</h3>
-                                <span class="widget-title3">Games <i class="fa fa-check" aria-hidden="true"></i></span>
+                                <span class="widget-title3">Games<i class="fa fa-check" aria-hidden="true"></i></span>
                             </div>
                         </div>
                     </div>
@@ -62,16 +42,19 @@
                         </div>
                     </div> --}}
                 </div>
-				 <div class="row">
+
+
+                {{!-- graph --}}
+				<div class="row">
 					<div class="col-12 col-md-6 col-lg-6 col-xl-6">
 						<div class="card">
 							<div class="card-body">
 								<div class="chart-title">
-									<h4>Doctors</h4>
+									<center><b><h4>Doctors graph</h4></b></center>
 								
 								</div>	
 								   <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
-          <button onClick="timeFrame('day')" >Day</button>
+               <button onClick="timeFrame('day')" >Day</button>
           <button onclick="timeFrame('month')">Month</button>
           <button onclick="timeFrame('year')" >Year</button>
           <input onchange="filterData()" type="date" id="startdate" value="">
@@ -84,7 +67,7 @@
 						<div class="card">
 							<div class="card-body">
 								<div class="chart-title">
-									<h4>Patients</h4>
+								<center><b><h4>Patients graph</h4></b></center>
 								</div>	
 								 <canvas id="myChartp" style="width:100%;max-width:600px"></canvas>
                  <button onClick="timeFramep('day')" >Day</button>
@@ -100,6 +83,8 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
+
+{{!-- doc graph --}}
 
         <script  myvar={{graphDataDoc}}>
 
@@ -130,9 +115,9 @@
             datasets: [{
               label: 'Doctors',
               data: day,
-              backgroundColor: "rgba(0,0,255,1.0)",
-              borderColor: "rgba(0,0,255,0.1)",
-              borderWidth: 1
+              backgroundColor: "skyblue",
+              borderColor: "blue",
+              borderWidth: 3
             }]
           };
           var config = {
@@ -199,8 +184,10 @@
           }
 
           </script> 
-<!-- //paitent chart -->
-				   <script myvar={{graphDataPatient}}>
+         <!-- //paitent chart -->
+
+
+				  <script myvar={{graphDataPatient}}>
               
           var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
           var temp = document.currentScript.getAttribute('myvar'); 
@@ -217,18 +204,18 @@
          }
           datapoints.push(curr);
           arr2=unique(arr2);
-          var day=[];
+          const dayp=[];
           for(var i=0;i<arr2.length;i++){
-             day.push({x:Date.parse(arr2[i]),y:datapoints[i]});
+             dayp.push({x:Date.parse(arr2[i]),y:datapoints[i]});
           }
           var data = {
             labels: arr2,
             datasets: [{
               label: 'Patients',
-              data: day,
-              backgroundColor: "rgba(0,0,255,1.0)",
-              borderColor: "rgba(0,0,255,0.1)",
-              borderWidth: 1
+              data: dayp,
+              backgroundColor: "lightgreen",
+              borderColor: "green",
+              borderWidth: 3
             }]
           };
           var config = {
@@ -239,7 +226,7 @@
                 x:{
                   type: 'time',
                   time:{
-                    unit: 'month'
+                    unit: 'day'
                   }
                 },
                 y: {
@@ -254,57 +241,67 @@
           );
 
           function timeFramep(period){
-            console.log(period)
+
             if(period=='day'){
               myChartp.config.options.scales.x.time.unit=period;
-              myChartp.config.data.datasets[0].data=day;
+              myChartp.config.data.datasets[0].data=dayp;
             }else if(period=='month'){
               myChartp.config.options.scales.x.time.unit=period;
-              myChartp.config.data.datasets[0].data=day;
+              myChartp.config.data.datasets[0].data=dayp;
             }else if(period=='year'){
               myChartp.config.options.scales.x.time.unit=period;
-              myChartp.config.data.datasets[0].data=day;
+              myChartp.config.data.datasets[0].data=dayp;
             }
             myChartp.update();
           }
 
           function filterDatap(){
             var dates2=[...arr2];
-            const startdatep=document.getElementById('startdatep');
-            const enddatep=document.getElementById('enddatep');
-           const indexstartdate=dates2.findIndex(function(date) {
+            const startdate=document.getElementById('startdatep');
+            const enddate=document.getElementById('enddatep');
+           var indexstartdate=dates2.findIndex(function(date) {
                             return date >=startdate.value;
                         });
-           var indexenddate=dates2.findIndex(function(date) {        
-                      if(date==enddatep.value){
-                          return date;
-                        }else if(date>enddatep.value){
-                          return date;
-                        }
-                        });
-                        if(indexenddate==-1){
-                          indexenddate=dates2.length-1;
-                        }
+          
+          var indexenddate;
+          for(var i=0;i<dates2.length;i++){
+            if(dates2[i]<=enddate.value){
+              indexenddate=i;
+            }
+          }
            const filterDate= dates2.slice(indexstartdate,indexenddate+1);
-            myChart.config.data.labels=filterDate;
+            myChartp.config.data.labels=filterDate;
             var datapoints2=[...datapoints]
             const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate+1);
-            myChart.config.data.datasets[0].data=filterDatapoints;
+            myChartp.config.data.datasets[0].data=filterDatapoints;
 
             myChartp.update();
        
           }
-                  </script>
+        </script>
+			
+
+      {{!-- list of patient --}}
 			
 				<div class="row">
-					<div class="col-12 col-md-6 col-lg-6 col-xl-6">
+					<div class="col-12">
 						<div class="card">
 							<div class="card-header">
-								<h4 class="card-title d-inline-block">New Patients </h4>
+								<center><b><h4 class="">Recent Patient </h4></b></center>
 							</div>
 							<div class="card-block">
 								<div class="table-responsive">
 									<table class="table mb-0 new-patient-table">
+                       <thead>
+									<tr>
+										<th>Image/Name</th>
+										{{!-- <th>Age</th> --}}
+										<th>Doctor ID</th>
+										<th>Patient Email</th>
+										<th>Patient Phone</th>
+										<th class="text-right">Profile</th>
+									</tr>
+								</thead>
 										 {{#each patientdata}}
 										<tbody>
 											<tr>
@@ -312,9 +309,13 @@
 													<img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
 													<h2>{{this.patientFullName}}</h2>
 												</td>
+                        <td>{{this.DocId}}</td>
 												<td>{{this.email}}</td>
 												<td>{{this.phone}}</td>
-												<td><button class="btn btn-primary btn-primary-one float-right">{{this.disabalityType}}</button></td>
+                         <td><form action="http://localhost:3000/patients-profile/{{this._id}}">
+                                              <button type="submit" class="btn btn-primary btn-primary-one float-right">Profile</button>
+                                                    </form></td>
+												{{!-- <td><button class="btn btn-primary btn-primary-one float-right">{{this.disabalityType}}</button></td> --}}
 											</tr>
 									
 										</tbody>
@@ -325,14 +326,24 @@
 						</div>
 					</div>
 
-					<div class="col-12 col-md-6 col-lg-6 col-xl-6">
+					<div class="col-12">
 						<div class="card">
 							<div class="card-header">
-								<h4 class="card-title d-inline-block">Doctors </h4>
+							<center><b><h4 class="">Recent Doctors </h4></b></center>
 							</div>
 							<div class="card-block">
 								<div class="table-responsive">
 									<table class="table mb-0 new-patient-table">
+                    <thead>
+									<tr>
+										<th>Image/Name</th>
+										<th>DocId</th>
+										{{!-- <th></th> --}}
+										<th>Doc Email</th>
+										<th>Doc Phone</th>
+										<th class="text-right">Doc Dashboard</th>
+									</tr>
+								</thead>
 										 {{#each docData}}
 										<tbody>
 											<tr>
@@ -340,9 +351,11 @@
 													<img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
 													<h2>{{this.fullname}}</h2>
 												</td>
+                        	<td>{{this._id}}</td>
 												<td>{{this.email}}</td>
 												<td>{{this.phone}}</td>
-												<td><button class="btn btn-primary btn-primary-one float-right">{{this.status}}</button></td>
+												<td><button class="btn btn-primary btn-primary-one float-right"><a  href="doc-dashboard/{{this._id}}">Dashboard</a></button></td>
+                        <td></td>
 											</tr>
 									
 										</tbody>
@@ -353,14 +366,19 @@
 						</div>
 					</div>
 
-					<div class="col-12 col-md-6 col-lg-6 col-xl-6">
+					<div class="col-12">
 						<div class="card">
 							<div class="card-header">
-								<h4 class="card-title d-inline-block">Games </h4>
+								<center><b><h4 class="">Recent Games </h4></b></center>
 							</div>
 							<div class="card-block">
 								<div class="table-responsive">
 									<table class="table mb-0 new-patient-table">
+                    <th>Image/Name</th>
+										<th>Game Type</th>
+										{{!-- <th></th> --}}
+										<th>Game Category</th>
+							
 										 {{#each gameData}}
 										<tbody>
 											<tr>
@@ -380,21 +398,41 @@
 						</div>
 					</div>
 				</div>
+
+
+         {{!-- <div class="col-12">
+                        <div class="card member-panel">
+							<div class="card-header bg-white">
+								<h4 class="card-title mb-0">Recent Doctors</h4>
+							</div>
+                            <div class="card-body">
+                                <ul class="contact-list">
+                                    <li>
+                                        <div class="contact-cont">
+                                            <div class="float-left user-img m-r-10">
+                                                <a href="profile.html" title="John Doe"><img src="assets/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status online"></span></a>
+                                            </div>
+                                            <div class="contact-info">
+                                                <span class="contact-name text-ellipsis">John Doe</span>
+                                                <span class="contact-date">MBBS, MD</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-footer text-center bg-white">
+                                <a href="#" class="text-muted">View all Doctors</a>
+                            </div>
+                        </div>
+                    </div> --}}
+				
+
+
+
+
+
             </div>
             
-        </div>
-    </div>
-    <div class="sidebar-overlay" data-reff=""></div>
-    <script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.slimscroll.js"></script>
-    <script src="js/Chart.bundle.js"></script>
-    <script src="js/chart.js"></script>
-    <script src="js/app.js"></script>
-
-</body>
-
-{{!-- C:\Users\Harsh\OneDrive\Desktop\New folder (4)\doctor\public\js\tagsinput.js --}}
-
-</html>
+  </div>
+</div>
+{{>footer}}
