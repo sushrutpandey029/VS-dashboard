@@ -19,6 +19,12 @@
     <link rel="stylesheet" type="text/css" href="../css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
+
+
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.3/handlebars.min.js"></script>
+
     <!--[if lt IE 9]>
 		<script src="assets/js/html5shiv.min.js"></script>
 		<script src="assets/js/respond.min.js"></script>
@@ -42,7 +48,22 @@
 							<img class="rounded-circle" src="../img/images.jpg" width="24" alt="Admin">
 							<span class="status online"></span>
 						</span>
-						<span>Admin</span>
+						<script>
+                            jQuery.ajax ({
+                                url: "http://localhost:3000/user",
+                                method: 'GET',
+                                success:function(data){
+                                 var temp= document.getElementById("user")
+                                  temp.innerText=data;
+                                },
+                                error: function(){
+                                    alert('error');
+                                }
+                            })
+                           
+                            </script>
+                             <span id="user">Admin</span>
+                             
                     </a>
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="admin-profile">My Profile</a>

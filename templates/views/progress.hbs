@@ -14,7 +14,7 @@
                         <div class="dash-widget">
                             <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
                             <div class="dash-widget-info text-right">
-                                <h3>24</h3>
+                                <h3>{{graphDataPatient.length}}</h3>
                                 <span class="widget-title2">Play Games<i class="fa fa-check" aria-hidden="true"></i></span>
                             </div>
                         </div>
@@ -522,16 +522,131 @@
 							</div>
                             <div class="card-body">
                                 <ul class="contact-list">
-                                  {{#each progreshdata}}
+                                  {{#each progress}}
                                     <li>
                                         <div class="contact-cont">
                                             <div class="float-left user-img m-r-10">
                                                 <a href="#" title="John Doe"><img src="{{this.image}}" alt="" class="w-40 rounded-circle"></a>
                                             </div>
                                             <div class="contact-info">
-                                               <span class="contact-name text-ellipsis">{{this.patientId}}</span>
-                                                <span class="contact-date">{{this.date}}</span>
-                                                <details><p>this is detail page </p></details> 
+                                               <span class="contact-name text-ellipsis">{{this.patientId}} </span>
+                                                <span class="contact-date">{{this.date}} </span>
+                                               <center><details>
+                                                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-box">
+                            {{!-- <h3 class="card-title">Progress Details</h3> --}}
+                            <div class="experience-box">
+                                <ul class="experience-list">
+                                    <li>
+                                        <div class="experience-user">
+                                            <div class="before-circle"></div>
+                                        </div>
+                                        <div class="experience-content">
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">Overralrating</a>
+                                                <div>{{this.overralrating}}</div>
+                                            </div>
+
+                                            <hr style="color:black">
+
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">LoudnessTarget</a>
+                                                <div>{{this.LoudnessTarget}}</div>
+                                            </div>
+
+                                             <hr style="color:black">
+
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">NumberOfTrials</a>
+                                                <div>{{this.NumberOfTrials}}</div>
+                                            </div>
+                                            
+
+                                            <hr style="color:black">
+
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">cumulativeDurationOfSounds</a>
+                                                <div>{{this.cumulativeDurationOfSounds}}</div>
+                                            </div>
+
+
+                                            
+                                            <hr style="color:black">
+
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">MeanPitch</a>
+                                                <div>{{this.MeanPitch}}</div>
+                                            </div>
+
+
+                                            <hr style="color:black">
+
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">meanLoudness</a>
+                                                <div>{{this.meanLoudness}}</div>
+                                            </div>
+
+
+                                            <hr style="color:black">
+
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">stdDevPitch</a>
+                                                <div>{{this.stdDevPitch}}</div>
+                                              
+                                            </div>
+
+                                             <hr style="color:black">
+
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">stdDevLoudness</a>
+                                                <div>{{this.stdDevLoudness}}</div>
+                                              
+                                            </div>
+
+                                            <hr style="color:black">
+
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">rangepitchMin</a>
+                                                <div>{{this.rangepitchMin}}</div>
+                                              
+                                            </div>
+
+
+                                             <hr style="color:black">
+
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">rangepitchMax</a>
+                                                <div>{{this.rangepitchMax}}</div>
+                                              
+                                            </div>
+
+
+                                            <hr style="color:black">
+
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">rangeLoudnessMin</a>
+                                                <div>{{this.rangeLoudnessMin}}</div>
+                                            </div>
+
+
+                                            <hr style="color:black">
+
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">rangeLoudnessmax</a>
+                                                <div>{{this.rangeLoudnessmax}}</div>
+                                              
+                                            </div>
+                                            
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                                               </details> </center>
                                             </div>
                                         </div>
                                     </li>

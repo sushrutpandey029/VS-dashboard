@@ -119,7 +119,8 @@ const register =async(req,res)=>{
        }
  
        const user = await Register.findOne({ email });
-       const adminid=await Register.find({'email':req.body.email})
+       const adminid=await Register.find({'email':req.body.email});
+
        if (user) {
           
            const validPassword = await bcrypt.compare(password, user.password);
@@ -158,7 +159,7 @@ const register =async(req,res)=>{
     //    let data2 = await gameModel.find().sort({_id:-1})
 
     //    return res.status(200).render("index",{docData:data, patientdata:data1, gameData:data2}) 
-    res.redirect("../index")
+    res.redirect("index")
    }
    catch (error) {
     let errors = [];

@@ -91,7 +91,7 @@ app.get("/index",async(req,res) => {
       array2.push(iso.split("T")[0])
    })
 
-   if(user.length>0)res.render("../index",{docData:data, patientdata:data1, gameData:data2,graphDataDoc:array,graphDataPatient:array2}) //if found to be of admin then return else invalid
+   if(user.length>0)res.render("index",{docData:data, patientdata:data1, gameData:data2,graphDataDoc:array,graphDataPatient:array2}) //if found to be of admin then return else invalid
    else res.send("authorization invalid");
 })
 
@@ -181,6 +181,7 @@ app.get("/doc-dashboard/:id",async(req,res)=>{
    let data=await patientModel.find({DocId:req.params.id}).sort({_id:-1})
 
    let datap=await patientModel.find({DocId:req.params.id}).sort({_id:1})
+
    var array=[]
    datap.map(ob =>{
       let iso=new Date(ob.createdAt).toISOString();
@@ -250,8 +251,8 @@ app.get('/edit-patient/:id',async(req,res)=>{
 
 app.get('/patients-profile/:id',async(req,res)=>{
    const data=await patientModel.find({"_id": req.params.id});
-   const gameData=await progressModel.find({"":req.params.id}).sort({patientId:1})
-   const data2=await progressModel.find({"patientId": req.params.id}).sort({patientId:1});
+   const userp = await progressModel.find({"patientId":req.params.id}).sort({patientId:1});
+   const gameData=await progressModel.find({"patientId":req.params.id}).sort({patientId:1});
    
    var array2=[]
    var mpl=new Map();
@@ -297,7 +298,18 @@ app.get('/patients-profile/:id',async(req,res)=>{
    }
    // console.log(arro);
 
-   res.render("progress",{userData:data,graphDataPatient:array2,loudness:arrl,pitch:arrp,overrall:arro,progreshdata:data2});
+   res.render("progress",{userData:data,progress:userp,graphDataPatient:array2,loudness:arrl,pitch:arrp,overrall:arro});
+})
+
+
+
+app.get("/user",async(req,res)=>{
+   var temp=req.cookies.id;
+   var data=await registerModel.find({_id:temp})
+   if(data.length ==0){
+      res.send("Doctor");
+   }
+   res.send("Admin")
 })
 
 app.listen(process.env.PORT || 3000, function () {
