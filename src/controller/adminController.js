@@ -5,8 +5,20 @@ const Register = require("../models/registerModel");
 const gameModel = require("../models/gameModel");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
+const session = require('express-session');
+
+
+
+const ONE_HOUR = 1000*60*60;
+const ONE_DAY = ONE_HOUR*24
+const SESSION_IDLE_TIMEOUT = ONE_DAY*20; //20 DAY IS IDLE TIME
+
+
 
 //added controller for admin login and register
+
+
+
 
 const authUser = (req,res,next)=>{
     try{
@@ -157,6 +169,8 @@ const register =async(req,res)=>{
     //    let data= await roleModel.find().sort({_id:-1})
     //    let data1 = await patientModel.find().sort({_id:-1})
     //    let data2 = await gameModel.find().sort({_id:-1})
+
+    console.log(user);
 
     //    return res.status(200).render("index",{docData:data, patientdata:data1, gameData:data2}) 
     res.redirect("index")

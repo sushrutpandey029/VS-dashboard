@@ -137,7 +137,10 @@
                   }
                 },
                 y: {
-                  beginAtZero: true
+                  beginAtZero: true,
+                  ticks: {
+                    precision: 0
+                }
                 }
               }
             }
@@ -222,7 +225,7 @@
 												<td>{{this.email}}</td>
 												<td>{{this.phone}}</td>
 												<!-- <td><button class="btn btn-primary btn-primary-one float-right">{{this.disabalityType}}</button></td> -->
-                                                <form action="localhost://3000/patients-profile/{{this._id}}">
+                                                <form action="/patients-profile/{{this._id}}">
                                                     <td><button type="submit" class="btn btn-primary btn-primary-one float-right">Profile</button></td>
                                                     </form>
 											</tr>

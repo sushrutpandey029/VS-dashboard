@@ -58,7 +58,7 @@ const SESSION_IDLE_TIMEOUT = ONE_DAY*20; //20 DAY IS IDLE TIME
 app.use(session({
     secret:process.env.SECRET,
     resave:false,
-    saveUninitialized:false,
+    saveUninitialized:true,
     store:store,
     cookie:{
         maxAge:+SESSION_IDLE_TIMEOUT,
@@ -97,17 +97,47 @@ app.get("/index",async(req,res) => {
 
 
  app.get('/register',(req,res)=>{
+
+
     res.render("register");
  })
 
  app.get('/login',(req,res)=>{
+   
+   // const user = authenticate(req.body.username, req.body.password);
+
    res.render("login");
 })
 
-app.get('/logout',(req,res)=>{ // at the time of logout clearing the cookie
-   res.clearCookie("id");
-   return res.redirect("/login")
-})
+
+
+app.get('/', (req, res) => {
+   // Check if the user is logged in
+   const isLoggedIn = req.session.user;
+ 
+   // Render the header template and pass the login data to it
+   res.render('header', { user: req.session.user });
+ });
+
+// app.get('/logout',(req,res)=>{ // at the time of logout clearing the cookie
+//    res.clearCookie("id");
+
+//    return res.render("login")
+// })
+
+app.get('/logout', (req, res) => {
+   // Destroy the user's session
+   req.session.destroy((err) => {
+     if (err) {
+       console.error(err);
+     } else {
+       res.redirect('login');
+     }
+   });
+ });
+
+
+
 
 app.get('/edit-profile',async(req,res)=>{
    const temp= req.cookies.id;
@@ -303,14 +333,15 @@ app.get('/patients-profile/:id',async(req,res)=>{
 
 
 
-app.get("/user",async(req,res)=>{
-   var temp=req.cookies.id;
-   var data=await registerModel.find({_id:temp})
-   if(data.length ==0){
-      res.send("Doctor");
-   }
-   res.send("Admin")
-})
+// app.get("/user",async(req,res)=>{
+//    var temp=req.cookies.id;
+//    var data=await registerModel.find({_id:temp})
+//    if(data.length ==0){
+//       res.send("Doctor");
+//    }
+//    res.send("Admin")
+// });
+
 
 app.listen(process.env.PORT || 3000, function () {
     console.log('Express app running on port ' + (process.env.PORT || 3000))

@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt');
 const game_register = async(req,res)=>{
     await gameModel.create(req.body).then(function(detail){
         // res.send(detail);
-        res.redirect('../games');
+        res.redirect('../games'); 
     }).catch(e=>{
         res.send(e);
         console.log(e);

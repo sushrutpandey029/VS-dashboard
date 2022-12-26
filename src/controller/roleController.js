@@ -243,7 +243,7 @@ const createUsernew = async function (req, res) {
                 pass: 'nsedmjzulrvhucif', // generated ethereal password
             },
           });
-
+ 
         let info = await transporter.sendMail({
             from: 'rashupandey029@gmail.com', // sender address
             to: body.email, // list of receivers
