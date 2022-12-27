@@ -255,23 +255,23 @@
 
         {{!-- Loudness --}}
 
-        <script myvar={{graphDataPatient}} myvars={{loudness}}>
-        var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
+        <script myvar={{datel}} myvars={{loudness}}>
           var temp2 = document.currentScript.getAttribute('myvars'); 
-        
+          var tempXl=document.currentScript.getAttribute('myvar');
           var arrY=temp2.split(",");
+          var arrXl=tempXl.split(",");
           var datapointsl=[];
         
          for(var i=0;i<arrY.length;i++){ //counting occurance of each element
               datapointsl.push(parseFloat(arrY[i]));
             }
           var dayl=[];
-          for(var i=0;i<arro.length;i++){
-             dayl.push({x:Date.parse(arro[i]),y:datapointsl[i]});
+          for(var i=0;i<arrXl.length;i++){
+             dayl.push({x:Date.parse(arrXl[i]),y:datapointsl[i]});
           }
           console.log(dayl)
           var data = {
-            labels: arro,
+            labels: arrXl,
             datasets: [{
               label: 'Loudness',
               data: dayl,
@@ -344,10 +344,10 @@
              {{!-- pitch --}}
 
 
-        <script myvar={{graphDataPatient}} myvars={{pitch}}>
-              var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
+        <script myvar={{datep}} myvars={{pitch}}>
           var templ = document.currentScript.getAttribute('myvars'); 
-        
+          var tempXp=document.currentScript.getAttribute('myvar');
+          var arrXp=tempXp.split(",");
           var arrYp=templ.split(",");
          var datapointsp=[];
         
@@ -356,10 +356,10 @@
             }
           var dayp=[];
           for(var i=0;i<arro.length;i++){
-             dayp.push({x:Date.parse(arro[i]),y:datapointsp[i]});
+             dayp.push({x:Date.parse(arrXp[i]),y:datapointsp[i]});
           }
           var data = {
-            labels: arro,
+            labels: arrXp,
             datasets: [{
               label: 'Pitch',
               data: dayp,
@@ -432,10 +432,10 @@
         {{!-- Recognition --}}
 
         <script myvar={{graphDataPatient}} myvars={{overrall}}>
-             var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
           var tempr = document.currentScript.getAttribute('myvars'); 
-        
+          var temprr=document.currentScript.getAttribute('myvar');
           var arrYr=tempr.split(",");
+          var arrr=temprr.split(",");
          var datapointsr=[];
         
          for(var i=0;i<arro.length;i++){ //counting occurance of each element
@@ -443,10 +443,10 @@
             }
           var dayr=[];
           for(var i=0;i<arro.length;i++){
-             dayr.push({x:Date.parse(arro[i]),y:datapointsr[i]});
+             dayr.push({x:Date.parse(arrr[i]),y:datapointsr[i]});
           }
           var data = {
-            labels: arro,
+            labels: arrr,
             datasets: [{
               label: 'Recognition',
               data: dayr,
@@ -514,8 +514,7 @@
        
           }
         </script>
-
-               <div class="col-12">
+ <div class="col-12">
                         <div class="card member-panel">
 							<div class="card-header bg-white">
 								<center><h4 class="card-title mb-0">Patient Pragress Details</h4></center>
@@ -659,7 +658,7 @@
                             </div> --}}
                         </div>
                     </div>
-				</div
+				</div>
 			
                 
             </div>

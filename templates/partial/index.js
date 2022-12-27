@@ -58,7 +58,7 @@ const SESSION_IDLE_TIMEOUT = ONE_DAY*20; //20 DAY IS IDLE TIME
 app.use(session({
     secret:process.env.SECRET,
     resave:false,
-    saveUninitialized:true,
+    saveUninitialized:false,
     store:store,
     cookie:{
         maxAge:+SESSION_IDLE_TIMEOUT,
@@ -97,59 +97,17 @@ app.get("/index",async(req,res) => {
 
 
  app.get('/register',(req,res)=>{
-
-
     res.render("register");
  })
 
  app.get('/login',(req,res)=>{
-   
-   // const user = authenticate(req.body.username, req.body.password);
-
    res.render("login");
 })
 
-
-
-app.get('/', (req, res) => {
-   // Check if the user is logged in
-   const isLoggedIn = req.session.user;
- 
-   // Render the header template and pass the login data to it
-   res.render('header', { user: req.session.user });
- });
-
-// app.get('/logout',(req,res)=>{ // at the time of logout clearing the cookie
-//    res.clearCookie("id");
-
-//    return res.render("login")
-// })
-
-app.get('/logout', (req, res) => {
-   // Destroy the user's session
-   req.session.destroy((err) => {
-     if (err) {
-       console.error(err);
-     } else {
-       res.redirect('login');
-     }
-   });
- });
-
-
-app.get('/doclogout', (req, res) => {
-   // Destroy the user's session
-   req.session.destroy((err) => {
-     if (err) {
-       console.error(err);
-     } else {
-       res.redirect('doc_login');
-     }
-   });
- });
-
-
-
+app.get('/logout',(req,res)=>{ // at the time of logout clearing the cookie
+   res.clearCookie("id");
+   return res.redirect("login")
+})
 
 app.get('/edit-profile',async(req,res)=>{
    const temp= req.cookies.id;
@@ -163,6 +121,17 @@ app.get('/admin-profile',async(req,res)=>{
    if(data.length>0)res.render("admin-profile",{data:data});
    else res.send("access not provided")
 });
+
+
+app.get("/user",async(req,res)=>{
+   var temp=req.cookies.id;
+   var data=await registerModel.find({_id:temp})
+   if(data.length ==0){
+      res.send("Doctor");
+   }
+   res.send("Admin")
+})
+
 
 app.get('/profile',(req,res)=>{
    res.render("profile");
@@ -198,15 +167,13 @@ app.get('/games',async(req,res)=>{
 app.get("/doctor",async(req,res)=>{
    let exist=await roleModel.find({_id:req.cookies.id})
    let data= await roleModel.find().sort({_id:1})
-   let datag= await roleModel.find().sort({_id:1})
-
    var array=[]
-   datag.map(ob =>{
+   data.map(ob =>{
       let iso=new Date(ob.createdAt).toISOString();
       array.push(iso.split("T")[0])
    })
    if(exist.length>0)res.send("admin login required")
-   else res.render('doctor',{userData:data,graphDataDoc:array})
+   else res.render('doctor',{userData:data,graphData:array})
 })
 
 app.get("/doctor_login",(req,res)=>{
@@ -219,33 +186,14 @@ app.get("/add-doctor",(req,res)=>{
 
 app.get("/doc-dashboard/:id",async(req,res)=>{
    let docdata =await roleModel.find({_id:req.params.id}).sort({_id:-1})
-
    let data=await patientModel.find({DocId:req.params.id}).sort({_id:-1})
-
    let datap=await patientModel.find({DocId:req.params.id}).sort({_id:1})
-
    var array=[]
    datap.map(ob =>{
       let iso=new Date(ob.createdAt).toISOString();
       array.push(iso.split("T")[0])
    })
    res.render("doc_dashboard",{userData:data,graphData:array,dacdata:docdata})
-})
-
-
-app.get("/doc_maindashboard/:id",async(req,res)=>{
-   let docdata =await roleModel.find({_id:req.params.id}).sort({_id:-1})
-
-   let data=await patientModel.find({DocId:req.params.id}).sort({_id:-1})
-
-   let datap=await patientModel.find({DocId:req.params.id}).sort({_id:1})
-
-   var array=[]
-   datap.map(ob =>{
-      let iso=new Date(ob.createdAt).toISOString();
-      array.push(iso.split("T")[0])
-   })
-   res.render("doc_maindashboard",{userData:data,graphData:array,dacdata:docdata})
 })
 
 
@@ -258,15 +206,9 @@ app.get("/patient_dashboard/:id",async(req,res)=>{
 app.get("/patients",async(req,res)=>{ // to render all the paitients 
    let data = await patientModel.find()
    let exist=await roleModel.find({_id:req.cookies.id})
-   let datap = await patientModel.find().sort({_id:1})
    let Data = await patientModel.find({DocId:req.cookies.id});
-   var array2=[]
-   datap.map(ob =>{
-      let iso=new Date(ob.createdAt).toISOString();
-      array2.push(iso.split("T")[0])
-   })
    if(exist.length>0)res.render('patients',{userData:Data})
-   else res.render('patients',{userData:data,graphDataPatient:array2})
+   else res.render('patients',{userData:data})
 })
 
 app.get("/add-patient",(req,res)=>{
@@ -301,85 +243,57 @@ app.get('/edit-patient/:id',async(req,res)=>{
 })
 
 
-// app.get('/patients-profile/:id',async(req,res)=>{
-//    const user=await patientModel.find({"_id": req.params.id})
-
-//    res.render("patients-profile",{userData:user})
-// })
 
 app.get('/patients-profile/:id',async(req,res)=>{
    const data=await patientModel.find({"_id": req.params.id});
    const gameData=await progressModel.find({"patientId":req.params.id}).sort({patientId:1})
-   // console.log(gameData)
+   
    var array2=[]
    var mpl=new Map();
    var mpp=new Map();
    var mpo=new Map();
    var arrl=[];
-   var aloud=[];
    var arrp=[];
-   var apitch=[];
    var arro=[];
-   var aover=[];
 
    gameData.map(ob =>{
       let iso=new Date(ob.createdAt).toISOString();
       iso=iso.split("T")[0];
-      
-      if(ob.gamebase=='Loudness'){
-         mpl[iso]=mpl[iso] || []
-         mpl[iso].push(parseFloat(ob.overralrating))
-      }else if(ob.gamebase=='Frequency'){
-         mpp[iso]=mpp[iso] || []
-         mpp[iso].push(parseFloat(ob.overralrating))
-      }else if(ob.gamebase=='Recogintion'){
-         mpo[iso]=mpo[iso] || []
-         mpo[iso].push(parseFloat(ob.overralrating))
-      } 
+      mpl[iso]=mpl[iso] || []
+      mpo[iso]=mpo[iso] || []
+      mpp[iso]=mpp[iso] || []
+      mpl[iso].push(parseFloat(ob.meanLoudness))
+      mpp[iso].push(parseFloat(ob.MeanPitch))
+      mpo[iso].push(parseFloat(ob.overralrating))
       array2.push(iso)
-   })
+   }) 
 
    for(var m in mpl){
       var sum=0;
-      aloud.push(m);
       for(var k=0;k<mpl[m].length;k++){
          sum+= Math.abs(mpl[m][k]);
       } 
       arrl.push(sum/mpl[m].length);
    }
-
+// console.log(arrl.length);
    for(var m in mpp){
       var sum=0;
-      apitch.push(m);
       for(var k=0;k<mpp[m].length;k++){
          sum+= Math.abs(mpp[m][k]);
       }
       arrp.push(sum/mpp[m].length);
    }
-
    for(var m in mpo){
       var sum=0;
-      aover.push(m);
       for(var k=0;k<mpo[m].length;k++){
          sum+= Math.abs(mpo[m][k]);
       }
       arro.push(sum/mpo[m].length);
    }
+   // console.log(arro);
 
-   res.render("progress",{userData:data,progress:gameData,graphDataPatient:array2,loudness:arrl,datel:aloud,pitch:arrp,datep:apitch,overrall:arro,dateo:aover});
-});
-
-
-
-// app.get("/user",async(req,res)=>{
-//    var temp=req.cookies.id;
-//    var data=await registerModel.find({_id:temp})
-//    if(data.length ==0){
-//       res.send("Doctor");
-//    }
-//    res.send("Admin")
-// });
-
+   res.render("progress",{userData:data,graphDataPatient:array2,loudness:arrl,pitch:arrp,overrall:arro});
+})
 
 app.listen(process.env.PORT || 3000, function () {
     console.log('Express app running on port ' + (process.env.PORT || 3000))

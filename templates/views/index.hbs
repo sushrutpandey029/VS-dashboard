@@ -166,16 +166,12 @@
            const indexstartdate=dates2.findIndex(function(date) {
                             return date >=startdate.value;
                         });
-           var indexenddate=dates2.findIndex(function(date) {        
-                      if(date==enddate.value){
-                          return date;
-                        }else if(date>enddate.value){
-                          return date;
-                        }
-                        });
-                        if(indexenddate==-1){
-                          indexenddate=dates2.length-1;
-                        }
+           var indexenddate;
+          for(var i=0;i<dates2.length;i++){
+            if(dates2[i]<=enddate.value){
+              indexenddate=i;
+            }
+          }
            const filterDate= dates2.slice(indexstartdate,indexenddate+1);
             myChart.config.data.labels=filterDate;
             var datapoints2=[...datapoints]

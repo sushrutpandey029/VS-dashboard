@@ -320,7 +320,7 @@ const doclogin = async(req,res)=>{
        req.session.isAuth=true;
 
     //    return res.status(200).send(`/doc-dashboard/:${user._id.toString()}`); 
-       res.redirect(`../doc-dashboard/${user._id.toString()}`) 
+       res.redirect(`../doc_maindashboard/${user._id.toString()}`) 
    }
    catch (error) {
     let errors = [];

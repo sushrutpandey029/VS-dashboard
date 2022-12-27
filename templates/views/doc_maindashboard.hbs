@@ -1,0 +1,248 @@
+{{>docheader}}
+{{>docsidebar}}
+        <div class="page-wrapper">
+            <div class="content">
+               
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="dash-widget">
+                            <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
+                            <div class="dash-widget-info text-right">
+                                <h3>{{userData.length}}</h3>
+                                <span class="widget-title2">Patients under doctor<i class="fa fa-check" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="card-box profile-header">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="profile-view">
+                              {{#each dacdata}}
+                                <div class="profile-img-wrap"  style="max-height: 100px;">
+                                    <div class="profile-img"  style="max-height: 100px;">
+                                        <a href="#"><img class="avatar" src="{{this.image}}" alt=""  style="max-height: 100px;"></a>
+                                    </div>
+                                </div>
+                                <div class="profile-basic">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="profile-info-left">
+                                                <h3 class="user-name m-t-0 mb-0">{{this.fullname}}</h3>
+                                                <small class="text-muted">{{this.email}}</small>
+                                                <div class="staff-id">Employee ID : {{this._id}}</div>
+                                               
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <ul class="personal-info">
+                                                <li>
+                                                    <span class="title">Phone:</span>
+                                                    <span class="text"><a href="#">{{this.phone}}</a></span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Email:</span>
+                                                    <span class="text"><a href="#">{{this.email}}</a></span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Birthday:</span>
+                                                    <span class="text">{{this.Dob}}</span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Address:</span>
+                                                    <span class="text">{{this.Address}}</span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Country:</span>
+                                                    <span class="text">{{this.Country}}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </div>                        
+                        </div>
+                    </div>
+                </div>
+
+                <br><br>
+
+
+                 <div class="row">
+					
+
+					<div class="col-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="chart-title">
+									<center><b><h4> Doc Patient Graph</h4></b></center>
+								</div>	
+								 <canvas id="myChartp" style="width:100%"></canvas>
+                                 <button onClick="timeFramep('day')" >Day</button>
+                                 <button onclick="timeFramep('month')">Month</button>
+                                 <button onclick="timeFramep('year')" >Year</button>
+                          <input onchange="filterDatap()" type="date" id="startdatep" value="">
+                          <input onchange="filterDatap()" type="date" id="enddatep" value=""> 
+                                </div>
+						</div>
+					</div>
+				</div>
+                <!-- <h3>{{graphData}}</h3> -->
+                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+        
+                <script myvar={{graphData}}>
+              var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
+          var temp = document.currentScript.getAttribute('myvar'); 
+          var arr2=temp.split(","); // spliting from iso date to normal date
+         var datapoints=[];
+          var curr=1;
+         for(var i=1;i<arr2.length;i++){ //counting occurance of each element
+            if(arr2[i-1]===arr2[i]){
+              ++curr;
+            }else{
+              datapoints.push(curr);
+              curr=1;
+            }
+         }
+          datapoints.push(curr);
+          arr2=unique(arr2);
+          var day=[];
+          for(var i=0;i<arr2.length;i++){
+             day.push({x:Date.parse(arr2[i]),y:datapoints[i]});
+          }
+          var data = {
+            labels: arr2,
+            datasets: [{
+              label: 'Patients Under Doctor',
+              data: day,
+              backgroundColor: "lightgreen",
+              borderColor: "green",
+              borderWidth: 3
+            }]
+          };
+          var config = {
+            type: 'line',
+            data,
+            options: {
+              scales: {
+                x:{
+                  type: 'time',
+                  time:{
+                    unit: 'month'
+                  }
+                },
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    precision: 0
+                }
+                }
+              }
+            }
+          };
+          const myChartp = new Chart(
+            document.getElementById('myChartp'),
+            config
+          );
+
+          function timeFramep(period){
+            console.log(period)
+            if(period=='day'){
+              myChartp.config.options.scales.x.time.unit=period;
+              myChartp.config.data.datasets[0].data=day;
+            }else if(period=='month'){
+              myChartp.config.options.scales.x.time.unit=period;
+              myChartp.config.data.datasets[0].data=day;
+            }else if(period=='year'){
+              myChartp.config.options.scales.x.time.unit=period;
+              myChartp.config.data.datasets[0].data=day;
+            }
+            myChartp.update();
+          }
+
+          function filterDatap(){
+            var dates2=[...arr2];
+            const startdatep=document.getElementById('startdatep');
+            const enddatep=document.getElementById('enddatep');
+           const indexstartdate=dates2.findIndex(function(date) {
+                            return date >=startdatep.value;
+                        });
+           var indexenddate=dates2.findIndex(function(date) {        
+                      if(date==enddatep.value){
+                          return date;
+                        }else if(date>enddatep.value){
+                          return date;
+                        }
+                        });
+                        if(indexenddate==-1){
+                          indexenddate=dates2.length-1;
+                        }
+           const filterDate= dates2.slice(indexstartdate,indexenddate+1);
+            myChartp.config.data.labels=filterDate;
+            var datapoints2=[...datapoints]
+            const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate);
+            myChartp.config.data.datasets[0].data=filterDatapoints;
+
+            myChartp.update();
+       
+          }
+              </script>
+				
+				<div class="row">
+                   
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<center><b><h4 class=""> Doctor Patients </h4></b></center>
+							</div>
+							<div class="card-block">
+                              
+								<div class="table-responsive">
+									<table class="table mb-0 new-patient-table">
+                          <thead>
+									<tr>
+										<th>Image/Name</th>
+										{{!-- <th>Age</th> --}}
+										<th>Doctor ID</th>
+										<th>Patient Email</th>
+										<th>Patient Phone</th>
+										<th class="text-right">Patient Profile</th>
+									</tr>
+								</thead>
+                                          {{#each userData}}
+										<tbody>
+											<tr>
+												<td>
+													<img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
+													<h2>{{this.patientFullName}}</h2>
+												</td>
+                        <td>{{this.DocId}}</td>
+												<td>{{this.email}}</td>
+												<td>{{this.phone}}</td>
+												<!-- <td><button class="btn btn-primary btn-primary-one float-right">{{this.disabalityType}}</button></td> -->
+                                                <form action="/patients-profile/{{this._id}}">
+                                                    <td><button type="submit" class="btn btn-primary btn-primary-one float-right">Profile</button></td>
+                                                    </form>
+											</tr>
+									
+										</tbody>
+                                         {{/each}}
+									</table>
+								</div>
+                               
+							</div>
+						</div>
+					</div>
+                   
+				</div>
+               
+            </div>
+        
+        </div>
+    </div>
+    {{>docfooter}}
