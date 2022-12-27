@@ -311,7 +311,7 @@
 													<img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
 													<h2>{{this.patientFullName}}</h2>
 												</td>
-                        <td>{{this.DocId}}</td>
+                        <td><a  href="doc-dashboard/{{this.DocId}}">{{this.DocId}}</a></td>
 												<td>{{this.email}}</td>
 												<td>{{this.phone}}</td>
                          <td><form action="../patients-profile/{{this._id}}">
@@ -339,7 +339,7 @@
                     <thead>
 									<tr>
 										<th>Image/Name</th>
-										<th>DocId</th>
+										{{!-- <th>DocId</th> --}}
 										{{!-- <th></th> --}}
 										<th>Doc Email</th>
 										<th>Doc Phone</th>
@@ -351,9 +351,10 @@
 											<tr>
 												<td>
 													<img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
-													<h2>{{this.fullname}}</h2>
+													<h2><a  href="doc-dashboard/{{this._id}}">{{this.fullname}}</a></h2>
+                         
 												</td>
-                        	<td>{{this._id}}</td>
+                        	{{!-- <td>{{this._id}}</td> --}}
 												<td>{{this.email}}</td>
 												<td>{{this.phone}}</td>
 												<td><button class="btn btn-primary btn-primary-one float-right"><a  href="doc-dashboard/{{this._id}}">Dashboard</a></button></td>
