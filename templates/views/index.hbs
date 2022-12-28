@@ -53,12 +53,12 @@
 									<center><b><h4>Doctors graph</h4></b></center>
 								
 								</div>	
-								   <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+								   <canvas id="pmyChart" style="width:100%;max-width:600px"></canvas>
                <button onClick="timeFrame('day')" >Day</button>
-          <button onclick="timeFrame('month')">Month</button>
-          <button onclick="timeFrame('year')" >Year</button>
-          <input onchange="filterData()" type="date" id="startdate" value="">
-          <input onchange="filterData()" type="date" id="enddate" value="">     
+              <button onclick="timeFrame('month')">Month</button>
+              <button onclick="timeFrame('year')" >Year</button>
+              <input onchange="filterData()" type="date" id="startdate" value="">
+               <input onchange="filterData()" type="date" id="enddate" value="">     
 							</div>
 						</div>
 					</div>
@@ -141,7 +141,7 @@
             }
           };
           const myChart = new Chart(
-            document.getElementById('myChart'),
+            document.getElementById('pmyChart'),
             config
           );
 
@@ -308,10 +308,10 @@
 										<tbody>
 											<tr>
 												<td>
-													<img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
-													<h2>{{this.patientFullName}}</h2>
+													<a  href="user_detailprofile/{{this._id}}"><img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
+													<h2>{{this.patientFullName}}</h2></a>
 												</td>
-                        <td><a  href="doc-dashboard/{{this.DocId}}">{{this.DocId}}</a></td>
+                        <td><a  href="doc_detail_profile/{{this.DocId}}">{{this.DocId}}</a></td>
 												<td>{{this.email}}</td>
 												<td>{{this.phone}}</td>
                          <td><form action="../patients-profile/{{this._id}}">
@@ -351,7 +351,7 @@
 											<tr>
 												<td>
 													<img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
-													<h2><a  href="doc-dashboard/{{this._id}}">{{this.fullname}}</a></h2>
+													<h2><a  href="doc_detail_profile/{{this._id}}">{{this.fullname}}</a></h2>
                          
 												</td>
                         	{{!-- <td>{{this._id}}</td> --}}

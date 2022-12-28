@@ -203,6 +203,10 @@ const createUsernew = async function (req, res) {
 
         }
 
+        if (password.length < 6 || password.length > 15) {
+            return res.status(400).send({ status: false, msg: "password length min 6 and max 15" })
+          }
+
         if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
             return res.status(400).send({ status: false, message: "email is not valid" })
         }

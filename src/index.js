@@ -72,9 +72,9 @@ app.use('/', route);
 app.get("/index",async(req,res) => {
 
    let data= await roleModel.find().sort({_id:-1})
-   let datag= await roleModel.find().sort({_id:1})
+   let datag= await roleModel.find().sort({createdAt:1})
    let data1 = await patientModel.find().sort({_id:-1})
-   let datap = await patientModel.find().sort({_id:1})
+   let datap = await patientModel.find().sort({createdAt:1})
    let data2 = await gameModel.find().sort({_id:-1})
    const temp=req.cookies.id;
    const user=await registerModel.find({_id:temp}); //checking if id logged in is of admin or not..
@@ -91,7 +91,7 @@ app.get("/index",async(req,res) => {
       array2.push(iso.split("T")[0])
    })
 
-   if(user.length>0)res.render("index",{docData:data, patientdata:data1, gameData:data2,graphDataDoc:array,graphDataPatient:array2}) //if found to be of admin then return else invalid
+   if(user.length>0)res.render("index",{docData:data,patientdata:data1, gameData:data2,graphDataDoc:array,graphDataPatient:array2}) //if found to be of admin then return else invalid
    else res.send("authorization invalid");
 })
 
@@ -104,8 +104,6 @@ app.get("/index",async(req,res) => {
 
  app.get('/login',(req,res)=>{
    
-   // const user = authenticate(req.body.username, req.body.password);
-
    res.render("login");
 })
 
@@ -126,27 +124,13 @@ app.get('/', (req, res) => {
 // })
 
 app.get('/logout', (req, res) => {
-   // Destroy the user's session
-   req.session.destroy((err) => {
-     if (err) {
-       console.error(err);
-     } else {
-       res.redirect('login');
-     }
-   });
+  
+      res.redirect('../login');
+   
  });
 
 
-app.get('/doclogout', (req, res) => {
-   // Destroy the user's session
-   req.session.destroy((err) => {
-     if (err) {
-       console.error(err);
-     } else {
-       res.redirect('doc_login');
-     }
-   });
- });
+
 
 
 
@@ -380,6 +364,20 @@ app.get('/patients-profile/:id',async(req,res)=>{
 //    res.send("Admin")
 // });
 
+app.get("/doc_detail_profile/:_id",async(req,res)=>{
+
+   const data = await roleModel.find({"_id":req.params._id});
+
+   res.render("doc_detail_profile",{docdata:data})
+})
+
+
+app.get("/user_detailprofile/:_id",async(req,res)=>{
+
+   const datauser = await patientModel.find({"_id":req.params._id});
+
+   res.render("user_detailprofile",{datauser:datauser})
+});
 
 app.listen(process.env.PORT || 3000, function () {
     console.log('Express app running on port ' + (process.env.PORT || 3000))

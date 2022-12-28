@@ -295,6 +295,10 @@ app.get('/patients-profile/:id',async(req,res)=>{
    res.render("progress",{userData:data,graphDataPatient:array2,loudness:arrl,pitch:arrp,overrall:arro});
 })
 
+
+
+
+
 app.listen(process.env.PORT || 3000, function () {
     console.log('Express app running on port ' + (process.env.PORT || 3000))
 });
