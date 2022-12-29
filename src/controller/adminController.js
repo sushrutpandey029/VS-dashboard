@@ -5,19 +5,67 @@ const Register = require("../models/registerModel");
 const gameModel = require("../models/gameModel");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
+
+const express = require('express');
 const session = require('express-session');
-
-
-
-const ONE_HOUR = 1000*60*60;
-const ONE_DAY = ONE_HOUR*24
-const SESSION_IDLE_TIMEOUT = ONE_DAY*20; //20 DAY IS IDLE TIME
+const app = express();
 
 
 
 //added controller for admin login and register
 
+// Set up the express-session middleware
+// app.use(session({
+//     secret: 'your-secret-key',
+//     resave: false,
+//     saveUninitialized: true,
+//   }));
 
+
+
+
+// const adminlogin1 = async(req,res,next)=>{
+//     try{
+//         let body = req.body;
+//         let errors = [];
+//         const { email, password } = body;
+//         if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
+//             res.status(400)
+//             errors.push({text:'Email Id is Invalid'})
+//         }
+//         const user = await Register.findOne({ email });
+//         const adminid = await Register.find({'email':req.body.email});
+//         if (user) {
+//             const validPassword = await bcrypt.compare(password, user.password);
+//             if (!validPassword) {
+//                 res.status(400)
+//                 errors.push({text:'Password is Invalid'})
+//             }
+//         } else {
+//             res.status(400)
+//             errors.push({text:"User does not exist"})
+//         }
+//         if(errors.length>0){
+//              res.render("login",{
+//                 errors:errors,
+//                 title:'Error',
+//                 email:email,
+//                 password:password
+//             })
+//         }else{
+//             req.session.user = user;
+//             res.redirect("index")
+//         }
+//     }
+//     catch (error) {
+//         let errors = [];
+//         errors.push[{text:"Server error"}]
+//         return res.render("login",{
+//            errors:errors,
+//            title:'Error'
+//         });
+//     }
+// }
 
 
 const authUser = (req,res,next)=>{
@@ -153,27 +201,27 @@ const register =async(req,res)=>{
               email:email,
               password:password
           })
-      }
-       req.user = user;
-    //   console.log(user);
+      }else{
+       req.session.user = user;
+  
 
        const token = await jwt.sign({
            userid: user._id.toString(),
+           username: user.username.toString(),
+           email: user.email.toString(),
+           isAdmin: user.isAdmin.toString(),
        },"Testing")
       
-    //    console.log("token ",token);
-       res.setHeader("Authentication", token) // Setting key Value pair of Token
+   
+       res.setHeader("Authentication", token) 
        
-       req.session.isAuth=true;
+        req.session.isAuth=true;
 
-    //    let data= await roleModel.find().sort({_id:-1})
-    //    let data1 = await patientModel.find().sort({_id:-1})
-    //    let data2 = await gameModel.find().sort({_id:-1})
+        console.log(req.session.user)
 
-    console.log(user);
-
-    //    return res.status(200).render("index",{docData:data, patientdata:data1, gameData:data2}) 
     res.redirect("index")
+    
+      }
    }
    catch (error) {
     let errors = [];
@@ -185,18 +233,27 @@ const register =async(req,res)=>{
   }
  }
 
- const adminUpdate=async (req,res)=>{
+ const adminUpdate= async (req,res)=>{
+    
     await Register.updateOne({_id:req.params.id},{
+
+    
+
+
          $set:{
              username:req.body.username,
              email:req.body.email,
+             password:req.body.password,
              phone:req.body.phone,
+             password:password,
+
+             
          },function(err,docs){
              if(err){
                  console.log(err);
              }else{
-                 console.log("updated admin :",admin);
-                 res.redirect('../admin-profile') 
+                //  console.log("updated admin :",admin);
+                 res.redirect('/admin-profile') 
              }
          }
      })  
@@ -204,4 +261,45 @@ const register =async(req,res)=>{
  }
 
 
-module.exports = {authUser,authRole,register,adminlogin,adminUpdate} 
+ const logout = async (req,res)=>{
+
+    res.render('login');
+
+ }
+
+
+ const changepassword=async(req,res)=>{
+
+    const newpassword = req.body.newpassword;
+  
+  
+        if (newpassword) {
+          // If the old password is correct, hash the new password
+          bcrypt.hash(newpassword, 10, function(error, hashedPassword) {
+            if (error) {
+              // Return an error if there was a problem hashing the password
+              return res.status(500).send(error);
+            }
+  
+            // Save the hashed new password to the database
+            Register.updateOne({_id:req.params.id}, { password: hashedPassword }, function(error) {
+              if (error) {
+                // Return an error if there was a problem updating the password
+                return res.status(500).send(error);
+              }
+  
+              // Return a success message if the password was updated successfully
+              // res.send('Password updated successfully');
+              console.log('yes')
+              res.redirect('/change-password') 
+            });
+          });
+        } else {
+          // Return an error if the old password is incorrect
+          response.status(401).send('Incorrect old password');
+        }
+}
+
+
+
+module.exports = { authUser,authRole,register,adminlogin,adminUpdate,logout,changepassword } 

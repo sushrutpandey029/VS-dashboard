@@ -461,7 +461,7 @@ const delete_patient = async (req,res)=>{
     const ID=req.params.id;
 await patientModel.findOneAndDelete({_id:ID});
 
-res.redirect('../patients') 
+res.redirect('/patients') 
 }
 
 
@@ -480,7 +480,7 @@ const update_patient=async (req,res)=>{
             if(err){
                 console.log(err);
             }else{
-                res.redirect('../patients') 
+                res.redirect('/patients') 
             }
         }
     })  

@@ -71,15 +71,22 @@ app.use('/', route);
 
 app.get("/index",async(req,res) => {
 
-   let data= await roleModel.find().sort({_id:-1})
+   let data= await roleModel.find().sort({_id:-1});
    let datag= await roleModel.find().sort({createdAt:1})
-   let data1 = await patientModel.find().sort({_id:-1})
-   let datap = await patientModel.find().sort({createdAt:1})
-   let data2 = await gameModel.find().sort({_id:-1})
-   const temp=req.cookies.id;
-   const user=await registerModel.find({_id:temp}); //checking if id logged in is of admin or not..
+   let data1 = await patientModel.find().sort({_id:-1});
+   let datap = await patientModel.find().sort({createdAt:1});
+   let data2 = await gameModel.find().sort({_id:-1});
+
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp}); 
+
+   //checking if id logged in is of admin or not..
    // doctor as an admin condition is not handled
+
+// console.log(temp)
+
    var array=[]
+
    datag.map(ob =>{
       let iso=new Date(ob.createdAt).toISOString();
       array.push(iso.split("T")[0])
@@ -103,35 +110,26 @@ app.get("/index",async(req,res) => {
  })
 
  app.get('/login',(req,res)=>{
-   
-   res.render("login");
+
+   res.render('login')
+});
+
+
+ app.get('/logout',(req,res)=>{
+
+   res.render('login')
 })
 
 
 
-app.get('/', (req, res) => {
-   // Check if the user is logged in
-   const isLoggedIn = req.session.user;
+
+// app.get('/tom', (req, res) => {
+//    // Check if the user is logged in
+//    const isLoggedIn = req.session.user;
  
-   // Render the header template and pass the login data to it
-   res.render('header', { user: req.session.user });
- });
-
-// app.get('/logout',(req,res)=>{ // at the time of logout clearing the cookie
-//    res.clearCookie("id");
-
-//    return res.render("login")
-// })
-
-app.get('/logout', (req, res) => {
-  
-      res.redirect('../login');
-   
- });
-
-
-
-
+//    // Render the header template and pass the login data to it
+//    res.render('header', { user: req.session.user });
+//  });
 
 
 
@@ -139,6 +137,12 @@ app.get('/edit-profile',async(req,res)=>{
    const temp= req.cookies.id;
    const data=await registerModel.find({_id:temp})
    res.render("edit-profile",{userData:data});
+})
+
+app.get("/change-password",async(req,res)=>{
+   const temp= req.cookies.id;
+   const data =await registerModel.find({_id:temp})
+   res.render("change-password",{userData:data});
 })
 
 app.get('/admin-profile',async(req,res)=>{
@@ -194,6 +198,7 @@ app.get("/doctor",async(req,res)=>{
 })
 
 app.get("/doctor_login",(req,res)=>{
+
    res.render("doctor_login")
 })
 
@@ -378,6 +383,28 @@ app.get("/user_detailprofile/:_id",async(req,res)=>{
 
    res.render("user_detailprofile",{datauser:datauser})
 });
+
+// app.get("/",async(req,res)=>{
+//    var temp=req.cookies.id;
+//    var data=await roleModel.find({_id:temp})
+//    if(data.length !=0){
+//       res.send(data[0].fullname);
+//    }
+//    res.send("Admin")
+// })
+
+
+// app.get("/header",async(req,res)=>{
+//    const temp= req.cookies.id;
+//    const data =await registerModel.find({_id:temp})
+//    res.render("header",{userData:data});
+// })
+
+
+
+
+
+
 
 app.listen(process.env.PORT || 3000, function () {
     console.log('Express app running on port ' + (process.env.PORT || 3000))

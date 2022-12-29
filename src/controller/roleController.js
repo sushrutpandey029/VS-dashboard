@@ -208,11 +208,11 @@ const createUsernew = async function (req, res) {
           }
 
         if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
-            return res.status(400).send({ status: false, message: "email is not valid" })
+            return res.status(400).send({ status: false, msg: "email is not valid" })
         }
 
         if (!(/^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/.test(phone))) {
-            return res.status(400).send({ status: false, message: "Mobile Number is not valid" })
+            return res.status(400).send({ status: false, msg: "Mobile Number is not valid" })
 
         }
 
@@ -268,8 +268,8 @@ const createUsernew = async function (req, res) {
     }
 
     catch (error) {
-        console.log(error.message)
-        return res.status(500).send({ status: false, message: error.message });
+        console.log(error.msg)
+        return res.status(500).send({ status: false, msg: error.msg });
     }
 
 
@@ -324,7 +324,7 @@ const doclogin = async(req,res)=>{
        req.session.isAuth=true;
 
     //    return res.status(200).send(`/doc-dashboard/:${user._id.toString()}`); 
-       res.redirect(`../doc_maindashboard/${user._id.toString()}`) 
+       res.redirect(`../doc-dashboard/${user._id.toString()}`)
    }
    catch (error) {
     let errors = [];
@@ -335,6 +335,64 @@ const doclogin = async(req,res)=>{
     });
   }
  }
+
+
+// const doclogin = async(req,res)=>{
+//     try{
+//         let body = req.body;
+//         let errors = [];
+//        const { email, password } = body;
+ 
+//        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/.test(email))) {
+//           res.status(400)
+//           errors.push({text:'Email Id is Invalid'})
+//        }
+  
+//        const user = await roleModel.findOne({ email });
+//        if (user) {
+//            const validPassword = await bcrypt.compare(password, user.password);
+//            if (!validPassword) {
+//              res.status(400)
+//              errors.push({text:'Password is Invalid'})
+//              }else if(user.role!="Doctor"){
+//                 res.status(400)
+//                 errors.push({text:'Enter a valid doctor id'})
+//              } 
+//             await res.cookie("id",user._id.toString())  // storing id in the form of cookie at the browser side, make it secure while deploying..
+//        } else {
+//           res.status(400)
+//           errors.push({text:"User does not exist"})
+//         }
+ 
+//         if(errors.length>0){
+//           res.render("login",{
+//               errors:errors,
+//               title:'Error',
+//               email:email,
+//               password:password
+//           })
+//       }
+//        req.user = user;
+//        const token =jwt.sign({
+//            userid: user._id.toString(),
+//        },"Testing")
+      
+//       await res.setHeader("Authentication", token) // Setting key Value pair of Token
+//        req.session.isAuth=true;
+//             //   return res.status(200).send(`/doc-dashboard/:${user._id.toString()}`); 
+//        var ID=user._id.toString();
+//        res.redirect(`doc-dashboard/${ID}`) 
+//     //    res.redirect("index")
+//    }
+//    catch (error) {
+//     let errors = [];
+//     errors.push[{text:"Server error"}]
+//     return res.render("login",{
+//        errors:errors,
+//        title:'Error'
+//     }); 
+//   }
+//  }
 
 
 const deletedoc=async (req,res)=>{
@@ -364,10 +422,18 @@ const docUpdate=async (req,res)=>{
             Biography:req.body.Biography,
             status:req.body.status,
             payment:req.body.payment
-        },function(err,docs){
+        },
+        
+        
+        
+        function(err,docs){
             if(err){
+                
                 console.log(err);
             }else{
+
+               
+       
                 console.log("updated doc :",docs);
                 res.redirect('../doctor')  
             }

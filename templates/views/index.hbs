@@ -86,35 +86,35 @@
 
 {{!-- doc graph --}}
 
-        <script  myvar={{graphDataDoc}}>
+       <script  myvar={{graphDataDoc}}>
 
           var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
-          var temp = document.currentScript.getAttribute('myvar'); 
-          var arr2=temp.split(","); // spliting from iso date to normal date
-         var datapoints=[];
+          var tempd = document.currentScript.getAttribute('myvar'); 
+          var arrd=tempd.split(","); // spliting from iso date to normal date
+         var datapointsd=[];
           var curr=1;
-         for(var i=1;i<arr2.length;i++){ //counting occurance of each element
-            if(arr2[i-1]===arr2[i]){
+         for(var i=1;i<arrd.length;i++){ //counting occurance of each element
+            if(arrd[i-1]===arrd[i]){
               ++curr;
             }else{
-              datapoints.push(curr);
+              datapointsd.push(curr);
               curr=1;
             }
          } 
-          datapoints.push(curr);
-          arr2=unique(arr2);
-          var day=[];
-          for(var i=0;i<arr2.length;i++){
-             day.push({x:Date.parse(arr2[i]),y:datapoints[i]});
+          datapointsd.push(curr);
+          arrd=unique(arrd);
+          var dayd=[];
+          for(var i=0;i<arrd.length;i++){
+             dayd.push({x:Date.parse(arrd[i]),y:datapointsd[i]});
           }
 
           // console.log(day);
         
           var data = {
-            labels: arr2,
+            labels: arrd,
             datasets: [{
               label: 'Doctors',
-              data: day,
+              data: dayd,
               backgroundColor: "skyblue",
               borderColor: "blue",
               borderWidth: 3
@@ -148,19 +148,19 @@
           function timeFrame(period){
             if(period=='day'){
               myChart.config.options.scales.x.time.unit=period;
-              myChart.config.data.datasets[0].data=day;
+              myChart.config.data.datasets[0].data=dayd;
             }else if(period=='month'){
               myChart.config.options.scales.x.time.unit=period;
-              myChart.config.data.datasets[0].data=day;
+              myChart.config.data.datasets[0].data=dayd;
             }else if(period=='year'){
               myChart.config.options.scales.x.time.unit=period;
-              myChart.config.data.datasets[0].data=day;
+              myChart.config.data.datasets[0].data=dayd;
             }
             myChart.update();
           }
 
           function filterData(){
-            var dates2=[...arr2];
+            var dates2=[...arrd];
             const startdate=document.getElementById('startdate');
             const enddate=document.getElementById('enddate');
            const indexstartdate=dates2.findIndex(function(date) {
@@ -174,7 +174,7 @@
           }
            const filterDate= dates2.slice(indexstartdate,indexenddate+1);
             myChart.config.data.labels=filterDate;
-            var datapoints2=[...datapoints]
+            var datapoints2=[...datapointsd]
             const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate+1);
             myChart.config.data.datasets[0].data=filterDatapoints;
 

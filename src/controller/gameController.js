@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt');
 const game_register = async(req,res)=>{
     await gameModel.create(req.body).then(function(detail){
         // res.send(detail);
-        res.redirect('../games'); 
+        res.redirect('/games'); 
     }).catch(e=>{
         res.send(e);
         console.log(e);
@@ -40,7 +40,7 @@ const delete_game=async (req,res)=>{
     const ID=req.params.id;
  await gameModel.findOneAndDelete({_id:ID});
  
- res.redirect('../games') 
+ res.redirect('/games') 
 }
 
 module.exports = {game_register,update_game,delete_game} 

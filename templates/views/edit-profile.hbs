@@ -1,21 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<!-- register24:03-->
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
-    <title>VS Doc</title>
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
-</head>
-
-<body>
+{{>header}}
+{{>sidebar}}
 
     <div class="main-wrapper  account-wrapper">
         <div class="account-page">
@@ -45,22 +29,25 @@
                             <label>Mobile Number</label>
                             <input type="text" class="form-control" name="phone" value="{{this.phone}}" required>
                         </div>
+
+                         {{!-- <div class="form-group">
+                            <label>Change Password</label>
+                            <input type="text" class="form-control" name="password" value="{{this.password}}" required>
+                        </div> --}}
                        
                         <div class="form-group text-center">
                             <button class="btn btn-primary account-btn" type="submit">Update Admin</button>
                         </div>
+
+                     
                     </form>
+
+                     <div class="form-group text-center">
+                        <a href="../change-password" type="submit" class="btn btn-primary btn-primary-one float-right">password</a>
+                        </div>
                 </div>
                 {{/each}}
             </div>
         </div>
     </div>
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/app.js"></script>
-</body>
-
-<!-- register24:03-->
-
-</html>
+    {{>footer}}

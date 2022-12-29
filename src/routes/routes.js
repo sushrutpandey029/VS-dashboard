@@ -34,6 +34,12 @@ router.post("/login",roleController.login)
 // admin api added ..
 router.post("/register",adminController.register);
 router.post("/adminlogin",adminController.adminlogin);
+router.post("/logout",adminController.logout);
+router.post("/adminUpdate/:id",adminController.adminUpdate)
+router.post("/changepassword/:id",adminController.changepassword);
+
+// router.post("/adminlogin1",adminController.adminlogin1);
+
 // router.post("/adminprofile",adminController.adminprofile);
 router.post("/doclogin",roleController.doclogin)
 router.get("/delete-doctor/:id",roleController.deletedoc);
@@ -44,7 +50,7 @@ router.post("/edit-patient/:id",patientController.update_patient)
 router.post("/game_register",gameController.game_register)
 router.post("/edit_game/:id",gameController.update_game)
 router.get("/delete-game/:id",gameController.delete_game)
-router.post("/adminUpdate/:id",adminController.adminUpdate)
+
 
 // section edited ends here..
 router.post("/createPatient",patientController.createPatient)
