@@ -164,6 +164,16 @@ app.get('/change-password',(req,res)=>{
    res.render("change-password");
 })
 
+
+app.get('/docchange-password/:id',async(req,res)=>{
+
+   const datadoc = await roleModel.find({_id:req.params.id});
+
+   console.log(datadoc)
+
+   res.render("docchange-password",{docdata:datadoc});
+})
+
 app.get('/game_categorie/:category',async(req,res)=>{
    let data = await gameModel.find({gamecategories:req.params.category})
    res.render("games",{userData:data});

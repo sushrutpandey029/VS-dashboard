@@ -442,4 +442,38 @@ const docUpdate=async (req,res)=>{
      
 }
 
-module.exports = { createUser,login,deletedoc,docUpdate,createUsernew,doclogin};
+const docchangepassword=async(req,res)=>{
+
+    const newpassword = req.body.newpassword;
+
+        if (newpassword) {
+          // If the old password is correct, hash the new password
+          bcrypt.hash(newpassword, 10, function(error, hashedPassword) {
+            if (error) {
+              // Return an error if there was a problem hashing the password
+              return res.status(500).send(error);
+            }
+  
+            // Save the hashed new password to the database
+            roleModel.updateOne({_id:req.params.id}, { password: hashedPassword }, function(error) {
+              if (error) {
+                // Return an error if there was a problem updating the password
+                return res.status(500).send(error);
+              }
+  
+              // Return a success message if the password was updated successfully
+              // res.send('Password updated successfully');
+              console.log('yes')
+              res.redirect('/docchange-password')
+            });
+          });
+        } else {
+          // Return an error if the old password is incorrect
+          response.status(401).send('Incorrect old password');
+        }
+}
+
+
+
+
+module.exports = { createUser,login,deletedoc,docUpdate,createUsernew,doclogin,docchangepassword};

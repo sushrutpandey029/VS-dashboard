@@ -30,6 +30,8 @@ const gameController=require("../controller/gameController")
 
 router.post("/docregister",upload.single('profilepic'),roleController.createUsernew)
 router.post("/login",roleController.login)
+router.post("/docchangepassword/:id",roleController.docchangepassword)
+
 
 // admin api added ..
 router.post("/register",adminController.register);
