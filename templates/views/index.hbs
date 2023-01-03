@@ -53,13 +53,17 @@
 									<center><b><h4>Doctors graph</h4></b></center>
 								
 								</div>	
-								   <canvas id="pmyChart" style="width:100%;max-width:600px"></canvas>
+								    <canvas id="pmyChart" style="width:100%"></canvas>
                <button onClick="timeFrame('day')" >Day</button>
               <button onclick="timeFrame('month')">Month</button>
               <button onclick="timeFrame('year')" >Year</button>
-              <input onchange="filterData()" type="date" id="startdate" value="">
-               <input onchange="filterData()" type="date" id="enddate" value="">     
-							</div>
+              <input onchange="filterData()" defaultValue={new Date(Date.now() - 31 * 24 * 60 * 60 * 1000).getFullYear() + "-" + (new Date(Date.now()- 31 * 24 * 60 * 60 * 1000).getMonth() + 1) + "-" + new Date(Date.now() - 31 * 24 * 60 * 60 * 1000).getDate()} type="date" id="startdate" value="">
+               <input onchange="filterData()" defaultValue={new Date(Date.now()).getFullYear() + "-" + (new Date(Date.now()).getMonth()+1) + "-" + new Date(Date.now()).getDate()} type="date" id="enddate" value="">     
+               
+               <select id='date-dropdown'>
+                <option>Select M's/Y</option>
+               </select>
+              </div>
 						</div>
 					</div>
 
@@ -84,6 +88,21 @@
         <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
 
+
+<script>
+  let dateDropdown = document.getElementById('date-dropdown'); 
+       
+  let currentYear = new Date().getFullYear();    
+  let earliestYear = 2020;     
+  while (currentYear >= earliestYear) {      
+    let dateOption = document.createElement('option');          
+    dateOption.text = currentYear;      
+    dateOption.value = currentYear;        
+    dateDropdown.add(dateOption);      
+    currentYear -= 1;    
+  }
+</script> 
+
 {{!-- doc graph --}}
 
        <script  myvar={{graphDataDoc}}>
@@ -91,7 +110,7 @@
           var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
           var tempd = document.currentScript.getAttribute('myvar'); 
           var arrd=tempd.split(","); // spliting from iso date to normal date
-         var datapointsd=[];
+          var datapointsd=[];
           var curr=1;
          for(var i=1;i<arrd.length;i++){ //counting occurance of each element
             if(arrd[i-1]===arrd[i]){
@@ -100,15 +119,25 @@
               datapointsd.push(curr);
               curr=1;
             }
-         } 
+         }
+         const counts = {};
+         for (const num of arrd) {
+                counts[num] = counts[num] ? counts[num] + 1 : 1;
+              }
+
           datapointsd.push(curr);
+
+          console.log(datapointsd);
+          
           arrd=unique(arrd);
           var dayd=[];
+          var mpo=new Map();
+
           for(var i=0;i<arrd.length;i++){
              dayd.push({x:Date.parse(arrd[i]),y:datapointsd[i]});
+             mpo[arrd[i]]=mpo[arrd[i]] || [];
+             mpo.set(arrd[i],datapointsd[i]);
           }
-
-          // console.log(day);
         
           var data = {
             labels: arrd,
@@ -122,8 +151,9 @@
           };
           var config = {
             type: 'line',
-            data,
+            data:data,
             options: {
+              responsive: true,
               scales: {
                 x:{
                   type: 'time',
@@ -134,10 +164,10 @@
                 y: {
                   beginAtZero: true,
                   ticks: {
-                    precision: 0
+                    precision: 0,
                 }
                 }
-              }
+              },
             }
           };
           const myChart = new Chart(
@@ -147,42 +177,103 @@
 
           function timeFrame(period){
             if(period=='day'){
-              myChart.config.options.scales.x.time.unit=period;
-              myChart.config.data.datasets[0].data=dayd;
-            }else if(period=='month'){
-              myChart.config.options.scales.x.time.unit=period;
-              myChart.config.data.datasets[0].data=dayd;
-            }else if(period=='year'){
-              myChart.config.options.scales.x.time.unit=period;
-              myChart.config.data.datasets[0].data=dayd;
-            }
-            myChart.update();
-          }
+            var startdate=document.getElementById('startdate');
+            var enddate=document.getElementById('enddate');
+            var temp = new Date(startdate.value)
+            enddate = new Date(enddate.value)
+            
+              var labels = []
+             while (temp <= enddate) {
+                let day = temp.getDate();
+                let month = temp.getMonth()+1;
+                let year = temp.getFullYear();
+              if(day<=9){
+                 day= day.toString().padStart(2, '0');
+                } if(month<=9){
+                  month=month.toString().padStart(2,'0');
+                }
+                  labels.push(year + "-" + month + "-" + day)
+                  temp = new Date(temp.getTime() + 24 * 60 * 60 * 1000)
+              }
 
-          function filterData(){
-            var dates2=[...arrd];
-            const startdate=document.getElementById('startdate');
-            const enddate=document.getElementById('enddate');
-           const indexstartdate=dates2.findIndex(function(date) {
-                            return date >=startdate.value;
-                        });
-           var indexenddate;
-          for(var i=0;i<dates2.length;i++){
-            if(dates2[i]<=enddate.value){
-              indexenddate=i;
-            }
-          }
-           const filterDate= dates2.slice(indexstartdate,indexenddate+1);
-            myChart.config.data.labels=filterDate;
-            var datapoints2=[...datapointsd]
-            const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate+1);
-            myChart.config.data.datasets[0].data=filterDatapoints;
+              var dayn=[];
 
-            myChart.update();
        
+
+            for(var i=0;i<labels.length;i++){
+
+              if(mpo.has(labels[i])){
+                dayn.push({x:Date.parse(labels[i]),y:counts[labels[i]]}) 
+              }else{
+                dayn.push({x:Date.parse(labels[i]),y:0});
+              }
+              } 
+              myChart.config.options.scales.x.time.unit=period;
+              myChart.config.options.scales.x.type="time";
+              myChart.config.data.labels=label; 
+              myChart.config.data.datasets[0].data=dayn;
+            }else if(period=='month'){
+              var selectYear=document.getElementById('date-dropdown');
+              
+              var label = ["January", "February", "March", "April", "May", "June", 
+              "July","August", "September", "October","November", "December"];
+
+              var data=new Array(12).fill(0);
+
+              for(var i=0;i<arrd.length;i++){
+                  let date=new Date(arrd[i]);
+                  let month = date.getMonth();
+                let year = date.getFullYear().toString();
+                if(year==selectYear.value){
+                  data[month]++;
+                }
+              }
+              var dayn=[];
+              for(let i=0;i<12;i++){
+                dayn.push({x:label[i],y:data[i]});
+              }
+
+              myChart.config.options.scales.x.time.unit=period;
+              myChart.config.options.scales.x.type="category";
+              myChart.config.data.labels=label; 
+              myChart.config.data.datasets[0].data=dayn;
+             
+            }else if(period=='year'){
+              var startdate=document.getElementById('startdate');
+              var enddate=document.getElementById('enddate');
+              startdate = new Date(startdate.value)
+              enddate = new Date(enddate.value)
+              
+              var syear=startdate.getFullYear();
+              var eyear=enddate.getFullYear();
+
+              var dif=eyear-syear+1;
+              var data=new Array(dif).fill(0);
+
+              var label = []
+              for(var i=syear;i<=eyear;i++){
+                label.push(i);
+              }
+              for(var i=0;i<arrd.length;i++){
+                let date=new Date(arrd[i]);
+                let temp=date.getFullYear();
+                data[temp-syear]++;
+              }
+              var dayn=[];
+              for(var i=0;i<label.length;i++){
+                dayn.push({x:label[i],y:data[i]});
+              }
+              myChart.config.options.scales.x.time.unit=period;
+              myChart.config.options.scales.x.type="category";
+              myChart.config.data.labels=label; 
+              myChart.config.data.datasets[0].data=dayn;
+            }
+            myChart.update();
           }
 
-          </script> 
+          </script>
+
+
          <!-- //paitent chart -->
 
 
@@ -230,7 +321,7 @@
                 },
                 y: {
                   beginAtZero: true,
-                   ticks: { 
+                   ticks: {
                     precision: 0
                 }
                 }
@@ -281,6 +372,179 @@
        
           }
         </script>
+
+
+
+
+        {{!-- new patients --}}
+
+         {{!-- <script  myvar={{graphDataDoc}}>
+
+          var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
+          var tempd = document.currentScript.getAttribute('myvar'); 
+          var arrd=tempd.split(","); // spliting from iso date to normal date
+          var datapointsd=[];
+          var curr=1;
+         for(var i=1;i<arrd.length;i++){ //counting occurance of each element
+            if(arrd[i-1]===arrd[i]){
+              ++curr;
+            }else{
+              datapointsd.push(curr);
+              curr=1;
+            }
+         }
+         const counts = {};
+         for (const num of arrd) {
+                counts[num] = counts[num] ? counts[num] + 1 : 1;
+              }
+
+          datapointsd.push(curr);
+
+          console.log(datapointsd);
+          
+          arrd=unique(arrd);
+          var dayd=[];
+          var mpo=new Map();
+
+          for(var i=0;i<arrd.length;i++){
+             dayd.push({x:Date.parse(arrd[i]),y:datapointsd[i]});
+             mpo[arrd[i]]=mpo[arrd[i]] || [];
+             mpo.set(arrd[i],datapointsd[i]);
+          }
+        
+          var data = {
+            labels: arrd,
+            datasets: [{
+              label: 'Doctors',
+              data: dayd,
+              backgroundColor: "skyblue",
+              borderColor: "blue",
+              borderWidth: 3
+            }]
+          };
+          var config = {
+            type: 'line',
+            data:data,
+            options: {
+              responsive: true,
+              scales: {
+                x:{
+                  type: 'time',
+                  time:{
+                    unit: 'month'
+                  }
+                },
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    precision: 0,
+                }
+                }
+              },
+            }
+          };
+          const myChart = new Chart(
+            document.getElementById('myChartp'),
+            config
+          );
+
+          function timeFrame(period){
+            if(period=='day'){
+            var startdate=document.getElementById('startdate');
+            var enddate=document.getElementById('enddate');
+            var temp = new Date(startdate.value)
+            enddate = new Date(enddate.value)
+            
+              var labels = []
+              while (temp <= enddate) {
+                let day = temp.getDate();
+                let month = temp.getMonth()+1;
+                let year = temp.getFullYear();
+                  labels.push(year + "-" + month + "-" + day)
+                  temp = new Date(temp.getTime() + 24 * 60 * 60 * 1000)
+              }
+
+              var dayn=[];
+
+       
+
+            for(var i=0;i<labels.length;i++){
+              
+              if(mpo.has(labels[i])){
+                dayn.push({x:Date.parse(labels[i]),y:counts[labels[i]]}) 
+              }else{
+                dayn.push({x:Date.parse(labels[i]),y:0});
+              }
+              } 
+              myChart.config.options.scales.x.time.unit=period;
+              myChart.config.options.scales.x.type="time";
+              myChart.config.data.labels=label; 
+              myChart.config.data.datasets[0].data=dayn;
+            }else if(period=='month'){
+              var selectYear=document.getElementById('date-dropdown');
+              
+              var label = ["January", "February", "March", "April", "May", "June", 
+              "July","August", "September", "October","November", "December"];
+
+              var data=new Array(12).fill(0);
+
+              for(var i=0;i<arrd.length;i++){
+                  let date=new Date(arrd[i]);
+                  let month = date.getMonth();
+                let year = date.getFullYear().toString();
+                if(year==selectYear.value){
+                  data[month]++;
+                }
+              }
+              var dayn=[];
+              for(let i=0;i<12;i++){
+                dayn.push({x:label[i],y:data[i]});
+              }
+
+              myChart.config.options.scales.x.time.unit=period;
+              myChart.config.options.scales.x.type="category";
+              myChart.config.data.labels=label; 
+              myChart.config.data.datasets[0].data=dayn;
+             
+            }else if(period=='year'){
+              var startdate=document.getElementById('startdate');
+            var enddate=document.getElementById('enddate');
+            var temp = new Date(startdate.value)
+            enddate = new Date(enddate.value)
+            
+              var labels = []
+
+
+              myChart.config.options.scales.x.time.unit=period;
+              myChart.config.data.datasets[0].data=dayd;
+            }
+            myChart.update();
+          }
+
+          function filterData(){
+            var dates2=[...arrd];
+            const startdate=document.getElementById('startdate');
+            const enddate=document.getElementById('enddate');
+           const indexstartdate=dates2.findIndex(function(date) {
+                            return date >=startdate.value;
+                        });
+           var indexenddate;
+          for(var i=0;i<dates2.length;i++){
+            if(dates2[i]<=enddate.value){
+              indexenddate=i;
+            }
+          }
+           const filterDate= dates2.slice(indexstartdate,indexenddate+1);
+            myChart.config.data.labels=filterDate;
+            var datapoints2=[...datapointsd]
+            const filterDatapoints=datapoints2.slice(indexstartdate,indexenddate+1);
+            myChart.config.data.datasets[0].data=filterDatapoints;
+
+            myChart.update();
+       
+          }
+
+          </script> --}}
 			
 
       {{!-- list of patient --}}

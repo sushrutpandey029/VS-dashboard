@@ -1,4 +1,61 @@
 {{>header}}
+<style>
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 1000px;
+
+  background-color: rgb(255, 255, 255);
+  color: rgb(249, 174, 174);
+  text-align: center;
+  border-radius: 6px;
+
+  z-index: 1;
+  bottom: 100%;
+
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+</style>
 {{>sidebar}}
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
@@ -516,6 +573,9 @@
         </script>
 
 
+        
+
+
  <div class="col-12" style="max-height: 500px;">
                         <div class="card member-panel" style="height: 500px;">
 							<div class="card-header bg-white">
@@ -532,8 +592,19 @@
                                             <div class="contact-info">
                                                <span class="contact-name text-ellipsis">{{this.patientId}} </span>
                                                 <span class="contact-date">{{this.date}} </span>
-                                               <center><details>
-                                                <div class="row">
+
+
+                                                <script>
+                                          function myFunction() {
+                                     var popup = document.getElementById("myPopup");
+                                   popup.classList.toggle("show");
+                                             }
+                                         </script>
+
+                                           <div class="popup" onclick="myFunction()">Show all details
+                                                  
+                                                  
+                                                <div class="popuptext" id="myPopup" class="row">
                     <div class="col-md-12"  style="max-height: 500px;">
                         <div class="card-box">
                             {{!-- <h3 class="card-title">Progress Details</h3> --}}
@@ -655,7 +726,9 @@
                         
                     </div>
                 </div>
-                                               </details> </center>
+                                              
+                                                 </div>
+                                              
                                             </div>
                                         </div>
                                     </li>
@@ -663,9 +736,7 @@
                                    
                                 </ul>
                             </div>
-                            {{!-- <div class="card-footer text-center bg-white">
-                                <a href="#" class="text-muted">View all Doctors</a>
-                            </div> --}}
+                         
                         </div>
                     </div>
 				</div>

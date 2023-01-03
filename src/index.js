@@ -412,10 +412,156 @@ app.get("/user_detailprofile/:_id",async(req,res)=>{
 
 
 
+// router.post("/getAvgDaily", async (req, res) => {
+//    try {
+
+//        const fromDate = new Date(req.body.fromDate)
+
+//        const toDate = new Date(req.body.toDate)
+
+//        var temp = new Date(req.body.fromDate)
+
+//        var result = []
+
+//        while (temp <= toDate) {
+
+//            var tempPlus1 = new Date(temp.getTime() + 24 * 60 * 60 * 1000)
+//            tempPlus1.setUTCHours(0, 0, 0, 0)
+
+//            const obss = await roleModel.find({createdAt: {$gte: temp, $lt: tempPlus1}})
+
+//            if (obss.length == 0) {
+//                result.push(0)
+//            } else {
+//                const total = obss.reduce((total, roleModel) => {
+//                    return total + parseInt(obss.length)
+//                }, 0)
+   
+//                result.push(total / obss.length)
+//            }
+       
+//            temp = new Date(temp.getTime() + 24 * 60 * 60 * 1000)
+//        }
+
+//        res.status(200).json(result)
+
+//        console.log(result)
+
+//    } catch(err) {
+//        console.log(err)
+//        res.status(500).json(err)
+//    }
+// });
+
+
+// router.post("/getAvgMonthly", async (req, res) => {
+//    try {
+
+//        const year = new Date(req.body.year)
+
+//        var date = new Date(year.getFullYear() + "-01-01")
+
+//        var lastDayOfMonth = new Date(year.getFullYear(), date.getMonth() + 1, 1);
+//        lastDayOfMonth.setUTCHours(23, 59, 59)
+
+//        // console.log(lastDayOfMonth)
+
+//        var result = []
+
+//        for (var i = 0; i < 12; i++) {
+
+//            // console.log(date)
+//            // console.log(lastDayOfMonth)
+
+//            const obss = await roleModel.find({createdAt: {$gte: date, $lte: lastDayOfMonth}})
+
+//            // console.log(obss.length);
+
+//            if (obss.length == 0) {
+//                result.push(0)
+//            } else {
+//                const total = obss.reduce((total, roleModel) => {
+//                    return total + parseInt(obss.length)
+//                }, 0)
+   
+//                result.push(total / obss.length)
+//            }
+       
+//            // temp = new Date(temp.getTime() + 24 * 60 * 60 * 1000)
+
+//            date = new Date(lastDayOfMonth.getTime() + 24 * 60 * 60 * 1000)
+//            date.setUTCHours(0, 0, 0, 0)
+
+//            lastDayOfMonth = new Date(year.getFullYear(), date.getMonth() + 1, 1);
+//            lastDayOfMonth.setUTCHours(23, 59, 59)
+//        }
+
+//        res.status(200).json(result)
+
+//        console.log(result)
+      
+
+//    } catch(err) {
+//        res.status(500).json(err)
+//    }
+// });
+
+
+// router.post("/getAvgYearly", async (req, res) => {
+//    try {
+
+//        const fromYear = new Date(req.body.fromYear)
+//        const toYear = new Date(req.body.toYear)
+//        toYear.setDate(31)
+//        toYear.setMonth(11)
+
+//        var temp = new Date(fromYear)
+//        temp.setDate(1)
+//        temp.setMonth(0)
+
+//        var result = []
+
+//        while (temp < toYear) {
+
+//            var tempPlus1 = new Date(temp)
+//            tempPlus1.setDate(31)
+//            tempPlus1.setMonth(11)
+//            tempPlus1.setUTCHours(23, 59, 59)
+
+//            // console.log(temp)
+//            // console.log(tempPlus1)
+
+//            const obss = await roleModel.find({createdAt: {$gte: temp, $lte: tempPlus1}})
+
+//            if (obss.length == 0) {
+//                result.push(0)
+//            } else {
+//                const total = obss.reduce((total, roleModel) => {
+//                    return total + parseInt(obss.length)
+//                }, 0)
+   
+//                result.push(total / obss.length)
+//            }
+           
+//            temp.setDate(31)
+//            temp.setMonth(11)
+//            temp = new Date(temp.getTime() + 24 * 60 * 60 * 1000)
+//        }
+
+//        res.status(200).json(result)
+       
+//    } catch(err) {
+//        console.log(err)
+//        res.status(500).json(err)
+//    }
+// });
 
 
 
 
-app.listen(process.env.PORT || 3000, function () {
-    console.log('Express app running on port ' + (process.env.PORT || 3000))
+
+
+
+app.listen(process.env.PORT || 4000, function () {
+    console.log('Express app running on port ' + (process.env.PORT || 4000))
 });

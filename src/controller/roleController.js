@@ -163,6 +163,7 @@ const createUsernew = async function (req, res) {
     try {
         let body ={
             fullname:req.body.fullname,
+            lastfullname:req.body.lastfullname,
             email:req.body.email,
             Dob:req.body.Dob,
             phone:req.body.phone,
@@ -182,10 +183,14 @@ const createUsernew = async function (req, res) {
             return res.status(400).send({ status: false, msg: "Invalid parameters, please provide user details" })
         }
 
-        const { fullname, email, phone, password, role, payment, patientId } = body
+        const { fullname,lastfullname, email, phone, password, role, payment, patientId } = body
 
         if (!validation.isValid(fullname)) {
             return res.status(400).send({ status: false, msg: "please provide full name" })
+
+        }
+        if (!validation.isValid(lastfullname)) {
+            return res.status(400).send({ status: false, msg: "please provide lastfullname" })
 
         }
         if (!validation.isValid(email)) {
@@ -409,6 +414,7 @@ const docUpdate=async (req,res)=>{
    await roleModel.updateOne({_id:req.params.id},{
         $set:{
             fullname:req.body.fullname,
+            lastfullname:req.body.lastfullname,
             email:req.body.email,
             Dob:req.body.Dob,
             phone:req.body.phone,
@@ -435,7 +441,7 @@ const docUpdate=async (req,res)=>{
                
        
                 console.log("updated doc :",docs);
-                res.redirect('../doctor')  
+                res.render('/doctor')  
             }
         }
     })  
@@ -464,7 +470,7 @@ const docchangepassword=async(req,res)=>{
               // Return a success message if the password was updated successfully
               // res.send('Password updated successfully');
               console.log('yes')
-              res.redirect('/docchange-password')
+              res.redirect('/doctor')
             });
           });
         } else {

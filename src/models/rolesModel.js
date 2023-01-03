@@ -8,6 +8,11 @@ const rolesSchema = new mongoose.Schema({
         required: true,
         trim: true 
       },
+    lastfullname:{
+        type: String,
+        required: true,
+        trim: true
+    },
     email: {
         type: String,
         required: true,
