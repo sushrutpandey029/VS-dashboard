@@ -61,12 +61,13 @@
 								<div class="chart-title">
 									<h4>Patients</h4>
 								</div>	
-								 <canvas id="myChartp" style="width:100%"></canvas>
-                                 <button onClick="timeFramep('day')" >Day</button>
-                                  <button onclick="timeFramep('month')">Month</button>
-                                    <button onclick="timeFramep('year')" >Year</button>
-                                   <input onchange="filterDatap()" type="date" id="startdatep" value="">
-                                   <input onchange="filterDatap()" type="date" id="enddatep" value="">     
+								 <canvas id="myChartp" style="width:100%;max-width:600px"></canvas>
+                 <button onClick="timeFramep('day')" >Day</button>
+                 <button onclick="timeFramep('month')">Month</button>
+                 <button onclick="timeFramep('year')" >Year</button>
+                <input onchange="filterDatap()" type="date" id="startdatep" value="">
+               <input onchange="filterDatap()" type="date" id="enddatep" value="">     
+               <select id='date-dropdownp'></select>             <input onchange="filterDatap()" type="date" id="enddatep" value="">     
 							</div>
 						</div>
 					</div>
@@ -80,6 +81,21 @@
     </div>
      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+
+        <script> //for patient
+  let dateDropdownp = document.getElementById('date-dropdownp'); 
+       
+  let currentYearp = new Date().getFullYear();    
+  let earliestYearp = 2020;     
+  while (currentYearp >= earliestYearp) {      
+    let dateOption = document.createElement('option');          
+    dateOption.text = currentYearp;      
+    dateOption.value = currentYearp;        
+    dateDropdownp.add(dateOption);      
+    currentYearp -= 1;    
+  } 
+</script>
 
       <script myvar={{graphDataPatient}}>
               
