@@ -42,11 +42,9 @@
                         </div>
                     </div> --}}
                 </div>
-
-
                 {{!-- graph --}}
-			<div class="row">
-					<div class="col-12 col-md-6 col-lg-6 col-xl-6">
+				<div class="row">
+					<div class="col-12">
 						<div class="card">
 							<div class="card-body">
 								<div class="chart-title">
@@ -85,9 +83,9 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
+{{!-- doc graph --}}
 
-
-<script>
+<script> //for doctor 
   let dateDropdown = document.getElementById('date-dropdown'); 
        
   let currentYear = new Date().getFullYear();    
@@ -98,12 +96,25 @@
     dateOption.value = currentYear;        
     dateDropdown.add(dateOption);      
     currentYear -= 1;    
-  }
-</script> 
+  } 
+</script>
 
-{{!-- doc graph --}}
+<script> //for patient
+  let dateDropdownp = document.getElementById('date-dropdownp'); 
+       
+  let currentYearp = new Date().getFullYear();    
+  let earliestYearp = 2020;     
+  while (currentYearp >= earliestYearp) {      
+    let dateOption = document.createElement('option');          
+    dateOption.text = currentYearp;      
+    dateOption.value = currentYearp;        
+    dateDropdownp.add(dateOption);      
+    currentYearp -= 1;    
+  } 
+</script>
 
-     <script  myvar={{graphDataDoc}}>
+
+        <script  myvar={{graphDataDoc}}>
 
           var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
           var tempd = document.currentScript.getAttribute('myvar'); 
@@ -214,7 +225,7 @@
                 dayn.push({x:Date.parse(label[i]),y:0});
               }
               }
-                
+
               console.log("dayn ",dayn) 
               myChart.config.options.scales.x.time.unit=period;
               myChart.config.options.scales.x.type="category";
@@ -303,27 +314,9 @@
        
           }
 
-          </script>
-
+          </script> 
          <!-- //paitent chart -->
-
-
-
- <script> //for patient
-  let dateDropdownp = document.getElementById('date-dropdownp'); 
-       
-  let currentYearp = new Date().getFullYear();    
-  let earliestYearp = 2020;     
-  while (currentYearp >= earliestYearp) {      
-    let dateOption = document.createElement('option');          
-    dateOption.text = currentYearp;      
-    dateOption.value = currentYearp;        
-    dateDropdownp.add(dateOption);      
-    currentYearp -= 1;    
-  } 
-</script>
-
-<script myvar={{graphDataPatient}}>
+				  <script myvar={{graphDataPatient}}>
               
           var unique = (a,t={}) => a.filter(e=>!(t[e]=e in t)); // function to find unique dates
           var temp = document.currentScript.getAttribute('myvar'); 
@@ -353,8 +346,8 @@
          
           var mpp=new Map();
 
-          for(var i=0;i<arr2.length;i++){
-                  let date=new Date(arr2[i]);
+          for(var i=0;i<arrd.length;i++){
+                  let date=new Date(arrd[i]);
                   let month = date.getMonth();
                 let year = date.getFullYear().toString();
                 if(year==Yp.value){
@@ -499,8 +492,8 @@
             myChartp.update();
           }
 
-         function filterDatap(){
-            var dates2=[...arrp];
+          function filterDatap(){
+            var dates2=[...arr2];
             const startdate=document.getElementById('startdatep');
             const enddate=document.getElementById('enddatep');
            var indexstartdate=dates2.findIndex(function(date) {
@@ -523,13 +516,6 @@
        
           }
         </script>
-
-
-
-
-        {{!-- new patients --}}
-
-     
 			
 
       {{!-- list of patient --}}
@@ -557,10 +543,10 @@
 										<tbody>
 											<tr>
 												<td>
-													<a  href="user_detailprofile/{{this._id}}"><img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
-													<h2>{{this.patientFullName}}</h2></a>
+													<img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
+													<h2>{{this.patientFullName}}</h2>
 												</td>
-                        <td><a  href="doc_detail_profile/{{this.DocId}}">{{this.DocId}}</a></td>
+                        <td><a  href="doc-dashboard/{{this.DocId}}">{{this.DocId}}</a></td>
 												<td>{{this.email}}</td>
 												<td>{{this.phone}}</td>
                          <td><form action="../patients-profile/{{this._id}}">
@@ -600,7 +586,7 @@
 											<tr>
 												<td>
 													<img width="28" height="28" class="rounded-circle" src="img/user.jpg" alt=""> 
-													<h2><a  href="doc_detail_profile/{{this._id}}">{{this.fullname}}</a></h2>
+													<h2><a  href="doc-dashboard/{{this._id}}">{{this.fullname}}</a></h2>
                          
 												</td>
                         	{{!-- <td>{{this._id}}</td> --}}
