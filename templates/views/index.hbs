@@ -58,11 +58,11 @@
 								</div>	
 								   <canvas id="pmyChart" style="width:100%"></canvas>
                <button onClick="timeFrame('day')" >Day</button>
-              <button onclick="timeFrame('month')">Month</button>
-              <button onclick="timeFrame('year')" >Year</button>
+              <button onclick="timeFrame('month')">Select Year<select id='date-dropdown'></select></button>
+             
               <input onchange="filterData()" type="date" id="startdate" value="">
                <input onchange="filterData()" type="date" id="enddate" value="">     
-               <select id='date-dropdown'></select>
+              
               </div>
 						</div>
 					</div>
@@ -75,8 +75,8 @@
 								</div>	
 								 <canvas id="myChartp" style="width:100%;max-width:600px"></canvas>
                  <button onClick="timeFramep('day')" >Day</button>
-                 <button onclick="timeFramep('month')">Month</button>
-                 <button onclick="timeFramep('year')" >Year</button>
+                 <button onclick="timeFramep('month')">Select Year<select id='date-dropdownp'></select></button>
+              
                 <input onchange="filterDatap()" type="date" id="startdatep" value="">
                <input onchange="filterDatap()" type="date" id="enddatep" value="">     
                <select id='date-dropdownp'></select>
