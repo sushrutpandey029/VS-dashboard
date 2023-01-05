@@ -1,24 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-
-<!-- profile22:59-->
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico">
-    <title>VS Doc</title>
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
-</head>
- 
-<body>
-    <div class="main-wrapper">
-        {{>header}}
-        {{>sidebar}}
+{{>header loginuser=loginuser}}
+ {{>sidebar loginuser=loginuser}}
         <div class="page-wrapper">
             <div class="content">
                 <div class="row">
@@ -90,14 +71,4 @@
            
         </div>
     </div>
-    <div class="sidebar-overlay" data-reff=""></div>
-    <script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.slimscroll.js"></script>
-    <script src="js/app.js"></script>
-</body>
-
-
-<!-- profile23:03-->
-</html>
+  {{>footer}}

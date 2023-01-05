@@ -78,12 +78,13 @@ app.get("/index",async(req,res) => {
    let data2 = await gameModel.find().sort({_id:-1});
 
    const temp = req.cookies.id;
-   const user = await registerModel.find({_id:temp}); 
+   const user = await registerModel.find({_id:temp});
+   // const user1 = await roleModel.find({_id:temp});
 
    //checking if id logged in is of admin or not..
    // doctor as an admin condition is not handled
 
-// console.log(temp)
+console.log(user)
 
    var array=[]
 
@@ -98,7 +99,7 @@ app.get("/index",async(req,res) => {
       array2.push(iso.split("T")[0])
    })
 
-   if(user.length>0)res.render("index",{docData:data,patientdata:data1, gameData:data2,graphDataDoc:array,graphDataPatient:array2}) //if found to be of admin then return else invalid
+   if(user.length>0)res.render("index",{docData:data,patientdata:data1, gameData:data2,graphDataDoc:array,graphDataPatient:array2,loginuser:user}) //if found to be of admin then return else invalid
    else res.send("authorization invalid");
 })
 
@@ -115,9 +116,27 @@ app.get("/index",async(req,res) => {
 });
 
 
- app.get('/logout',(req,res)=>{
+app.get('/logout',(req,res)=>{
+   req.session.destroy((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.clearCookie('session-id');
+        res.redirect('/login');
+      }
+    });
+})
 
-   res.render('login')
+
+app.get('/doclogout',(req,res)=>{
+   req.session.destroy((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.clearCookie('session-id');
+        res.redirect('/doctor_login');
+      }
+    });
 })
 
 
@@ -169,28 +188,38 @@ app.get('/docchange-password/:id',async(req,res)=>{
 
    const datadoc = await roleModel.find({_id:req.params.id});
 
-   console.log(datadoc)
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
 
-   res.render("docchange-password",{docdata:datadoc});
+   // console.log(datadoc)
+
+   res.render("docchange-password",{docdata:datadoc,loginuser:user});
 })
 
 app.get('/game_categorie/:category',async(req,res)=>{
    let data = await gameModel.find({gamecategories:req.params.category})
-   res.render("games",{userData:data});
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
+   res.render("games",{userData:data,loginuser:user});
 })
 
 app.get('/games',async(req,res)=>{
+
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
    let data =await gameModel.find()
-   var temp=[];
+   var temp1=[];
    data.forEach(element => {
-      temp.push(element.gamecategories);
+      temp1.push(element.gamecategories);
    }); 
-   function removeDuplicates(temp) {
-      return temp.filter((item, 
-          index) => temp.indexOf(item) === index);
+   function removeDuplicates(temp1) {
+      return temp1.filter((item, 
+          index) => temp1.indexOf(item) === index);
   }
- let newdata=removeDuplicates(temp);
-  res.render("categories",{userData:newdata})
+ let newdata=removeDuplicates(temp1);
+  res.render("categories",{userData:newdata, loginuser:user})
 })
 
 app.get("/doctor",async(req,res)=>{
@@ -198,13 +227,16 @@ app.get("/doctor",async(req,res)=>{
    let data= await roleModel.find().sort({_id:1})
    let datag= await roleModel.find().sort({_id:1})
 
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
    var array=[]
    datag.map(ob =>{
       let iso=new Date(ob.createdAt).toISOString();
       array.push(iso.split("T")[0])
    })
    if(exist.length>0)res.send("admin login required")
-   else res.render('doctor',{userData:data,graphDataDoc:array})
+   else res.render('doctor',{userData:data,graphDataDoc:array,loginuser:user})
 })
 
 app.get("/doctor_login",(req,res)=>{
@@ -212,8 +244,12 @@ app.get("/doctor_login",(req,res)=>{
    res.render("doctor_login")
 })
 
-app.get("/add-doctor",(req,res)=>{
-   res.render('add-doctor')
+app.get("/add-doctor",async(req,res)=>{
+
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
+   res.render('add-doctor',{loginuser:user})
 })
 
 app.get("/doc-dashboard/:id",async(req,res)=>{
@@ -223,12 +259,15 @@ app.get("/doc-dashboard/:id",async(req,res)=>{
 
    let datap=await patientModel.find({DocId:req.params.id}).sort({_id:1})
 
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
    var array=[]
    datap.map(ob =>{
       let iso=new Date(ob.createdAt).toISOString();
       array.push(iso.split("T")[0])
    })
-   res.render("doc_dashboard",{userData:data,graphData:array,dacdata:docdata})
+   res.render("doc_dashboard",{userData:data,graphData:array,dacdata:docdata,loginuser:user})
 })
 
 
@@ -259,27 +298,44 @@ app.get("/patients",async(req,res)=>{ // to render all the paitients
    let exist=await roleModel.find({_id:req.cookies.id})
    let datap = await patientModel.find().sort({_id:1})
    let Data = await patientModel.find({DocId:req.cookies.id});
+
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
+
+
    var array2=[]
    datap.map(ob =>{
       let iso=new Date(ob.createdAt).toISOString();
       array2.push(iso.split("T")[0])
    })
    if(exist.length>0)res.render('patients',{userData:Data})
-   else res.render('patients',{userData:data,graphDataPatient:array2})
+   else res.render('patients',{userData:data,graphDataPatient:array2,loginuser:user})
 })
 
-app.get("/add-patient",(req,res)=>{
-   res.render("add-patient")
+app.get("/add-patient",async(req,res)=>{
+
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
+   res.render("add-patient",{loginuser:user})
 })
 
-app.get("/add-game",(req,res)=>{
-   res.render("add-game")
+app.get("/add-game",async(req,res)=>{
+
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
+   res.render("add-game",{loginuser:user})
 })
 
 app.get('/edit-doctor/:id',async(req,res)=>{ // api to edit doctor
-   const user=await roleModel.find({"_id":req.params.id})
+   const user1 =await roleModel.find({"_id":req.params.id})
 
-   res.render("edit-doctor",{userData:user})
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
+   res.render("edit-doctor",{userData:user1,loginuser:user})
 })
 
 app.get('/doc-profile/:id',async(req,res)=>{ // api to edit doctor
@@ -288,15 +344,21 @@ app.get('/doc-profile/:id',async(req,res)=>{ // api to edit doctor
 })
 
 app.get('/edit-game/:id',async(req,res)=>{
-   const user=await gameModel.find({"_id":req.params.id})
+   const user1 =await gameModel.find({"_id":req.params.id})
 
-   res.render("edit-game",{userData:user})
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
+   res.render("edit-game",{userData:user1,loginuser:user})
 })
 
 app.get('/edit-patient/:id',async(req,res)=>{
-   const user=await patientModel.find({"_id": req.params.id})
+   const user1 =await patientModel.find({"_id": req.params.id})
 
-   res.render("edit-patient",{userData:user})
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
+   res.render("edit-patient",{userData:user1,loginuser:user})
 })
 
 
@@ -309,6 +371,9 @@ app.get('/edit-patient/:id',async(req,res)=>{
 app.get('/patients-profile/:id',async(req,res)=>{
    const data=await patientModel.find({"_id": req.params.id});
    const gameData=await progressModel.find({"patientId":req.params.id}).sort({patientId:1})
+
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
    // console.log(gameData)
    var array2=[]
    var mpl=new Map();
@@ -365,7 +430,7 @@ app.get('/patients-profile/:id',async(req,res)=>{
       arro.push(sum/mpo[m].length);
    }
 
-   res.render("progress",{userData:data,progress:gameData,graphDataPatient:array2,loudness:arrl,datel:aloud,pitch:arrp,datep:apitch,overrall:arro,dateo:aover});
+   res.render("progress",{userData:data,progress:gameData,graphDataPatient:array2,loudness:arrl,datel:aloud,pitch:arrp,datep:apitch,overrall:arro,dateo:aover,loginuser:user});
 });
 
 
@@ -383,7 +448,10 @@ app.get("/doc_detail_profile/:_id",async(req,res)=>{
 
    const data = await roleModel.find({"_id":req.params._id});
 
-   res.render("doc_detail_profile",{docdata:data})
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
+   res.render("doc_detail_profile",{docdata:data,loginuser:user})
 })
 
 
@@ -391,7 +459,10 @@ app.get("/user_detailprofile/:_id",async(req,res)=>{
 
    const datauser = await patientModel.find({"_id":req.params._id});
 
-   res.render("user_detailprofile",{datauser:datauser})
+   const temp = req.cookies.id;
+   const user = await registerModel.find({_id:temp});
+
+   res.render("user_detailprofile",{datauser:datauser,loginuser:user})
 });
 
 // app.get("/",async(req,res)=>{

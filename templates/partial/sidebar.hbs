@@ -5,30 +5,53 @@
 
                 <div id="sidebar-menu" class="sidebar-menu">
 
-                    <ul id='task'>
+                        {{#each loginuser}}
+                         <ul id='task'>
+                            {{#if isAdmin}}
+                           
+                                <li class="active">
+                                    <a href="../index"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                                 </li>
+                                <li class="active1">
+                                    <a href="../doctor"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
+                                </li>
+                                <li class="active2">
+                                    <a href="../patients"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
+                                </li>
+                                <li class="active3">
+                                    <a href="../games"><i class="fa fa-gamepad"></i> <span>Games</span></a>
+                                </li>
 
-                        <li class="active">
+                                <li class="active3">
+                                <a class="dropdown-item" href="/admin-profile"><i class="fa fa-sign-out" aria-hidden="true"></i>My Profile</a>
+                                </li>
+                                <li class="active3">
+						        <a class="dropdown-item" href="/edit-profile"><i class="fa fa-sign-out" aria-hidden="true"></i>Edit Profile </a>
+                                </li>
+                                <li class="active3">
+                                    <a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Logout</span></a>
+                                </li>
 
-                            <a href="../index"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
-                        </li>
-						<li class="active1">
-                            <a href="../doctor"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
-                        </li>
-                        <li class="active2">
-                            <a href="../patients"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
-                        </li>
-                        <li class="active3">
-                            <a href="../games"><i class="fa fa-gamepad"></i> <span>Games</span></a>
-                        </li>
+                            {{else}}
+                            </ul>
+                            {{/if}}
+                    {{/each}}
 
+                    <ul><li class="active">
+                                    <a href="#"><i class="fa fa-dashboard"></i> <span>Doc Dashboard</span></a>
+                                 </li>
+                                  <li class="active2">
+                                    <a href="../patients"><i class="fa fa-wheelchair"></i> <span> Doc Patients</span></a>
+                                </li>
 
-                         <li class="active3">
-                            <a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Logout</span></a>
-                        </li>
+                                <li class="active4">
+                                     <a href="/doc-profile"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Profile</span></a>
+                                </li>
 
-                         
-                        
-                        
+                                <li class="active3">
+                                    <a href="/doclogout"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Logout</span></a>
+                                </li>
+                                 
                     </ul>
                 </div>
             </div>
