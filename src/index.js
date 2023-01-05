@@ -79,10 +79,6 @@ app.get("/index",async(req,res) => {
 
    const temp = req.cookies.id;
    const user = await registerModel.find({_id:temp});
-   // const user1 = await roleModel.find({_id:temp});
-
-   //checking if id logged in is of admin or not..
-   // doctor as an admin condition is not handled
 
 console.log(user)
 
@@ -99,7 +95,7 @@ console.log(user)
       array2.push(iso.split("T")[0])
    })
 
-   if(user.length>0)res.render("index",{docData:data,patientdata:data1, gameData:data2,graphDataDoc:array,graphDataPatient:array2,loginuser:user}) //if found to be of admin then return else invalid
+   if(user.length>0)res.render("index",{docData:data,patientdata:data1, gameData:data2,graphDataDoc:array,graphDataPatient:array2,loginuser:user})
    else res.send("authorization invalid");
 })
 

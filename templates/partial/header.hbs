@@ -28,10 +28,10 @@
 			</div>
             <a id="toggle_btn" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
             <a id="mobile_btn" class="mobile_btn float-left" href="#sidebar"><i class="fa fa-bars"></i></a>
-            {{#each loginuser}}
-            <ul class="nav user-menu float-right">
-                 {{#if isAdmin}}
-                 <li class="nav-item dropdown has-arrow">
+        {{#each loginuser}}
+         <ul class="nav user-menu float-right">
+            {{#if isAdmin}}
+                <li class="nav-item dropdown has-arrow">
                     <a href="#" class="" data-toggle="dropdown">
                         <span class="user-img">
 							<img class="rounded-circle" src="../img/images.jpg" width="24" alt="Admin">
@@ -40,19 +40,26 @@
                     </a>
                 </li>
                 {{else}}
-            </ul>
-                {{/if}}
-            {{/each}}
-            <ul class="nav user-menu float-right">
-                <li  class="nav-item dropdown has-arrow">
-                    <a href="#" class="" data-toggle="dropdown">
+        </ul>
+            {{/if}}
+
+              <ul class="nav user-menu float-right">
+                    <li  class="nav-item dropdown has-arrow">
+                        <a href="#" class="" data-toggle="dropdown">
                         <span class="user-img">
 							<img class="rounded-circle" src="../img/images.jpg" width="24" alt="Admin">
 						</span>
-                       <span>Doctors</span>
-                    </a>
-                </li>
-            </ul>
+                       <span>Doctor Name</span>
+                       </a>
+                    </li>
+                </ul>
+                
+              
+        {{/each}}
+
+              
+
+            
         </div>
 
 
