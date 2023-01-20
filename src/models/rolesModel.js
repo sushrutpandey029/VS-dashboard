@@ -85,7 +85,7 @@ const rolesSchema = new mongoose.Schema({
 
     count:{
         type:String,
-        default:Null
+        default: "0"
     },
     patientData:[Object],
 },{timestamps:true})
