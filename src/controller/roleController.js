@@ -164,6 +164,8 @@ const createUsernew = async function (req, res) {
         let body ={
             fullname:req.body.fullname,
             lastfullname:req.body.lastfullname,
+            username:req.body.username,
+            adminid:req.body.adminid,
             email:req.body.email,
             Dob:req.body.Dob,
             phone:req.body.phone,
@@ -183,16 +185,28 @@ const createUsernew = async function (req, res) {
             return res.status(400).send({ status: false, msg: "Invalid parameters, please provide user details" })
         }
 
-        const { fullname,lastfullname, email, phone, password, role, payment, patientId } = body
+        const { fullname,lastfullname, username,adminid, email, phone, password, role, payment, patientId } = body
 
         if (!validation.isValid(fullname)) {
             return res.status(400).send({ status: false, msg: "please provide full name" })
 
         }
+
+        if (!validation.isValid(adminid)) {
+            return res.status(400).send({ status: false, msg: "please provide adminid" })
+
+        }
+
         if (!validation.isValid(lastfullname)) {
             return res.status(400).send({ status: false, msg: "please provide lastfullname" })
 
         }
+
+        if (!validation.isValid(username)) {
+            return res.status(400).send({ status: false, msg: "please provide username" })
+
+        }
+
         if (!validation.isValid(email)) {
             return res.status(400).send({ status: false, msg: "please provide email" })
 
@@ -229,6 +243,12 @@ const createUsernew = async function (req, res) {
         let duplicatephone = await roleModel.findOne({ phone });
         if (duplicatephone) {
             return res.status(400).send({ status: false, msg: "phone is already in use" })
+        }
+
+
+        let duplicateusername = await roleModel.findOne({ username });
+        if (duplicateusername) {
+            return res.status(400).send({ status: false, msg: "username is already in use" })
         }
 
         // generate salt to hash password
@@ -272,9 +292,9 @@ const createUsernew = async function (req, res) {
         res.redirect('../doctor') //added this to redirect 
     }
 
-    catch (error) {
-        console.log(error.msg)
-        return res.status(500).send({ status: false, msg: error.msg });
+    catch (errors) {
+        // console.log(error.msg)
+        res.render('../docregister', { msg: errors.msg});
     }
 
 
