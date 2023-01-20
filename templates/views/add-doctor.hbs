@@ -3,14 +3,15 @@
  {{>sidebar loginuser=loginuser}}
         <div class="page-wrapper">
             <div class="content">
-                <div class="row">
+                 <div class="row">
                     <div class="col-lg-8 offset-lg-2">
                         <h4 class="page-title">Add Doctor</h4>
                     </div>
                 </div>
                 <div class="row"> 
                     <div class="col-lg-8 offset-lg-2">
-                        <form action="/docregister" method="POST" >
+                        <form action="../docregister" method="POST" >
+                        
                             {{#each errors}}
                             <div class="alert alert-danger">
                               <a href="#" class ="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -31,19 +32,36 @@
                                         <input class="form-control" type="text" placeholder="Lastname" name ="lastfullname" value="{{lastfullname}}" required>
                                     </div>
 
+                                    <div class="form-group">
+                                        <!-- <input type="text" name ="nickName"class="form-control" id="floatingInput" placeholder=" nick Name "> -->
+                                        <label>UserName <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" placeholder="UserName" name ="username" value="{{username}}" required>
+                                    </div>
+
                                 </div>
+
+                                  <div class="form-group">
+                                        <!-- <input type="text" name ="nickName"class="form-control" id="floatingInput" placeholder=" nick Name "> -->
+                                        <label>Admin Id <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" placeholder="Admin Id" name ="adminid" value="{{fullname}}" required>
+                                    </div>
+
+                                
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Email <span class="text-danger">*</span></label>
                                         <input class="form-control" type="email" name ="email" value="{{email}}" required>
                                     </div>
                                 </div>
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Password <span class="text-danger">*</span></label>
                                         <input class="form-control" type="password" name ="password" value="{{password}}" required>
                                     </div>
                                 </div>
+
+
 								<div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Date of Birth</label>
